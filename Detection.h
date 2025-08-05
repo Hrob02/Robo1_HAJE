@@ -5,7 +5,7 @@
   Core Functions and Responsibilities:
     - Identify Objects
     - Determine quantifiable Charcateristics such as size
-    - Push data to Risk Assessment class
+    - Push data to Fire Risk class
     - etc
 
 @note
