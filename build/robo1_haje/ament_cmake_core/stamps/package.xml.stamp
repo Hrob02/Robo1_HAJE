@@ -1,0 +1,33 @@
+<package format="3">
+  <name>robo1_haje</name>
+  <version>0.0.1</version>
+  <description>
+    Logic for forest and environmental management robotic prototype.
+  </description>
+  <maintainer email="hallie.r.robins@student.uts.edu.au">Hallie Robins</maintainer>
+  <license>Apache 2.0</license>
+  
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  
+  <!-- These packages may be subject to change -->
+  <depend>gazebo_ros_pkgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>tf2</depend>
+  <depend>turtlebot3_navigation2</depend>
+
+  <build_depend>nav2_common</build_depend>
+  <build_depend>navigation2</build_depend>
+  <build_depend>launch_ros</build_depend>
+
+  <!-- 
+  Add an executable for each subsystem here
+  <exec_depend>Subsystem1</exec_depend> ... 
+  -->
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
