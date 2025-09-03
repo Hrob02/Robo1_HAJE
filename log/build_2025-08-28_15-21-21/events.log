@@ -1,0 +1,170 @@
+[0.000000] (-) TimerEvent: {}
+[0.000442] (robo1_haje) JobQueued: {'identifier': 'robo1_haje', 'dependencies': OrderedDict()}
+[0.000731] (robo1_haje) JobStarted: {'identifier': 'robo1_haje'}
+[0.005993] (robo1_haje) JobProgress: {'identifier': 'robo1_haje', 'progress': 'cmake'}
+[0.006326] (robo1_haje) Command: {'cmd': ['/usr/bin/cmake', '/home/eleanorlow/robo1/Robo1_HAJE', '-DCMAKE_INSTALL_PREFIX=/home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje'], 'cwd': '/home/eleanorlow/robo1/Robo1_HAJE/build/robo1_haje', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'en_AU:en'), ('USER', 'eleanorlow'), ('ROS_PACKAGE_PATH', '/home/eleanorlow/robo1/install/stage/share:/home/eleanorlow/spcrob/ros_ws/install/stage/share'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/eleanorlow/robo1/install/stage_ros2/lib:/home/eleanorlow/robo1/install/stage/lib:/home/eleanorlow/spcrob/ros_ws/install/stage_ros2/lib:/home/eleanorlow/spcrob/ros_ws/install/stage/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/eleanorlow'), ('OLDPWD', '/home/eleanorlow/robo1'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('MANAGERPID', '1055'), ('SYSTEMD_EXEC_PID', '1733'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator25ef4b219e3b005583550f2b0f9f990c3'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '4029'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/eleanorlow/robo1/install:/home/eleanorlow/spcrob/ros_ws/install:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'eleanorlow'), ('JOURNAL_STREAM', '8:8149'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('PKG_CONFIG_PATH', '/home/eleanorlow/robo1/install/stage/lib/x86_64-linux-gnu/pkgconfig:/home/eleanorlow/robo1/install/stage/lib/pkgconfig:/home/eleanorlow/spcrob/ros_ws/install/stage/lib/x86_64-linux-gnu/pkgconfig:/home/eleanorlow/spcrob/ros_ws/install/stage/lib/pkgconfig'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'eleanorlow'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/eleanorlow/robo1/install/stage/bin:/home/eleanorlow/spcrob/ros_ws/install/stage/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/bethany:@/tmp/.ICE-unix/1699,unix/bethany:/tmp/.ICE-unix/1699'), ('INVOCATION_ID', '72ced52683ef467bb31d6064b378deb3'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('IBUS_DISABLE_SNOOPER', '1'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.HXSQB3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/eleanorlow/robo1/install/stage_ros2:/home/eleanorlow/robo1/install/robo1_haje:/home/eleanorlow/spcrob/ros_ws/install/stage_ros2:/home/eleanorlow/spcrob/ros_ws/install/particle_filter_localisation:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/install/python_tutorial:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('TERMINATOR_UUID', 'urn:uuid:4239c13d-ba3f-4303-9adc-7b8f096388db'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/eleanorlow/robo1/Robo1_HAJE/build/robo1_haje'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/eleanorlow/spcrob/ros_ws/install/particle_filter_localisation/lib/python3.10/site-packages:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/build/python_tutorial:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/install/python_tutorial/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/eleanorlow/robo1/install/stage_ros2:/home/eleanorlow/spcrob/ros_ws/install/particle_filter_localisation:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/install/python_tutorial:/opt/ros/humble:/home/eleanorlow/robo1/install/stage:/home/eleanorlow/robo1/install/robo1_haje:/home/eleanorlow/spcrob/ros_ws/install/stage_ros2:/home/eleanorlow/spcrob/ros_ws/install/stage')]), 'shell': False}
+[0.099907] (-) TimerEvent: {}
+[0.200350] (-) TimerEvent: {}
+[0.300837] (-) TimerEvent: {}
+[0.401393] (-) TimerEvent: {}
+[0.501862] (-) TimerEvent: {}
+[0.602338] (-) TimerEvent: {}
+[0.702777] (-) TimerEvent: {}
+[0.792398] (robo1_haje) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.802895] (-) TimerEvent: {}
+[0.903268] (-) TimerEvent: {}
+[1.003794] (-) TimerEvent: {}
+[1.104354] (-) TimerEvent: {}
+[1.204953] (-) TimerEvent: {}
+[1.305488] (-) TimerEvent: {}
+[1.405923] (-) TimerEvent: {}
+[1.506390] (-) TimerEvent: {}
+[1.545357] (robo1_haje) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[1.573266] (robo1_haje) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[1.606611] (-) TimerEvent: {}
+[1.707112] (-) TimerEvent: {}
+[1.731908] (robo1_haje) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[1.744956] (robo1_haje) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[1.745411] (robo1_haje) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[1.759291] (robo1_haje) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[1.768593] (robo1_haje) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[1.807281] (-) TimerEvent: {}
+[1.900663] (robo1_haje) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[1.907378] (-) TimerEvent: {}
+[1.908330] (robo1_haje) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[1.908539] (robo1_haje) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[1.908812] (robo1_haje) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[1.956775] (robo1_haje) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[2.007547] (-) TimerEvent: {}
+[2.107941] (-) TimerEvent: {}
+[2.184222] (robo1_haje) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[2.208058] (-) TimerEvent: {}
+[2.308394] (-) TimerEvent: {}
+[2.408816] (-) TimerEvent: {}
+[2.456662] (robo1_haje) StdoutLine: {'line': b'-- Found rclcpp: 16.0.14 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[2.508972] (-) TimerEvent: {}
+[2.609347] (-) TimerEvent: {}
+[2.675940] (robo1_haje) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[2.709630] (-) TimerEvent: {}
+[2.714502] (robo1_haje) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[2.741485] (robo1_haje) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[2.809910] (-) TimerEvent: {}
+[2.814854] (robo1_haje) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[2.869410] (robo1_haje) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[2.910130] (-) TimerEvent: {}
+[3.005369] (robo1_haje) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[3.010227] (-) TimerEvent: {}
+[3.045117] (robo1_haje) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.8 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[3.110484] (-) TimerEvent: {}
+[3.211012] (-) TimerEvent: {}
+[3.311469] (-) TimerEvent: {}
+[3.314626] (robo1_haje) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[3.359322] (robo1_haje) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[3.387651] (robo1_haje) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[3.411780] (-) TimerEvent: {}
+[3.425087] (robo1_haje) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[3.512090] (-) TimerEvent: {}
+[3.612600] (-) TimerEvent: {}
+[3.700883] (robo1_haje) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[3.701125] (robo1_haje) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[3.712683] (-) TimerEvent: {}
+[3.762402] (robo1_haje) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[3.763156] (robo1_haje) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[3.812888] (-) TimerEvent: {}
+[3.889942] (robo1_haje) StdoutLine: {'line': b'-- Found nav2_msgs: 1.1.18 (/opt/ros/humble/share/nav2_msgs/cmake)\n'}
+[3.913123] (-) TimerEvent: {}
+[4.013527] (-) TimerEvent: {}
+[4.050068] (robo1_haje) StdoutLine: {'line': b'-- Found rclcpp_action: 16.0.14 (/opt/ros/humble/share/rclcpp_action/cmake)\n'}
+[4.082264] (robo1_haje) StdoutLine: {'line': b'-- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)\n'}
+[4.113613] (-) TimerEvent: {}
+[4.153534] (robo1_haje) StdoutLine: {'line': b'-- Configuring done\n'}
+[4.160837] (robo1_haje) StdoutLine: {'line': b'-- Generating done\n'}
+[4.164359] (robo1_haje) StdoutLine: {'line': b'-- Build files have been written to: /home/eleanorlow/robo1/Robo1_HAJE/build/robo1_haje\n'}
+[4.171959] (robo1_haje) CommandEnded: {'returncode': 0}
+[4.172772] (robo1_haje) JobProgress: {'identifier': 'robo1_haje', 'progress': 'build'}
+[4.172915] (robo1_haje) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/eleanorlow/robo1/Robo1_HAJE/build/robo1_haje', '--', '-j8', '-l8'], 'cwd': '/home/eleanorlow/robo1/Robo1_HAJE/build/robo1_haje', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'en_AU:en'), ('USER', 'eleanorlow'), ('ROS_PACKAGE_PATH', '/home/eleanorlow/robo1/install/stage/share:/home/eleanorlow/spcrob/ros_ws/install/stage/share'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/eleanorlow/robo1/install/stage_ros2/lib:/home/eleanorlow/robo1/install/stage/lib:/home/eleanorlow/spcrob/ros_ws/install/stage_ros2/lib:/home/eleanorlow/spcrob/ros_ws/install/stage/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/eleanorlow'), ('OLDPWD', '/home/eleanorlow/robo1'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('MANAGERPID', '1055'), ('SYSTEMD_EXEC_PID', '1733'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator25ef4b219e3b005583550f2b0f9f990c3'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '4029'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/eleanorlow/robo1/install:/home/eleanorlow/spcrob/ros_ws/install:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'eleanorlow'), ('JOURNAL_STREAM', '8:8149'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('PKG_CONFIG_PATH', '/home/eleanorlow/robo1/install/stage/lib/x86_64-linux-gnu/pkgconfig:/home/eleanorlow/robo1/install/stage/lib/pkgconfig:/home/eleanorlow/spcrob/ros_ws/install/stage/lib/x86_64-linux-gnu/pkgconfig:/home/eleanorlow/spcrob/ros_ws/install/stage/lib/pkgconfig'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'eleanorlow'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/eleanorlow/robo1/install/stage/bin:/home/eleanorlow/spcrob/ros_ws/install/stage/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/bethany:@/tmp/.ICE-unix/1699,unix/bethany:/tmp/.ICE-unix/1699'), ('INVOCATION_ID', '72ced52683ef467bb31d6064b378deb3'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('IBUS_DISABLE_SNOOPER', '1'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.HXSQB3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/eleanorlow/robo1/install/stage_ros2:/home/eleanorlow/robo1/install/robo1_haje:/home/eleanorlow/spcrob/ros_ws/install/stage_ros2:/home/eleanorlow/spcrob/ros_ws/install/particle_filter_localisation:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/install/python_tutorial:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('TERMINATOR_UUID', 'urn:uuid:4239c13d-ba3f-4303-9adc-7b8f096388db'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/eleanorlow/robo1/Robo1_HAJE/build/robo1_haje'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/eleanorlow/spcrob/ros_ws/install/particle_filter_localisation/lib/python3.10/site-packages:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/build/python_tutorial:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/install/python_tutorial/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/eleanorlow/robo1/install/stage_ros2:/home/eleanorlow/spcrob/ros_ws/install/particle_filter_localisation:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/install/python_tutorial:/opt/ros/humble:/home/eleanorlow/robo1/install/stage:/home/eleanorlow/robo1/install/robo1_haje:/home/eleanorlow/spcrob/ros_ws/install/stage_ros2:/home/eleanorlow/spcrob/ros_ws/install/stage')]), 'shell': False}
+[4.213740] (-) TimerEvent: {}
+[4.215689] (robo1_haje) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding CXX object CMakeFiles/Movement.dir/src/Movement.cpp.o\x1b[0m\n'}
+[4.313900] (-) TimerEvent: {}
+[4.414299] (-) TimerEvent: {}
+[4.514824] (-) TimerEvent: {}
+[4.615346] (-) TimerEvent: {}
+[4.715802] (-) TimerEvent: {}
+[4.816302] (-) TimerEvent: {}
+[4.916699] (-) TimerEvent: {}
+[5.016996] (-) TimerEvent: {}
+[5.117426] (-) TimerEvent: {}
+[5.218027] (-) TimerEvent: {}
+[5.318430] (-) TimerEvent: {}
+[5.418734] (-) TimerEvent: {}
+[5.519246] (-) TimerEvent: {}
+[5.619680] (-) TimerEvent: {}
+[5.720103] (-) TimerEvent: {}
+[5.820644] (-) TimerEvent: {}
+[5.921206] (-) TimerEvent: {}
+[6.021863] (-) TimerEvent: {}
+[6.122331] (-) TimerEvent: {}
+[6.222757] (-) TimerEvent: {}
+[6.323132] (-) TimerEvent: {}
+[6.423451] (-) TimerEvent: {}
+[6.523798] (-) TimerEvent: {}
+[6.624164] (-) TimerEvent: {}
+[6.724490] (-) TimerEvent: {}
+[6.824809] (-) TimerEvent: {}
+[6.925116] (-) TimerEvent: {}
+[7.025424] (-) TimerEvent: {}
+[7.125801] (-) TimerEvent: {}
+[7.226151] (-) TimerEvent: {}
+[7.326503] (-) TimerEvent: {}
+[7.426870] (-) TimerEvent: {}
+[7.527127] (-) TimerEvent: {}
+[7.627476] (-) TimerEvent: {}
+[7.727816] (-) TimerEvent: {}
+[7.828084] (-) TimerEvent: {}
+[7.928365] (-) TimerEvent: {}
+[8.028683] (-) TimerEvent: {}
+[8.128978] (-) TimerEvent: {}
+[8.229273] (-) TimerEvent: {}
+[8.329622] (-) TimerEvent: {}
+[8.429948] (-) TimerEvent: {}
+[8.530294] (-) TimerEvent: {}
+[8.630647] (-) TimerEvent: {}
+[8.730983] (-) TimerEvent: {}
+[8.831267] (-) TimerEvent: {}
+[8.931622] (-) TimerEvent: {}
+[9.031976] (-) TimerEvent: {}
+[9.132341] (-) TimerEvent: {}
+[9.139855] (robo1_haje) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable Movement\x1b[0m\n'}
+[9.232599] (-) TimerEvent: {}
+[9.333025] (-) TimerEvent: {}
+[9.433543] (-) TimerEvent: {}
+[9.533968] (-) TimerEvent: {}
+[9.634338] (-) TimerEvent: {}
+[9.734725] (-) TimerEvent: {}
+[9.788582] (robo1_haje) StdoutLine: {'line': b'[100%] Built target Movement\n'}
+[9.796188] (robo1_haje) CommandEnded: {'returncode': 0}
+[9.796675] (robo1_haje) JobProgress: {'identifier': 'robo1_haje', 'progress': 'install'}
+[9.802552] (robo1_haje) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/eleanorlow/robo1/Robo1_HAJE/build/robo1_haje'], 'cwd': '/home/eleanorlow/robo1/Robo1_HAJE/build/robo1_haje', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'en_AU:en'), ('USER', 'eleanorlow'), ('ROS_PACKAGE_PATH', '/home/eleanorlow/robo1/install/stage/share:/home/eleanorlow/spcrob/ros_ws/install/stage/share'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/eleanorlow/robo1/install/stage_ros2/lib:/home/eleanorlow/robo1/install/stage/lib:/home/eleanorlow/spcrob/ros_ws/install/stage_ros2/lib:/home/eleanorlow/spcrob/ros_ws/install/stage/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/eleanorlow'), ('OLDPWD', '/home/eleanorlow/robo1'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('MANAGERPID', '1055'), ('SYSTEMD_EXEC_PID', '1733'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator25ef4b219e3b005583550f2b0f9f990c3'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '4029'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/eleanorlow/robo1/install:/home/eleanorlow/spcrob/ros_ws/install:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'eleanorlow'), ('JOURNAL_STREAM', '8:8149'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('PKG_CONFIG_PATH', '/home/eleanorlow/robo1/install/stage/lib/x86_64-linux-gnu/pkgconfig:/home/eleanorlow/robo1/install/stage/lib/pkgconfig:/home/eleanorlow/spcrob/ros_ws/install/stage/lib/x86_64-linux-gnu/pkgconfig:/home/eleanorlow/spcrob/ros_ws/install/stage/lib/pkgconfig'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'eleanorlow'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/eleanorlow/robo1/install/stage/bin:/home/eleanorlow/spcrob/ros_ws/install/stage/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/bethany:@/tmp/.ICE-unix/1699,unix/bethany:/tmp/.ICE-unix/1699'), ('INVOCATION_ID', '72ced52683ef467bb31d6064b378deb3'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('IBUS_DISABLE_SNOOPER', '1'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.HXSQB3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/eleanorlow/robo1/install/stage_ros2:/home/eleanorlow/robo1/install/robo1_haje:/home/eleanorlow/spcrob/ros_ws/install/stage_ros2:/home/eleanorlow/spcrob/ros_ws/install/particle_filter_localisation:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/install/python_tutorial:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('TERMINATOR_UUID', 'urn:uuid:4239c13d-ba3f-4303-9adc-7b8f096388db'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/eleanorlow/robo1/Robo1_HAJE/build/robo1_haje'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/eleanorlow/spcrob/ros_ws/install/particle_filter_localisation/lib/python3.10/site-packages:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/build/python_tutorial:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/install/python_tutorial/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/eleanorlow/robo1/install/stage_ros2:/home/eleanorlow/spcrob/ros_ws/install/particle_filter_localisation:/home/eleanorlow/spcrob/pythonTutorial/colcon_ws/install/python_tutorial:/opt/ros/humble:/home/eleanorlow/robo1/install/stage:/home/eleanorlow/robo1/install/robo1_haje:/home/eleanorlow/spcrob/ros_ws/install/stage_ros2:/home/eleanorlow/spcrob/ros_ws/install/stage')]), 'shell': False}
+[9.809144] (robo1_haje) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[9.809282] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch\n'}
+[9.809344] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/launch.py\n'}
+[9.809425] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/lib/robo1_haje/Movement\n'}
+[9.809974] (robo1_haje) StdoutLine: {'line': b'-- Set runtime path of "/home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/lib/robo1_haje/Movement" to ""\n'}
+[9.810044] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/ament_index/resource_index/package_run_dependencies/robo1_haje\n'}
+[9.810107] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/ament_index/resource_index/parent_prefix_path/robo1_haje\n'}
+[9.810174] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/ament_prefix_path.sh\n'}
+[9.810245] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/ament_prefix_path.dsv\n'}
+[9.810305] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/path.sh\n'}
+[9.810367] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/path.dsv\n'}
+[9.810450] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.bash\n'}
+[9.810568] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.sh\n'}
+[9.810667] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.zsh\n'}
+[9.810706] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.dsv\n'}
+[9.810761] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/robo1_haje/package.dsv\n'}
+[9.810812] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/ament_index/resource_index/packages/robo1_haje\n'}
+[9.810893] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/robo1_haje/cmake/robo1_hajeConfig.cmake\n'}
+[9.810952] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/robo1_haje/cmake/robo1_hajeConfig-version.cmake\n'}
+[9.811008] (robo1_haje) StdoutLine: {'line': b'-- Installing: /home/eleanorlow/robo1/Robo1_HAJE/install/robo1_haje/share/robo1_haje/package.xml\n'}
+[9.812165] (robo1_haje) CommandEnded: {'returncode': 0}
+[9.822821] (robo1_haje) JobEnded: {'identifier': 'robo1_haje', 'rc': 0}
+[9.823291] (-) EventReactorShutdown: {}
