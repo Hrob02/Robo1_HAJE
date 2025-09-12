@@ -16,6 +16,7 @@ find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
+find_package(ros_ign_interfaces REQUIRED)
 
 # Service files
 ## rosidl_generate_interfaces(${PROJECT_NAME}
@@ -31,8 +32,13 @@ ament_target_dependencies(Movement rclcpp nav2_msgs rclcpp_action geometry_msgs 
 ## target_link_libraries(movementlogic ${cpp_typesupport_target})
 
 install(TARGETS
-  Movement
-  DESTINATION lib/${PROJECT_NAME}
+  DIRECTORY config launch models urdf worlds
+  DESTINATION share/${PROJECT_NAME}
 )
+
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
+endif()
 
 ament_package()
