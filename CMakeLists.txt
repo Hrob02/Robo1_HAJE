@@ -32,7 +32,7 @@ find_package(ros_ign_interfaces REQUIRED)
 ## target_link_libraries(movementlogic ${cpp_typesupport_target})
 
 install(
-  DIRECTORY config launch models urdf worlds movement pathplanning firerisk detection
+  DIRECTORY config launch models urdf worlds srv src
   DESTINATION share/${PROJECT_NAME}
 )
 
