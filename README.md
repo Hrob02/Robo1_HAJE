@@ -31,6 +31,18 @@ Potential future upgrades to this system include:
 - **IoT Integration**: Connect to external weather APIs for live data (humidity, temperature, wind).
 - **Real-World Deployment**: Adapt the simulation for hardware testing and integration with real drones or sensor networks.
 
+## Dependancies
+The following are required to successfully run this project:
+
+- ROS2 humble
+- Gazebo ignition
+- C++ libraries
+- Python packages
+- ROS packages
+- colcon or ament (ROS 2 build tools)
+
+The repo has package.xml and CMakeLists.txt.
+
 ## Getting Started
 
 1. Clone the repository:
