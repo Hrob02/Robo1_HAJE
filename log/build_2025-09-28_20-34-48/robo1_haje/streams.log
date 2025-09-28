@@ -1,0 +1,162 @@
+[0.008s] Invoking command in '/home/eleanorlow/Robo1_HAJE/build/robo1_haje': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/eleanorlow/spcrob/ros_ws2/install/path_planner:/opt/ros/humble /usr/bin/cmake /home/eleanorlow/Robo1_HAJE/src -DCMAKE_INSTALL_PREFIX=/home/eleanorlow/Robo1_HAJE/install/robo1_haje
+[0.047s] -- The C compiler identification is GNU 11.4.0
+[0.086s] -- The CXX compiler identification is GNU 11.4.0
+[0.092s] -- Detecting C compiler ABI info
+[0.141s] -- Detecting C compiler ABI info - done
+[0.146s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.146s] -- Detecting C compile features
+[0.147s] -- Detecting C compile features - done
+[0.149s] -- Detecting CXX compiler ABI info
+[0.205s] -- Detecting CXX compiler ABI info - done
+[0.210s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.210s] -- Detecting CXX compile features
+[0.211s] -- Detecting CXX compile features - done
+[0.216s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.329s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.406s] -- Found rclcpp: 16.0.14 (/opt/ros/humble/share/rclcpp/cmake)
+[0.452s] -- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.457s] -- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.466s] -- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.480s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.496s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.538s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.541s] -- Found rmw_fastrtps_cpp: 6.2.8 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.606s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[0.628s] -- Found FastRTPS: /opt/ros/humble/include  
+[0.659s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.668s] -- Looking for pthread.h
+[0.717s] -- Looking for pthread.h - found
+[0.718s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.769s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[0.770s] -- Found Threads: TRUE  
+[0.816s] -- Found nav2_msgs: 1.1.18 (/opt/ros/humble/share/nav2_msgs/cmake)
+[0.886s] -- Found rclcpp_action: 16.0.14 (/opt/ros/humble/share/rclcpp_action/cmake)
+[0.896s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[0.906s] -- Found ros_ign_interfaces: 0.244.20 (/opt/ros/humble/share/ros_ign_interfaces/cmake)
+[0.943s] -- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[1.010s] -- Added test 'copyright' to check source files copyright and LICENSE
+[1.015s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[1.015s] -- Configured cppcheck include dirs: 
+[1.016s] -- Configured cppcheck exclude dirs and/or files: 
+[1.018s] -- Added test 'cpplint' to check C / C++ code against the Google style
+[1.018s] -- Configured cpplint exclude dirs and/or files: 
+[1.019s] -- Added test 'flake8' to check Python code syntax and style conventions
+[1.020s] -- Added test 'lint_cmake' to check CMake code style
+[1.021s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[1.023s] -- Added test 'uncrustify' to check C / C++ code style
+[1.023s] -- Configured uncrustify additional arguments: 
+[1.024s] -- Added test 'xmllint' to check XML markup files
+[1.025s] -- Configuring done
+[1.028s] -- Generating done
+[1.030s] -- Build files have been written to: /home/eleanorlow/Robo1_HAJE/build/robo1_haje
+[1.038s] Invoked command in '/home/eleanorlow/Robo1_HAJE/build/robo1_haje' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/eleanorlow/spcrob/ros_ws2/install/path_planner:/opt/ros/humble /usr/bin/cmake /home/eleanorlow/Robo1_HAJE/src -DCMAKE_INSTALL_PREFIX=/home/eleanorlow/Robo1_HAJE/install/robo1_haje
+[1.040s] Invoking command in '/home/eleanorlow/Robo1_HAJE/build/robo1_haje': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/eleanorlow/spcrob/ros_ws2/install/path_planner:/opt/ros/humble /usr/bin/cmake --build /home/eleanorlow/Robo1_HAJE/build/robo1_haje -- -j8 -l8
+[1.069s] Invoked command in '/home/eleanorlow/Robo1_HAJE/build/robo1_haje' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/eleanorlow/spcrob/ros_ws2/install/path_planner:/opt/ros/humble /usr/bin/cmake --build /home/eleanorlow/Robo1_HAJE/build/robo1_haje -- -j8 -l8
+[1.076s] Invoking command in '/home/eleanorlow/Robo1_HAJE/build/robo1_haje': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/eleanorlow/spcrob/ros_ws2/install/path_planner:/opt/ros/humble /usr/bin/cmake --install /home/eleanorlow/Robo1_HAJE/build/robo1_haje
+[1.081s] -- Install configuration: ""
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/gazebo_bridge.yaml
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/robot_localization.yaml
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/drone.rviz
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/slam_params.yaml
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/nav2_params.yaml
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/launch.py
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/launch_2.py
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/drone_ignition.launch.py
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/drone_navigation.launch.py
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree/model.config
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree/meshes
+[1.081s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree/meshes/model
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree/meshes/model/__Wood_Lumber_ButtJoined_.jpg
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree/meshes/palm_tree.dae
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree/model.sdf
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/materials
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/materials/textures
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/materials/textures/leaf_litter.png
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/materials/textures/empty_grass.png
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/materials/textures/forest_overhead.png
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/model.config
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/model.sdf
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/grass_plane
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/grass_plane/materials
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/grass_plane/materials/textures
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/grass_plane/materials/textures/empty_grass.png
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/grass_plane/model.config
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/grass_plane/model.sdf
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/materials
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/materials/textures
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/materials/textures/forest_wall_transparent_small.png
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/materials/textures/forest_wall.png
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/materials/textures/forest_wall_transparent.png
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/model.config
+[1.082s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/model.sdf
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/model.config
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/meshes
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/meshes/bush_3.mtl
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/meshes/bush_3.obj
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/meshes/Summer_B.jpg
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/model.sdf
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/model.config
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/meshes
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/meshes/tree_1.mtl
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/meshes/tree_1.obj
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/meshes/Sonnerat.jpg
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/model.sdf
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/model.config
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/meshes
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/meshes/tree_2.obj
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/meshes/Walnut_L.jpg
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/meshes/tree_2.mtl
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/meshes/Mossy_Tr.jpg
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/model.sdf
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf
+[1.083s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/propeller_fl.dae
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/propeller_fr.dae
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/propeller_rl.dae
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/propeller_rr.dae
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/hull.dae
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/common_properties.urdf.xacro
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/drone.gazebo.xacro
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/drone.urdf.xacro
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/worlds
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/worlds/simple_trees.sdf
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/worlds/large_demo.sdf
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/movement
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/movement/Movement.h
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/movement/Movement.py
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/movement/Movement.cpp
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/pathplanning
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/pathplanning/graph.py
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/pathplanning/PathPlanning.cpp
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/pathplanning/PathPlanning.h
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/firerisk
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/firerisk/FireRisk.h
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/firerisk/FireRisk.cpp
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/detection
+[1.084s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/detection/Detection.h
+[1.085s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/detection/Detection.cpp
+[1.085s] -- Installing: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/ament_index/resource_index/package_run_dependencies/robo1_haje
+[1.085s] -- Installing: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/ament_index/resource_index/parent_prefix_path/robo1_haje
+[1.085s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/ament_prefix_path.sh
+[1.085s] -- Installing: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/ament_prefix_path.dsv
+[1.085s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/path.sh
+[1.085s] -- Installing: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/path.dsv
+[1.085s] -- Installing: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.bash
+[1.085s] -- Installing: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.sh
+[1.085s] -- Installing: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.zsh
+[1.085s] -- Installing: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.dsv
+[1.085s] -- Installing: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/package.dsv
+[1.085s] -- Installing: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/ament_index/resource_index/packages/robo1_haje
+[1.085s] -- Installing: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/cmake/robo1_hajeConfig.cmake
+[1.085s] -- Installing: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/cmake/robo1_hajeConfig-version.cmake
+[1.085s] -- Up-to-date: /home/eleanorlow/Robo1_HAJE/install/robo1_haje/share/robo1_haje/package.xml
+[1.086s] Invoked command in '/home/eleanorlow/Robo1_HAJE/build/robo1_haje' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/eleanorlow/spcrob/ros_ws2/install/path_planner:/opt/ros/humble /usr/bin/cmake --install /home/eleanorlow/Robo1_HAJE/build/robo1_haje

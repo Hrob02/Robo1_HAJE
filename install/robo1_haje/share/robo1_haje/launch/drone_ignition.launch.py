@@ -13,7 +13,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # Get paths to directories
-    pkg_path = FindPackageShare('drone_ignition_bringup')
+    pkg_path = FindPackageShare('robo1_haje')
     config_path = PathJoinSubstitution([pkg_path,
                                        'config'])
 

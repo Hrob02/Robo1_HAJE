@@ -43,7 +43,7 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/robo1_haje" TYPE DIRECTORY FILES
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/robo1_haje" TYPE DIRECTORY FILES
     "/home/eleanorlow/Robo1_HAJE/src/config"
     "/home/eleanorlow/Robo1_HAJE/src/launch"
     "/home/eleanorlow/Robo1_HAJE/src/models"

@@ -33,7 +33,7 @@ find_package(ros_ign_interfaces REQUIRED)
 
 install(
   DIRECTORY config launch models urdf worlds movement pathplanning firerisk detection
-  DESTINATION share/${PROJECT_NAME}
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)
