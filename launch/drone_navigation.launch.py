@@ -8,7 +8,7 @@ def generate_launch_description():
 
     ld = LaunchDescription()
 
-    config_path = PathJoinSubstitution([FindPackageShare('drone_ignition_bringup'), 'config'])
+    config_path = PathJoinSubstitution([FindPackageShare('robo1_haje'), 'config'])
 
     # Additional command line arguments
     use_sim_time = LaunchConfiguration('use_sim_time')
