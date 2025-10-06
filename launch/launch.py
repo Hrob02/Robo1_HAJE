@@ -5,7 +5,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     return LaunchDescription([
         Node(
-            package='haje_drone_movement',      # your package name
+            package='robo1_haje',      # your package name
             executable='movement_node',         # console_scripts entry point
             name='movement_controller',
             output='screen',

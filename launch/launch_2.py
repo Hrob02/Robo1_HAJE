@@ -25,7 +25,7 @@ from nav_msgs.msg import Odometry, Path
 
 class MovementNode(Node):
     def __init__(self):
-        super().__init__('movement_controller')
+        super().__init__('robo1_haje')
 
         # ---------- Parameters (override in a launch file as needed) ----------
         self.declare_parameter('drone_name', 'parrot')  # model name in Ignition
