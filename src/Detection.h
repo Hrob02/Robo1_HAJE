@@ -1,23 +1,39 @@
-/**
-@class Detection
-@breif Identifies Objects and determines object characteristics
+#ifndef DETECTION_H
+#define DETECTION_H
 
-  Core Functions and Responsibilities:
-    - Identify Objects
-    - Determine quantifiable Charcateristics such as size
-    - Push data to Fire Risk class
-    - etc
-
-@note
-@author
-@date
-*/
+#include "rclcpp/rclcpp.hpp"
+#include "sensor_msgs/msg/laser_scan.hpp"
+#include "nav_msgs/msg/odometry.hpp"
+#include "geometry_msgs/msg/point.hpp"
+#include "visualization_msgs/msg/marker.hpp"
+#include <memory>
 
 /**
-Resources:
-  - https://github.com/Goodbudy/waitforme/blob/main/tom/src/detection.h - Detection logic to determine different shapes in an environment 
-  - https://github.com/Goodbudy/waitforme/blob/integration_namespace/tom/src/detection.h - Not sure if this code is different but including here anyway
-  - Might be able to find more resources so give me a shout when you get here
-*/
+ * @brief Detects nearby trees and publishes visualization markers.
+ * 
+ * Subscribes to /scan and /odom, processes points within a threshold range,
+ * and publishes cylinder markers representing detected trees.
+ */
+class DroneTreeDetector : public rclcpp::Node
+{
+public:
+  DroneTreeDetector();
 
-// Begin Code Here
+private:
+  // === Callbacks ===
+  void odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg);
+  void scanCallback(const sensor_msgs::msg::LaserScan::SharedPtr scan);
+
+  // === Utility ===
+  visualization_msgs::msg::Marker makeMarker(const geometry_msgs::msg::Point &p);
+
+  // === Members ===
+  rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr scan_sub_;
+  rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
+  rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr marker_pub_;
+
+  nav_msgs::msg::Odometry current_odom_;
+  int marker_id_ = 0;
+};
+
+#endif

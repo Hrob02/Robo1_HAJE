@@ -148,6 +148,15 @@ def generate_launch_description():
     )
 
     # ------------------------------
+    # 7. Tree detector
+    # ------------------------------
+    tree_detector = Node(
+        package='robo1_haje',
+        executable='tree_detector',
+        output='screen'
+    )
+
+    # ------------------------------
     # Return everything
     # ------------------------------
     return LaunchDescription([
@@ -160,5 +169,6 @@ def generate_launch_description():
         bridge,
         ekf_node,
         slam_toolbox,
-        rviz_node
+        rviz_node,
+        tree_detector
     ])
