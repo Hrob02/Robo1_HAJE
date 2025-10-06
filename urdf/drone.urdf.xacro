@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot name="drone" xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:include filename="$(find Robo1_HAJE)/urdf/common_properties.urdf.xacro"/>
-  <xacro:include filename="$(find Robo1_HAJE)/urdf/drone.gazebo.xacro"/>
+  <xacro:include filename="$(find robo1_haje)/urdf/common_properties.urdf.xacro"/>
+  <xacro:include filename="$(find robo1_haje)/urdf/drone.gazebo.xacro"/>
 
   <xacro:property name="r200_cam_rgb_px" value="0.005"/>
   <xacro:property name="r200_cam_rgb_py" value="0.018"/>
@@ -26,31 +26,31 @@
     </collision> -->
     <visual name="hull">
       <geometry>
-        <mesh filename="file://$(find Robo1_HAJE)/urdf/meshes/hull.dae"/>
+        <mesh filename="file://$(find robo1_haje)/urdf/meshes/hull.dae"/>
       </geometry>
     </visual>
     <visual name="propeller_rr">
       <origin xyz="-0.09035 -0.11423 -0.00501" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="file://$(find Robo1_HAJE)/urdf/meshes/propeller_rr.dae"/>
+        <mesh filename="file://$(find robo1_haje)/urdf/meshes/propeller_rr.dae"/>
       </geometry>
     </visual>
     <visual name="propeller_rl">
       <origin xyz="0.09035 0.11452 -0.00501" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="file://$(find Robo1_HAJE)/urdf/meshes/propeller_rl.dae"/>
+        <mesh filename="file://$(find robo1_haje)/urdf/meshes/propeller_rl.dae"/>
       </geometry>
     </visual>
     <visual name="propeller_fr">
       <origin xyz="0.08456 -0.11435 -0.00501" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="file://$(find Robo1_HAJE)/urdf/meshes/propeller_fr.dae"/>
+        <mesh filename="file://$(find robo1_haje)/urdf/meshes/propeller_fr.dae"/>
       </geometry>
     </visual>
     <visual name="propeller_fl">
       <origin xyz="0.08456 0.11463 -0.00501" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="file://$(find Robo1_HAJE)/urdf/meshes/propeller_fl.dae"/>
+        <mesh filename="file://$(find robo1_haje)/urdf/meshes/propeller_fl.dae"/>
       </geometry>
     </visual>
   </link>
