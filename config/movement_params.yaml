@@ -1,0 +1,8 @@
+/**:
+  ros__parameters:
+    # Leave [] to disable geofence
+    geofence: [-5.0, 5.0, -5.0, 5.0, 0.0, 3.0]
+
+    # You can also pre-seed waypoints here if you want:
+    # waypoints: [0.0, 0.0, 2.0, 3.0, 0.0, 2.0]
+

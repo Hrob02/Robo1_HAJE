@@ -8,6 +8,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch.conditions import IfCondition
 from launch_ros.substitutions import FindPackageShare
+from launch_ros.parameter_descriptions import ParameterFile
 import xacro
 
 
@@ -157,6 +158,36 @@ def generate_launch_description():
     )
 
     # ------------------------------
+    # 7. Movement controller
+    # ------------------------------
+    movement_params = os.path.join(
+        get_package_share_directory("robo1_haje"),
+        "config",
+        "movement_params.yaml",
+    )
+
+    movement_node = Node(
+        package="robo1_haje",
+        executable="movement_node.py",  # must match your CMake target / executable name
+        name="movement_controller",
+        output="screen",
+        parameters=[
+            ParameterFile(movement_params, allow_substs=True),
+            {
+                "cmd_vel_topic": "/cmd_vel",
+                "odom_topic": "/odometry",
+                "skip_takeoff": False,
+                "use_z_control": False,
+                "yaw_to_path": True,
+                "lookahead_m": 0.0,
+                "launch_altitude": 2.0,
+                "land_touchdown_z": 0.1,
+            },
+        ],
+    )
+
+
+    # ------------------------------
     # Return everything
     # ------------------------------
     return LaunchDescription([
@@ -170,5 +201,6 @@ def generate_launch_description():
         ekf_node,
         slam_toolbox,
         rviz_node,
-        tree_detector
+        tree_detector,
+        movement_node
     ])

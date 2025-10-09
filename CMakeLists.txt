@@ -24,6 +24,19 @@ find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 
+# === Python Integration ===
+find_package(ament_cmake_python REQUIRED)
+
+# Install the Python package (so robo1_haje/ becomes importable)
+ament_python_install_package(${PROJECT_NAME})
+
+# Install your Python executable script into ROS 2's lib directory
+install(PROGRAMS
+  robo1_haje/movement_node.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+# ==========================
+
 # ------------------------------------------------------------------------------
 # Include directories (since you keep headers inside src/)
 # ------------------------------------------------------------------------------
