@@ -10,10 +10,10 @@ def generate_launch_description():
             name='movement_controller',
             output='screen',
             parameters=[{
-                'drone_name': 'parrot',
+                'drone_name': 'drone',
                 # Or set explicit topics if different in your bridge config:
-                # 'cmd_vel_topic': '/model/parrot/cmd_vel',
-                # 'odom_topic':    '/model/parrot/odometry',
+                # 'cmd_vel_topic': '/model/drone/cmd_vel',
+                # 'odom_topic':    '/model/drone/odometry',
                 'xy_tol': 0.35,
                 'z_tol':  0.25
             }]

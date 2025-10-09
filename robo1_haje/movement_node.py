@@ -8,7 +8,7 @@
 # - Publishes nav_msgs/Path on /movement/path (with proper header stamps).
 #
 # Assumptions:
-# - Use simulator odometry: /model/<name>/odometry (defaults to parrot), or /odometry via bridge.
+# - Use simulator odometry: /model/<name>/odometry (defaults to drone), or /odometry via bridge.
 #
 # This version adds "face_forward" yaw control so the drone turns toward the
 # direction of travel (publishes Twist.angular.z).
@@ -30,7 +30,7 @@
 # Adds /movement/launch and /movement/land on top of the distinction build.
 #!/usr/bin/env python3
 """
-Movement controller for the Parrot sim (ROS 2 Humble).
+Movement controller for the drone sim (ROS 2 Humble).
 
 Core features
 -------------
@@ -75,7 +75,7 @@ Features
 - Publishes /movement/markers     (visualization_msgs/MarkerArray)
 - Yaw-to-path (on/off), optional lookahead follower
 - Optional geofence [xmin,xmax,ymin,ymax,zmin,zmax]
-- Works with /odometry (Gazebo bridge) and /cmd_vel -> /model/parrot/cmd_vel
+- Works with /odometry (Gazebo bridge) and /cmd_vel -> /model/drone/cmd_vel
 
 Notes
 - X/Y are commanded in world frame. Z control is optional.

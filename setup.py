@@ -18,7 +18,7 @@ setup(
     zip_safe=True,
     maintainer="Jorian Mitchell",
     maintainer_email="jorian.p.mitchell@outlook.com",
-    description="Waypoint-based movement controller for the Parrot sim.",
+    description="Waypoint-based movement controller for the drone sim.",
     license="MIT",
     entry_points={
         "console_scripts": [

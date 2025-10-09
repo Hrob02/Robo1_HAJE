@@ -1,11 +1,11 @@
 
 #!/usr/bin/env python3
-# HAJE Movement Subsystem (Ignition/Gazebo, Parrot drone)
+# HAJE Movement Subsystem (Ignition/Gazebo, drone drone)
 # - Pass: GO/STOP; >=3 waypoint path; tolerance checks; sequential queue
 # - Credit (partial): queue executor + path visualisation publisher (nav_msgs/Path)
 #
 # Assumptions:
-# 1) Drone is spawned via 41068_ignition_drone.launch.py (Parrot) with ros_ign_bridge + EKF.
+# 1) Drone is spawned via 41068_ignition_drone.launch.py (drone) with ros_ign_bridge + EKF.
 # 2) A model-scoped cmd_vel and odometry exist, typically:
 #       /model/<drone_name>/cmd_vel (geometry_msgs/Twist)
 #       /model/<drone_name>/odometry (nav_msgs/Odometry)
@@ -28,7 +28,7 @@ class MovementNode(Node):
         super().__init__('movement_controller')
 
         # ---------- Parameters (override in a launch file as needed) ----------
-        self.declare_parameter('drone_name', 'parrot')  # model name in Ignition
+        self.declare_parameter('drone_name', 'drone')  # model name in Ignition
         name = self.get_parameter('drone_name').get_parameter_value().string_value
 
         # Default topics follow Ignition's model-scoped naming

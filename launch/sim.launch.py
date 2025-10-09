@@ -85,6 +85,25 @@ def generate_launch_description():
         output='screen'
     )
 
+    # Supplemental Ignition bridge for odometry + cmd_vel
+    ign_bridge = Node(
+        package='ros_ign_bridge',
+        executable='parameter_bridge',
+        name='ign_bridge',
+        output='screen',
+        arguments=[
+            # Command velocity (ROS → Ign)
+            '/cmd_vel@geometry_msgs/msg/Twist]ignition.msgs.Twist',
+            # Odometry (Ign → ROS)
+            '/model/drone/odometry@nav_msgs/msg/Odometry[ignition.msgs.Odometry',
+        ],
+        remappings=[
+            ('/model/drone/odometry', '/odometry'),
+        ],
+        parameters=[{'use_sim_time': True}],
+    )
+
+
     # ------------------------------
     # 5. EKF localization
     # ------------------------------
@@ -158,7 +177,7 @@ def generate_launch_description():
     )
 
     # ------------------------------
-    # 7. Movement controller
+    # 8. Movement controller
     # ------------------------------
     movement_params = os.path.join(
         get_package_share_directory("robo1_haje"),
@@ -176,7 +195,7 @@ def generate_launch_description():
             {
                 "cmd_vel_topic": "/cmd_vel",
                 "odom_topic": "/odometry",
-                "skip_takeoff": False,
+                "skip_takeoff": True,
                 "use_z_control": False,
                 "yaw_to_path": True,
                 "lookahead_m": 0.0,
@@ -184,6 +203,9 @@ def generate_launch_description():
                 "land_touchdown_z": 0.1,
             },
         ],
+        # remappings=[
+        # ("/odometry", "/model/drone/odometry"),
+        # ],
     )
 
 
@@ -198,6 +220,7 @@ def generate_launch_description():
         spawn_entity,
         state_publisher,
         bridge,
+        ign_bridge,
         ekf_node,
         slam_toolbox,
         rviz_node,
