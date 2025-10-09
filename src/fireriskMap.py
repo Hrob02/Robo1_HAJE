@@ -9,17 +9,33 @@ class FireRiskMap:
         self.resolution = resolution 
         self.grid_size = int(self.world_size / self.resolution)
         self.veg_map = np.zeros((self.grid_size, self.grid_size), dtype=int)  # x, y coords of the graph
-        self.fire_map = np.zeros((self.grid_size, self.grid_size), dtype=int)  
+        self.fire_map = np.zeros((self.grid_size, self.grid_size), dtype=float) 
+        self.weights = {
+            "short": 0.3,
+            "medium": 0.6,
+            "tall": 0.9
+        } 
+        self.radius = {
+            "short": 4,
+            "medium": 6,
+            "tall": 8
+        }
+        self.treeCategory = {
+            "short": 1,
+            "medium": 2,
+            "tall": 3
+        }
             
 
 
-    def expandingPixel(self, gx, gy, radius, treeInt):
+    def expandingPixel(self, gx, gy, radius, treeInt, weight):
         for dx in range(-radius, radius + 1):
             for dy in range(-radius, radius + 1):
                 nx = gx + dx
                 ny = gy + dy
                 if 0 <= nx < self.grid_size and 0 <= ny < self.grid_size:
                     self.veg_map[ny, nx] = treeInt 
+                    self.fire_map[ny, nx] = min(self.fire_map[ny, nx] + weight, 1.5)
 
     def visibleVegetionMap(self, shortTrees, mediumTrees, tallTrees, expand=True):
 
@@ -27,25 +43,25 @@ class FireRiskMap:
             gx = int(x / self.resolution)
             gy = int(y / self.resolution)
             if expand:
-                self.expandingPixel(gx, gy, 4, 1)
+                self.expandingPixel(gx, gy, self.radius["short"], self.treeCategory["short"], self.weights["short"])
             else:
-                self.veg_map[gx, gy] = 1
+                self.veg_map[gx, gy] = self.treeCategory["short"]
 
         for (x, y) in mediumTrees:
             gx = int(x / self.resolution)
             gy = int(y / self.resolution)
             if expand:
-                self.expandingPixel(gx, gy, 6, 2)
+                self.expandingPixel(gx, gy, self.radius["medium"], self.treeCategory["medium"], self.weights["medium"])
             else:
-                self.veg_map[gx, gy] = 2
+                self.veg_map[gx, gy] = self.treeCategory["medium"]
 
         for (x, y) in tallTrees:
             gx = int(x / self.resolution)
             gy = int(y / self.resolution)
             if expand:
-                self.expandingPixel(gx, gy, 8, 3)
+                self.expandingPixel(gx, gy, self.radius["tall"], self.treeCategory["tall"], self.weights["tall"])
             else:
-                self.veg_map[gx,gy] = 3
+                self.veg_map[gx,gy] = self.treeCategory["tall"]
 
         #Plotting the points on the graph
         colors = ["white", "green", "blue", "purple"]
@@ -60,22 +76,13 @@ class FireRiskMap:
 
     def fireRiskMap(self):
 
-    #Calculate fire risk based on vegetation density
-        for y in range(self.grid_size):
-            for x in range(self.grid_size):
-                # Simple rule: risk = average vegetation around (x,y)
-                window = self.veg_map[max(0,y-2):min(self.grid_size,y+3),
-                                    max(0,x-2):min(self.grid_size,x+3)]
-                density = np.mean(window)
-                self.fire_map[y, x] = density / 3.0  # normalise to [0,1]
-
-        colors = ["white", "yellow", "orange", "red"]
-        fire_cmap = ListedColormap(colors)
+        colors = ["white", "yellow", "orange", "red", "black"]
+        cmap = ListedColormap(colors)
         plt.figure(figsize=(6,6))
-        plt.title("Fire Risk Map")
-        im = plt.imshow(self.fire_map, cmap=fire_cmap, origin="lower", vmin=0, vmax=1)
+        plt.title("Fire Fuel Map")
+        im = plt.imshow(self.fire_map, cmap=cmap, origin="lower", vmin=0, vmax=1.4)
         cbar = plt.colorbar(im)
-        cbar.set_label("Fire Risk (0=Low, 1=High)")
+        cbar.set_label("Fire Risk Level")
         plt.show()
 
     def ffdiCalculator(self, temp, humidity, windSpeed, droughtFactor):

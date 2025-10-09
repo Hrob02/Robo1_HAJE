@@ -166,7 +166,6 @@ def create_grid(self, grid_step_size):
                         # Check edge is collision free
                         if node_i.is_connected(self.map_.obstacle_map_, node_j):
 
-    
 
                             energy_cost = distance
 
