@@ -6,6 +6,7 @@
 #include "nav_msgs/msg/odometry.hpp"
 #include "geometry_msgs/msg/point.hpp"
 #include "visualization_msgs/msg/marker.hpp"
+#include <vector>
 #include <memory>
 
 /**
@@ -33,6 +34,7 @@ private:
   rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr marker_pub_;
 
   nav_msgs::msg::Odometry current_odom_;
+  std::vector<geometry_msgs::msg::Point> detected_points_;
   int marker_id_ = 0;
 };
 
