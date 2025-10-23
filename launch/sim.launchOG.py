@@ -10,13 +10,13 @@ from launch.conditions import IfCondition
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.parameter_descriptions import ParameterFile
 import xacro
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-
 
 
 def generate_launch_description():
     pkg_robo1 = get_package_share_directory('robo1_haje')
     config_path = os.path.join(pkg_robo1, 'config')
+
+    ld = LaunchDescription()
 
     # ------------------------------
     # Launch arguments
@@ -43,18 +43,35 @@ def generate_launch_description():
     # ------------------------------
     # 1. Launch Ignition Gazebo
     # ------------------------------
+
     ign_gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            PathJoinSubstitution([
-                FindPackageShare('ros_gz_sim'),
-                'launch',
-                'gz_sim.launch.py'
-            ])
-        ]),
-        launch_arguments={
-            'gz_args': [LaunchConfiguration('world'), ' -r -v 4']
-        }.items(),
+        PathJoinSubstitution([FindPackageShare('ros_ign_gazebo'),
+                             'launch', 'ign_gazebo.launch.py']),
+                                     launch_arguments={
+            'ign_args': [PathJoinSubstitution([pkg_robo1,
+                                               'worlds',
+                                               [LaunchConfiguration('world'), '.sdf']]),
+                         ' -r']}.items()
     )
+    ld.add_action(ign_gazebo)
+
+    # Bridge topics between gazebo and ROS2
+    gazebo_bridge = Node(
+        package='ros_ign_bridge',
+        executable='parameter_bridge',
+        parameters=[{'config_file': PathJoinSubstitution([config_path,
+                                                          'gazebo_bridge.yaml']),
+                    'use_sim_time': use_sim_time}]
+    )
+    ld.add_action(gazebo_bridge)
+
+
+    # ign_gazebo = ExecuteProcess(
+    #     cmd=['ign', 'gazebo.ign', world, '-r', '-v', '4'],
+    #     output='screen'
+    # )
+
+
     # ------------------------------
     # 2. Process URDF + spawn drone
     # ------------------------------
