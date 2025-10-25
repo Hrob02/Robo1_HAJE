@@ -56,8 +56,8 @@ class MovementNode(Node):
         ])
 
         # ---------- Resolve parameters ----------
-        self.cmd_vel_topic = self.get_parameter('cmd_vel_topic').get_parameter_value().string_value
-        self.odom_topic    = self.get_parameter('odom_topic').get_parameter_value().string_value
+        self.cmd_vel_topic = self.get_parameter('/cmd_vel@geometry_msgs/msg/Twist]ignition.msgs.Twist').get_parameter_value().string_value
+        self.odom_topic    = self.get_parameter('/model/drone/odometry@nav_msgs/msg/Odometry[ignition.msgs.Odometry').get_parameter_value().string_value
         self.world_frame   = self.get_parameter('world_frame').get_parameter_value().string_value
         self.base_frame    = self.get_parameter('base_frame').get_parameter_value().string_value
 
@@ -92,7 +92,7 @@ class MovementNode(Node):
 
         # ---------- Mission state ----------
         self.pos = None
-        self.state = 'idle'     # 'idle' | 'takeoff' | 'mission' | 'landing'
+        self.state = 'takeoff'     # 'idle' | 'takeoff' | 'mission' | 'landing'
         self.wp_i = 0
         self.hold_t = 0.0
 

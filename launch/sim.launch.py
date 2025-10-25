@@ -65,7 +65,8 @@ def generate_launch_description():
         package='ros_gz_sim',
         executable='create',
         output='screen',
-        arguments=['-name', 'drone', '-topic', 'robot_description']
+        arguments=['-name', 'drone', '-topic', 'robot_description', '-z', '0.1']
+        # arguments=['-topic', '/robot_description', '-x', '6', '-y', '-4', '-z', '0.1']
     )
 
     # ------------------------------
@@ -100,16 +101,19 @@ def generate_launch_description():
         executable='parameter_bridge',
         name='ign_bridge',
         output='screen',
-        arguments=[
-            # Command velocity (ROS → Ign)
-            '/cmd_vel@geometry_msgs/msg/Twist]ignition.msgs.Twist',
-            # Odometry (Ign → ROS)
-            '/model/drone/odometry@nav_msgs/msg/Odometry[ignition.msgs.Odometry',
-        ],
-        remappings=[
-            ('/model/drone/odometry', '/odometry'),
-        ],
-        parameters=[{'use_sim_time': True}],
+        parameters=[{'config_file': PathJoinSubstitution([config_path,
+                                                          'gazebo_bridge.yaml']),
+                    'use_sim_time': use_sim_time}]
+        # arguments=[
+        #     # Command velocity (ROS → Ign)
+        #     '/cmd_vel@geometry_msgs/msg/Twist]ignition.msgs.Twist',
+        #     # Odometry (Ign → ROS)
+        #     '/model/drone/odometry@nav_msgs/msg/Odometry[ignition.msgs.Odometry',
+        # ],
+        # remappings=[
+        #     ('/model/drone/odometry', '/odometry'),
+        # ],
+        # parameters=[{'use_sim_time': True}],
     )
 
 
