@@ -40,6 +40,9 @@ The following are required to successfully run this project:
 - Python packages
 - ROS packages
 - colcon or ament (ROS 2 build tools)
+- customkinter for GUI. Can be install through
+     ```bash
+   pip3 install customtkinter
 
 The repo has package.xml and CMakeLists.txt.
 
