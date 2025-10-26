@@ -43,6 +43,13 @@ The following are required to successfully run this project:
 - customkinter for GUI. Can be install through
      ```bash
    pip3 install customtkinter
+- the following ros dependencies must be downloaded:
+     ```bash
+     sudo apt update
+     sudo apt install ros-humble-ros-ign-bridge ros-humble-ros-ign-gazebo
+     sudo apt install ros-humble-robot-localization
+     sudo apt install ros-humble-slam-toolbox ros-humble-navigation2 ros-humble-nav2-bringup
+     sudo apt install ros-humble-xacro
 
 The repo has package.xml and CMakeLists.txt.
 
