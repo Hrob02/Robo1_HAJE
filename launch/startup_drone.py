@@ -97,7 +97,6 @@ def generate_launch_description():
         remappings=[('/model/drone/camera/points', '/camera/depth/points')],
         condition=IfCondition(LaunchConfiguration('depth_pointcloud'))
 
-
     )
 
     # Publish odom -> base_link transform **using robot_localization**
@@ -110,67 +109,6 @@ def generate_launch_description():
                     {'use_sim_time': use_sim_time}],
         condition=LaunchConfigurationEquals('odom_mode', 'robot_localization')
     )
-
-    # ekf_node = Node(
-    #     package='robot_localization',
-    #     executable='ekf_node',
-    #     name='ekf_filter_node',
-    #     output='screen',
-    #     parameters=[{
-    #         'use_sim_time': True,
-    #         'publish_tf': True,
-    #         'two_d_mode': False,
-    #         'map_frame': 'map',
-    #         'odom_frame': 'odom',
-    #         'base_link_frame': 'base_link',
-    #         'world_frame': 'odom',
-    #         'frequency': 30.0,
-    #         'odom0': '/odometry',
-    #         'imu0': '/imu',
-    #         'odom0_config': [True, True, True,
-    #                         False, False, True,
-    #                         False, False, False,
-    #                         False, False, False, False, False, False],
-    #         'imu0_config': [False, False, False,
-    #                         True, True, True,
-    #                         False, False, False,
-    #                         False, False, False, False, False, False],
-    #     }]
-    # )
-
-
-
-
-    # # Publish odom -> base_link transform **directly from gazebo**
-    # odom_tf_bridge_node = Node(
-    #     package='ros_gz_bridge',
-    #     executable='parameter_bridge',
-    #     name='odom_tf_bridge',
-    #     output='screen',
-    #     arguments=['/model/drone/tf@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V'],
-    #     remappings=[('/model/drone/tf', '/tf')],
-    #     # condition=LaunchConfigurationEquals('odom_mode', 'gazebo')
-    # )
-
-    # # Bridge gazebo odometry to either /odom or /diff_drive_controller/odom depending on odom_mode
-    # odom_topic_bridge_node_robot_localization = Node(
-    #     package='ros_gz_bridge',
-    #     executable='parameter_bridge',
-    #     name='odom_bridge',
-    #     output='screen',
-    #     arguments=['/model/drone/odometry@nav_msgs/msg/Odometry[ignition.msgs.Odometry'],
-    #     remappings=[('/model/drone/odometry', '/diff_drive_controller/odom')],
-    #     condition=LaunchConfigurationEquals('odom_mode', 'robot_localization')
-    # )
-    # odom_topic_bridge_node_gazebo = Node(
-    #     package='ros_gz_bridge',
-    #     executable='parameter_bridge',
-    #     name='odom_bridge',
-    #     output='screen',
-    #     arguments=['/model/drone/odometry@nav_msgs/msg/Odometry[ignition.msgs.Odometry'],
-    #     remappings=[('/model/drone/odometry', '/odom')],
-    #     # condition=LaunchConfigurationEquals('odom_mode', 'gazebo')
-    # )
 
     # rviz2 visualises data
     rviz_node = Node(
@@ -188,15 +126,11 @@ def generate_launch_description():
     ld.add_action(odom_mode_launch_arg)
     ld.add_action(depth_pointcloud_launch_arg)
     ld.add_action(robot_state_publisher_node)
-    # ld.add_action(odom_tf_bridge_node)
-    # ld.add_action(odom_topic_bridge_node_robot_localization)
-    # ld.add_action(odom_topic_bridge_node_gazebo)
     ld.add_action(gazebo)
     ld.add_action(robot_spawner)
     ld.add_action(gazebo_bridge)
     ld.add_action(rgbd_depth_pcl2_bridge_node)
     ld.add_action(robot_localization_node)
-    # ld.add_action(ekf_node)
     ld.add_action(rviz_node)
 
     return ld
