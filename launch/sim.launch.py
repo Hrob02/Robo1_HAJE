@@ -195,7 +195,7 @@ def generate_launch_description():
             {
                 "cmd_vel_topic": "/cmd_vel",
                 "odom_topic": "/odometry",
-                "skip_takeoff": True,
+                "skip_takeoff": False,
                 "use_z_control": False,
                 "yaw_to_path": True,
                 "lookahead_m": 0.0,
