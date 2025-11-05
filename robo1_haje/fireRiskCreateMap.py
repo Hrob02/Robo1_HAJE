@@ -1,4 +1,3 @@
-
 from geometry_msgs.msg import Pose, Pose2D, PoseStamped, Point
 from nav_msgs.msg import OccupancyGrid
 from rclpy.node import Node
@@ -23,7 +22,7 @@ class RunningMap(Node):
         super().__init__('fire_map_node')
         
         #tree pose subscription
-        self.treepose_sub_ = self.create_subscription(MarkerArray, 'std_msgs/msg/tree_pose', self.treepose_callback, 10)
+        self.treepose_sub_ = self.create_subscription(MarkerArray, '/tree_pose', self.treepose_callback, 10)
 
         self.small_trees = []
         self.medium_trees = []
@@ -66,9 +65,6 @@ class RunningMap(Node):
         ffdiRating = map.ffdiRating(ffdiValue)
         print(ffdiRating)
 
-if __name__ == "__main__":
-    runner = RunningMap()
-    runner.run()
 
 def main():
     # Initialise
@@ -79,3 +75,8 @@ def main():
 
     while rclpy.ok():
         rclpy.spin(fireRiskMap)
+
+if __name__ == "__main__":
+    # runner = RunningMap()
+    # runner.run()
+    main()

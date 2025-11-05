@@ -67,23 +67,34 @@ class FireRiskMap:
         colors = ["white", "green", "blue", "purple"]
         veg_cmap = ListedColormap(colors)
 
+        plt.ion()                # turn on interactive mode
+        self.fig, self.ax = plt.subplots()
+
         plt.figure(figsize=(6,6))
         plt.title("Visible Vegetation FART")
+        self.ax.clear()
         im = plt.imshow(self.veg_map, cmap=veg_cmap, origin="lower")
         cbar = plt.colorbar(im, ticks=[0,1,2,3])
         cbar.ax.set_yticklabels(['None','Short','Medium','Tall'])
-        plt.show(block=False)
+        plt.draw()
+        plt.pause(0.001)
 
     def fireRiskMap(self):
+
+        plt.ion()                # turn on interactive mode
+        self.fig, self.ax = plt.subplots()
 
         colors = ["white", "yellow", "orange", "red", "black"]
         cmap = ListedColormap(colors)
         plt.figure(figsize=(6,6))
         plt.title("Fire Fuel Map")
+        self.ax.clear()
         im = plt.imshow(self.fire_map, cmap=cmap, origin="lower", vmin=0, vmax=1.4)
         cbar = plt.colorbar(im)
         cbar.set_label("Fire Risk Level")
-        plt.show()
+        # plt.show(block=False)
+        plt.draw()
+        plt.pause(0.001)
 
     def ffdiCalculator(self, temp, humidity, windSpeed, droughtFactor):
         ffdi = 2.0*math.exp(-0.45+0.987 * math.log(droughtFactor + 0.001) -0.0345 * humidity +0.0338 * temp + 0.0234 * windSpeed)

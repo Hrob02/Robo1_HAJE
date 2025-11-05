@@ -199,6 +199,7 @@ def generate_launch_description():
     fire_map_node = Node(
         package='robo1_haje',
         executable='fireRiskCreateMap.py',
+        name = "fire_map_node",
         output='screen'
     )
 
