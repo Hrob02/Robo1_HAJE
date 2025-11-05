@@ -56,8 +56,6 @@ class PlannerType(Enum):
 
     FRONTIER_EXPLORATION = 6
 
-    Advanced4 = 20
-
 
 class FirelandExplorer(Node):
     def __init__(self):
@@ -394,6 +392,14 @@ class FirelandExplorer(Node):
 
         # Choose next goal
         goal = self.choose_frontier_goal(frontiers, robot_pose)
+
+        if goal is None:
+            self.get_logger().info(f"NO GOAL, trying again")
+            self.ready_for_next_goal_ = True
+            return
+
+
+
 
         self.get_logger().info(f"Exploring frontier at ({goal[0]:.2f}, {goal[1]:.2f})")
 
