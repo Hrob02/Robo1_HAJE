@@ -42,14 +42,14 @@
       <surface_model>EARTH_WGS84</surface_model>
     </spherical_coordinates>
 
-    <!-- Small ground plane with grass texture -->
+    <!-- Small ground plane with grass texture
     <include>
       <uri>
-        model://grass_plane
+      model://grass_plane
       </uri>
       <name>grass_plane</name>
       <pose>0 0 0 0 0 0</pose>
-    </include>
+    </include> -->
 
     <!-- Oak tree -->
     <include>

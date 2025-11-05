@@ -2,28 +2,24 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>robo1_haje</name>
-  <version>1.0.3</version>
-  <description>TurtleBot 4 Ignition Simulator bringup</description>
-  <maintainer email="rkreinin@clearpathrobotics.com">rkreinin</maintainer>
-  <license>Apache 2.0</license>
+  <version>0.0.0</version>
+  <description>TODO: Package description</description>
+  <maintainer email="graeme.best@uts.edu.au">Graeme Best</maintainer>
+  <license>TODO: License declaration</license>
 
-  <buildtool_depend>ament_cmake</buildtool_depend>
-  <buildtool_depend>ament_cmake_python</buildtool_depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <exec_depend>ultralytics</exec_depend>
 
-  <!-- ROS IGN -->
-  <depend>ros_ign_interfaces</depend>
-  <depend>ros_ign_gazebo</depend>
-  <depend>ros_ign_bridge</depend>
-
-  <!-- Other -->
-  <depend>robot_localization</depend>
-
-  <test_depend>ament_lint_auto</test_depend>
-  <test_depend>ament_lint_common</test_depend>
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
 
   <export>
-    <build_type>ament_cmake</build_type>
-    <gazebo_ros gazebo_model_path="${prefix}/models"/>
-    <gazebo_ros gazebo_media_path="${prefix}/worlds"/>
+    <build_type>ament_python</build_type>
+    <!-- Make package available to gazebo too (to find models) -->
+    <gazebo_ros gazebo_model_path="${prefix}/../"/>
   </export>
 </package>
+

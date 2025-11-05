@@ -8,6 +8,11 @@ from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
+from launch import LaunchDescription
+from launch_ros.actions import Node
+
+from ament_index_python.packages import get_package_share_directory
+
 
 def generate_launch_description():
 
@@ -15,33 +20,28 @@ def generate_launch_description():
     config_path = [FindPackageShare('robo1_haje'), 'config']
     
     # Additional command line arguments
-    use_sim_time = LaunchConfiguration('use_sim_time')
     use_sim_time_launch_arg = DeclareLaunchArgument(
         'use_sim_time',
         default_value='True',
         description='Flag to enable use_sim_time'
     )
-
-    # Start Simultaneous Localisation and Mapping (SLaM)
-    slam = IncludeLaunchDescription(
-        PathJoinSubstitution([FindPackageShare('slam_toolbox'), 'launch', 'online_async_launch.py']),
-        launch_arguments={
-            'use_sim_time': use_sim_time,
-            'slam_params_file': PathJoinSubstitution(config_path+['slam_params.yaml'])
-        }.items()
+    print_feedback_launch_arg = DeclareLaunchArgument(
+        'print_feedback',
+        default_value='False',
+        description='Flag to enable print feedback from action server'
     )
-    
+
     # Start Navigation Stack
-    navigation = IncludeLaunchDescription(
-        PathJoinSubstitution([FindPackageShare('nav2_bringup'), 'launch', 'navigation_launch.py']),
-        launch_arguments={
-            'use_sim_time': use_sim_time,
-            'params_file': PathJoinSubstitution(config_path+['nav2_params.yaml'])
-        }.items()
+    fireland_explorer = Node(
+        package='robo1_haje',
+        executable='fireland_explorer',
+        output='screen',
+        parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time'),
+                     'print_feedback': LaunchConfiguration('print_feedback')}]
     )
 
     ld.add_action(use_sim_time_launch_arg)
-    ld.add_action(slam)
-    ld.add_action(navigation)
+    ld.add_action(print_feedback_launch_arg)
+    ld.add_action(fireland_explorer)
 
     return ld
