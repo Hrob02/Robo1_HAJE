@@ -195,6 +195,18 @@ def generate_launch_description():
         ],
     )
 
+    # 10. Fire risk map creator
+    fire_map_node = Node(
+        package="robo1_haje",
+        executable="fireRiskCreateMap.py",
+        name="fire_risk_map_creator",
+        output="screen",
+        parameters=[{
+            'use_sim_time': True,
+            'world_path': LaunchConfiguration('world')
+        }]
+    )
+
     # Return everything
     return LaunchDescription([
         declare_world,
@@ -209,5 +221,6 @@ def generate_launch_description():
         slam_toolbox,
         rviz_node,
         tree_detector,
-        movement_node
+        movement_node,
+        fire_map_node
     ])
