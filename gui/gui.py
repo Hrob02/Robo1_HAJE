@@ -511,7 +511,13 @@ class HAJEGUI(ctk.CTk):
         self.bind_all("<Control-y>", lambda e: self._redo())
 
         # Command registry (dictionary file)
-        self.cmds = CommandRegistry(Path.cwd()/"commands.json", log_cb=self._append_log)
+        from pathlib import Path
+        self.cmds = CommandRegistry(
+            Path(__file__).resolve().parent.parent / "commands.json",
+            log_cb=self._append_log
+        )
+
+        self._append_log(f"[DEBUG] Loaded commands: {list(self.cmds.commands.keys())}")
 
         # IMPORTANT: start with MockCams only (no telemetry)
         self.mock = MockCams(self._on_frame1, self._on_frame2, fps=10)
@@ -548,26 +554,40 @@ class HAJEGUI(ctk.CTk):
         self._state_badge = ctk.CTkLabel(top.body, text=BState.OFF, fg_color=BORDER, corner_radius=10, padx=10)
         self._state_badge.grid(row=0, column=1, sticky="w", padx=6)
 
-        self.btn_start = ctk.CTkButton(top.body, text="START SESSION", command=self._start_session,
-                                       fg_color=ACCENT, hover_color=ACCENT_2)
-        self.btn_start.grid(row=0, column=2, sticky="w", padx=8)
+        # World selector dropdown
+        self.world_var = ctk.StringVar(value="Select a World")
+        self.world_menu = ctk.CTkOptionMenu(
+            top.body,
+            values=[
+                "Small Test Site (2 Trees)",
+                "Large Demonstration Field"
+            ],
+            variable=self.world_var,
+            command=self._on_world_select
+        )
+        self.world_menu.set("Select a World")
+        self.world_menu.grid(row=0, column=2, sticky="w", padx=8)
+
+        # Start Session button (disabled by default)
+        self.btn_start = ctk.CTkButton(
+            top.body,
+            text="START SESSION",
+            command=self._start_session,
+            fg_color="#444",  # greyed-out look
+            state="disabled"
+        )
+        self.btn_start.grid(row=0, column=3, sticky="e", padx=8)
+
         self.btn_restart = ctk.CTkButton(top.body, text="CLEAN RESTART", command=self._clean_restart,
-                                         fg_color="#444", hover_color="#555")
-        self.btn_restart.grid(row=0, column=3, sticky="e", padx=8)
+                                        fg_color="#444", hover_color="#555")
+        self.btn_restart.grid(row=0, column=4, sticky="e", padx=8)
 
-        opts = self._card(self.launch); opts.grid(row=2, column=0, sticky="ew", padx=20, pady=(6,10))
-        ctk.CTkLabel(opts.body, text="Mission parameters", text_color=TEXT, font=("Arial",18,"bold"))\
-            .grid(row=0, column=0, sticky="w")
-        self.param_speed = ctk.CTkEntry(opts.body, placeholder_text="Speed (m/s)")
-        self.param_res   = ctk.CTkEntry(opts.body, placeholder_text="Resolution (cm/px)")
-        self.param_dur   = ctk.CTkEntry(opts.body, placeholder_text="Est. Duration (min)")
-        for i,x in enumerate([self.param_speed,self.param_res,self.param_dur], start=1):
-            x.grid(row=i, column=0, sticky="ew", pady=4)
-
-        self._msg = ctk.CTkTextbox(self.launch, height=140, fg_color="#121316", text_color=TEXT,
-                                   border_color=BORDER, border_width=2, corner_radius=12)
+        self._msg = ctk.CTkTextbox(self.launch, height=140, fg_color="#121316",
+                                    text_color=TEXT, border_color=BORDER, border_width=2,
+                                    corner_radius=12)
         self._msg.grid(row=3, column=0, sticky="nsew", padx=20, pady=(6,16))
-        self._append_log("[INFO] Ready. Start a session to enable logging.")
+        self._append_log("[INFO] Ready. Select a world and start a session to begin.")
+
 
     # ----------------- BUILD: Live -------------------------------------
     def _build_live(self):
@@ -651,15 +671,38 @@ class HAJEGUI(ctk.CTk):
                "SUSPEND":WARN, "LAND":"#888"}[s.value]
         self._state_badge.configure(text=s.value, fg_color=col)
         self._status(s.value)
+    
+    def _on_world_select(self, choice: str):
+        self._append_log(f"[DEBUG] on_world_select called with: {choice}")
+        self.btn_start.configure(state="normal", fg_color=ACCENT, hover_color=ACCENT_2)
+        self._append_log(f"[INFO] World selected: {choice}")
+
+        if "Small Test Site" in choice:
+            self.selected_world_cmd = self.cmds.commands.get("launch_small_world")
+        elif "Large Demonstration" in choice:
+            self.selected_world_cmd = self.cmds.commands.get("launch_large_world")
+        else:
+            self.selected_world_cmd = None
 
     # ----------------- session -----------------------------------------
     def _start_session(self):
+        if not getattr(self, "selected_world_cmd", None):
+            self._append_log("[WARN] Please select a world before starting.")
+            return
+
         self.session_id = now_id()
         base = Path.cwd()/ "DroneReports" / "sessions"
-        self.session_dir = base/self.session_id; self.session_dir.mkdir(parents=True, exist_ok=True)
+        self.session_dir = base/self.session_id
+        self.session_dir.mkdir(parents=True, exist_ok=True)
         self.ctx = Context(self.session_dir, self._set_state, self._status)
         self._set_state(BState.IDLE)
-        self._append_log(f"[INFO] Session started at {self.session_dir}")
+
+        # Save the command dynamically before running
+        self.cmds.commands["launch_world"] = self.selected_world_cmd
+
+        # Run it
+        self._append_log(f"[INFO] Launching world with: {self.selected_world_cmd}")
+        self.cmds.run("launch_world", cwd=self.session_dir, new_console=True)
 
     def _clean_restart(self):
         if messagebox.askyesno("Clean restart","Save report first?\nThis clears cached UI and resets states."):
@@ -819,6 +862,9 @@ class HAJEGUI(ctk.CTk):
             super().destroy()
 
 # ----------------------------- run -----------------------------------------
-if __name__ == "__main__":
+def main():
     app = HAJEGUI()
     app.mainloop()
+
+if __name__ == "__main__":
+    main()

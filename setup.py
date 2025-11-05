@@ -23,7 +23,8 @@ setup(
     entry_points={
         "console_scripts": [
             "movement_node = robo1_haje.movement_node:main",
-            "fire_map_node = robo1_haje.fireRiskCreateMap:main"
+            "fire_map_node = robo1_haje.fireRiskCreateMap:main",
+            "gui = gui.gui:main"
         ],
     },
 )

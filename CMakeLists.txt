@@ -36,6 +36,7 @@ ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS
   robo1_haje/movement_node.py
   robo1_haje/fireRiskCreateMap.py
+  gui/gui.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
