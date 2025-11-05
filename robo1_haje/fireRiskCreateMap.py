@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3
 from geometry_msgs.msg import Pose, Pose2D, PoseStamped, Point
 from nav_msgs.msg import OccupancyGrid
 from rclpy.node import Node
