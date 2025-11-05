@@ -1,7 +1,8 @@
 {
   "launch_small_world": "ros2 launch robo1_haje sim.launch.py",
   "launch_large_world": "ros2 launch robo1_haje sim.launch.py world:=/home/hallie/ros2_ws/src/Robo1_HAJE/worlds/large_demo.sdf",
-  "takeoff": "ros2 topic pub /takeoff std_msgs/Bool 'data: true'",
-  "suspend": "ros2 topic pub /pause std_msgs/Bool 'data: true'",
-  "land": "ros2 topic pub /land std_msgs/Bool 'data: true'"
+  "takeoff": "ros2 topic pub -1 /movement/launch std_msgs/msg/Empty \"{}\"",
+  "movement": "ros2 topic pub -1 /movement/go std_msgs/msg/Empty \"{}\"",
+  "suspend": "ros2 topic pub -1 /movement/stop std_msgs/msg/Empty \"{}\"",
+  "land": "ros2 topic pub -1 /movement/land std_msgs/msg/Empty \"{}\""
 }

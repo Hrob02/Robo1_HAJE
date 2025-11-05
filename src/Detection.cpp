@@ -135,12 +135,7 @@ void DroneTreeDetector::imageCallback(const sensor_msgs::msg::Image::SharedPtr m
   }
 
   if (found_tree)
-  {
-    RCLCPP_INFO(this->get_logger(),
-                "Segment label =%d Detected, dist=%.2f m",
-                dom_label,
-                min_dist);
-                
+  {             
     bool already_marked = false;
 
     for (const auto &mp : marked_positions_)

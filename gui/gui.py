@@ -855,12 +855,33 @@ class HAJEGUI(ctk.CTk):
         if not self.session_dir:
             self._append_log("[WARN] Start a session first.")
             return
+
+        # Check the command actually exists in commands.json
+        if name not in self.cmds.commands:
+            self._append_log(f"[WARN] Command '{name}' not found in commands.json")
+            return
+
+        # Build env, but only if those widgets/vars exist
         env = os.environ.copy()
-        if self.param_speed.get().strip(): env["HAJE_SPEED"] = self.param_speed.get().strip()
-        if self.param_res.get().strip():   env["HAJE_RES"]   = self.param_res.get().strip()
-        if self.param_dur.get().strip():   env["HAJE_DUR"]   = self.param_dur.get().strip()
-        self._append_log(f"[INFO] Executing shell command '{name}'…")
+
+        for env_name, attr_name in [
+            ("HAJE_SPEED", "param_speed"),
+            ("HAJE_RES",   "param_res"),
+            ("HAJE_DUR",   "param_dur"),
+        ]:
+            w = getattr(self, attr_name, None)
+            if w is not None:
+                try:
+                    val = w.get().strip()
+                    if val:
+                        env[env_name] = val
+                except Exception:
+                    # If it's not a Tk variable just ignore
+                    pass
+
         os.environ.update(env)
+
+        self._append_log(f"[INFO] Executing shell command '{name}'…")
         self.cmds.run(name, cwd=self.session_dir, new_console=new_console)
 
     # ----------------- report ------------------------------------------
@@ -941,7 +962,6 @@ class MapPanel(ctk.CTkFrame):
     def set_pose(self, x, y, yaw):
         """Set drone pose in map frame (meters, radians)."""
         self.drone_pose = (x, y, yaw)
-        self._redraw()
 
     def add_scan(self, ranges, angle_min, angle_increment):
         """Convert laser scan ranges into points on canvas."""
