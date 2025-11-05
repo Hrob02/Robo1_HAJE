@@ -209,6 +209,5 @@ def generate_launch_description():
         slam_toolbox,
         rviz_node,
         tree_detector,
-        movement_node,
-        fire_map_node
+        movement_node
     ])
