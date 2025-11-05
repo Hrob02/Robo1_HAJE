@@ -29,12 +29,15 @@ private:
   void loadWorldModels(const std::string &path);
   visualization_msgs::msg::Marker makeMarker(const geometry_msgs::msg::Point &p);
 
+  // ROS interfaces
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_sub_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
   rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr marker_pub_;
 
+  // State
   nav_msgs::msg::Odometry current_odom_;
   std::map<std::string, geometry_msgs::msg::Point> model_positions_;
+  std::vector<geometry_msgs::msg::Point> marked_positions_;
   std::mutex model_mutex_;
   int marker_id_ = 0;
 };

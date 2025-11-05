@@ -134,15 +134,42 @@ void DroneTreeDetector::imageCallback(const sensor_msgs::msg::Image::SharedPtr m
   if (found_tree)
   {
     RCLCPP_INFO(this->get_logger(),
-                "Dominant label=%d (≠ %d) → nearest tree at (%.2f, %.2f, %.2f), dist=%.2f m",
-                dom_label, grass_label,
-                closest_tree.x, closest_tree.y, closest_tree.z, min_dist);
-    marker_pub_->publish(makeMarker(closest_tree));
+                "Segment label =%d Detected, dist=%.2f m",
+                dom_label,
+                min_dist);
+                
+    bool already_marked = false;
+
+    for (const auto &mp : marked_positions_)
+    {
+      double dx = mp.x - closest_tree.x;
+      double dy = mp.y - closest_tree.y;
+      double dz = mp.z - closest_tree.z;
+      if (std::sqrt(dx*dx + dy*dy + dz*dz) < 0.5)
+      {
+        already_marked = true;
+        break;
+      }
+    }
+
+    if (!already_marked)
+    {
+      marker_pub_->publish(makeMarker(closest_tree));
+      marked_positions_.push_back(closest_tree);
+      RCLCPP_INFO(this->get_logger(),
+                  "New tree marked at (%.2f, %.2f, %.2f)",
+                  closest_tree.x, closest_tree.y, closest_tree.z);
+    }
+    else
+    {
+      RCLCPP_DEBUG(this->get_logger(),
+                  "Detected tree already marked");
+    }
   }
   else
   {
     RCLCPP_WARN(this->get_logger(),
-                "Detected non-grass region but no nearby trees within 15 m.");
+                "Detecting...");
   }
 }
 
