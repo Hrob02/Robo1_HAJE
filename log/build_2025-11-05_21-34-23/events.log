@@ -1,0 +1,302 @@
+[0.000000] (-) TimerEvent: {}
+[0.000146] (robo1_haje) JobQueued: {'identifier': 'robo1_haje', 'dependencies': OrderedDict()}
+[0.000168] (robo1_haje) JobStarted: {'identifier': 'robo1_haje'}
+[0.004889] (robo1_haje) JobProgress: {'identifier': 'robo1_haje', 'progress': 'cmake'}
+[0.005268] (robo1_haje) Command: {'cmd': ['/usr/bin/cmake', '/home/eleanorlow/robo1/src/Robo1_HAJE', '-DAMENT_CMAKE_SYMLINK_INSTALL=1', '-DCMAKE_INSTALL_PREFIX=/home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje'], 'cwd': '/home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'en_AU:en'), ('USER', 'eleanorlow'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/eleanorlow'), ('OLDPWD', '/home/eleanorlow/robo1'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('MANAGERPID', '1584'), ('SYSTEMD_EXEC_PID', '1759'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator25ef4b219e3b005583550f2b0f9f990c3'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '15010'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/eleanorlow/robo1/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'eleanorlow'), ('JOURNAL_STREAM', '8:12086'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'eleanorlow'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/home/eleanorlow/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/bethany:@/tmp/.ICE-unix/1720,unix/bethany:/tmp/.ICE-unix/1720'), ('INVOCATION_ID', '8af1ed9ae7fa422f8b0d9b5ab08f36af'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_AU.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('IBUS_DISABLE_SNOOPER', '1'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.9Z3IF3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/eleanorlow/robo1/install/robo1_haje:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('TERMINATOR_UUID', 'urn:uuid:361a2aa6-effa-48d9-8c39-366c2164a741'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/eleanorlow/robo1/build/robo1_haje:/home/eleanorlow/robo1/install/robo1_haje/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/eleanorlow/robo1/install/robo1_haje:/opt/ros/humble')]), 'shell': False}
+[0.067417] (robo1_haje) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.099485] (-) TimerEvent: {}
+[0.122138] (robo1_haje) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[0.129328] (robo1_haje) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.179147] (robo1_haje) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.184475] (robo1_haje) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.184674] (robo1_haje) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.185105] (robo1_haje) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.187496] (robo1_haje) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.199572] (-) TimerEvent: {}
+[0.250354] (robo1_haje) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[0.255853] (robo1_haje) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[0.255981] (robo1_haje) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[0.256347] (robo1_haje) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[0.259933] (robo1_haje) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.299757] (-) TimerEvent: {}
+[0.372581] (robo1_haje) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[0.399859] (-) TimerEvent: {}
+[0.433322] (robo1_haje) StdoutLine: {'line': b'-- Override CMake install command with custom implementation using symlinks instead of copying resources\n'}
+[0.459976] (robo1_haje) StdoutLine: {'line': b'-- Found rclcpp: 16.0.15 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[0.499977] (-) TimerEvent: {}
+[0.501715] (robo1_haje) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[0.506188] (robo1_haje) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.514305] (robo1_haje) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[0.526328] (robo1_haje) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.541251] (robo1_haje) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.585024] (robo1_haje) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[0.587883] (robo1_haje) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.9 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[0.600063] (-) TimerEvent: {}
+[0.663028] (robo1_haje) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[0.687687] (robo1_haje) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[0.700236] (-) TimerEvent: {}
+[0.715948] (robo1_haje) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[0.723758] (robo1_haje) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[0.778172] (robo1_haje) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[0.778574] (robo1_haje) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[0.800450] (-) TimerEvent: {}
+[0.837645] (robo1_haje) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[0.838852] (robo1_haje) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[0.884203] (robo1_haje) StdoutLine: {'line': b'-- Found nav2_msgs: 1.1.19 (/opt/ros/humble/share/nav2_msgs/cmake)\n'}
+[0.900539] (-) TimerEvent: {}
+[0.953274] (robo1_haje) StdoutLine: {'line': b'-- Found rclcpp_action: 16.0.15 (/opt/ros/humble/share/rclcpp_action/cmake)\n'}
+[0.962282] (robo1_haje) StdoutLine: {'line': b'-- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)\n'}
+[0.970855] (robo1_haje) StdoutLine: {'line': b'-- Found ros_ign_interfaces: 0.244.20 (/opt/ros/humble/share/ros_ign_interfaces/cmake)\n'}
+[1.000717] (-) TimerEvent: {}
+[1.004445] (robo1_haje) StdoutLine: {'line': b'-- Found sensor_msgs: 4.9.0 (/opt/ros/humble/share/sensor_msgs/cmake)\n'}
+[1.019948] (robo1_haje) StdoutLine: {'line': b'-- Found tf2: 0.25.16 (/opt/ros/humble/share/tf2/cmake)\n'}
+[1.028491] (robo1_haje) StdoutLine: {'line': b'-- Found tf2_geometry_msgs: 0.25.16 (/opt/ros/humble/share/tf2_geometry_msgs/cmake)\n'}
+[1.040111] (robo1_haje) StdoutLine: {'line': b'-- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)\n'}
+[1.041096] (robo1_haje) StdoutLine: {'line': b'-- Found Eigen3: TRUE (found version "3.4.0") \n'}
+[1.041177] (robo1_haje) StdoutLine: {'line': b'-- Ensuring Eigen3 include directory is part of orocos-kdl CMake target\n'}
+[1.088723] (robo1_haje) StdoutLine: {'line': b'-- Found visualization_msgs: 4.9.0 (/opt/ros/humble/share/visualization_msgs/cmake)\n'}
+[1.100879] (-) TimerEvent: {}
+[1.105064] (robo1_haje) StdoutLine: {'line': b'-- Found cv_bridge: 3.2.1 (/opt/ros/humble/share/cv_bridge/cmake)\n'}
+[1.114154] (robo1_haje) StdoutLine: {'line': b'-- Found image_transport: 3.1.12 (/opt/ros/humble/share/image_transport/cmake)\n'}
+[1.131686] (robo1_haje) StdoutLine: {'line': b'-- Found OpenCV: /usr (found version "4.5.4") \n'}
+[1.131850] (robo1_haje) StdoutLine: {'line': b'-- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND\n'}
+[1.195497] (robo1_haje) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)\n'}
+[1.200984] (-) TimerEvent: {}
+[1.258484] (robo1_haje) StdoutLine: {'line': b"-- Added test 'copyright' to check source files copyright and LICENSE\n"}
+[1.301169] (-) TimerEvent: {}
+[1.302912] (robo1_haje) StdoutLine: {'line': b"-- Added test 'cppcheck' to perform static code analysis on C / C++ code\n"}
+[1.303131] (robo1_haje) StdoutLine: {'line': b'-- Configured cppcheck include dirs: /home/eleanorlow/robo1/src/Robo1_HAJE/src\n'}
+[1.303217] (robo1_haje) StdoutLine: {'line': b'-- Configured cppcheck exclude dirs and/or files: \n'}
+[1.327774] (robo1_haje) StdoutLine: {'line': b"-- Added test 'cpplint' to check C / C++ code against the Google style\n"}
+[1.327973] (robo1_haje) StdoutLine: {'line': b'-- Configured cpplint exclude dirs and/or files: \n'}
+[1.331658] (robo1_haje) StdoutLine: {'line': b"-- Added test 'flake8' to check Python code syntax and style conventions\n"}
+[1.338744] (robo1_haje) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[1.342321] (robo1_haje) StdoutLine: {'line': b"-- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257\n"}
+[1.366826] (robo1_haje) StdoutLine: {'line': b"-- Added test 'uncrustify' to check C / C++ code style\n"}
+[1.367008] (robo1_haje) StdoutLine: {'line': b'-- Configured uncrustify additional arguments: \n'}
+[1.370478] (robo1_haje) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[1.371623] (robo1_haje) StdoutLine: {'line': b'-- Configuring done\n'}
+[1.383175] (robo1_haje) StdoutLine: {'line': b'-- Generating done\n'}
+[1.387262] (robo1_haje) StdoutLine: {'line': b'-- Build files have been written to: /home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje\n'}
+[1.395185] (robo1_haje) CommandEnded: {'returncode': 0}
+[1.395608] (robo1_haje) JobProgress: {'identifier': 'robo1_haje', 'progress': 'build'}
+[1.396156] (robo1_haje) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje', '--', '-j8', '-l8'], 'cwd': '/home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'en_AU:en'), ('USER', 'eleanorlow'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/eleanorlow'), ('OLDPWD', '/home/eleanorlow/robo1'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('MANAGERPID', '1584'), ('SYSTEMD_EXEC_PID', '1759'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator25ef4b219e3b005583550f2b0f9f990c3'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '15010'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/eleanorlow/robo1/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'eleanorlow'), ('JOURNAL_STREAM', '8:12086'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'eleanorlow'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/home/eleanorlow/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/bethany:@/tmp/.ICE-unix/1720,unix/bethany:/tmp/.ICE-unix/1720'), ('INVOCATION_ID', '8af1ed9ae7fa422f8b0d9b5ab08f36af'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_AU.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('IBUS_DISABLE_SNOOPER', '1'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.9Z3IF3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/eleanorlow/robo1/install/robo1_haje:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('TERMINATOR_UUID', 'urn:uuid:361a2aa6-effa-48d9-8c39-366c2164a741'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/eleanorlow/robo1/build/robo1_haje:/home/eleanorlow/robo1/install/robo1_haje/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/eleanorlow/robo1/install/robo1_haje:/opt/ros/humble')]), 'shell': False}
+[1.401255] (-) TimerEvent: {}
+[1.430452] (robo1_haje) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding CXX object CMakeFiles/tree_detector.dir/src/Detection.cpp.o\x1b[0m\n'}
+[1.436421] (robo1_haje) StdoutLine: {'line': b'[ 50%] Built target ament_cmake_python_symlink_robo1_haje\n'}
+[1.436577] (robo1_haje) StdoutLine: {'line': b'[ 50%] Built target ament_cmake_python_symlink_robo1_haje_setup\n'}
+[1.501377] (-) TimerEvent: {}
+[1.601662] (-) TimerEvent: {}
+[1.617037] (robo1_haje) StdoutLine: {'line': b'running egg_info\n'}
+[1.617357] (robo1_haje) StdoutLine: {'line': b'creating robo1_haje.egg-info\n'}
+[1.617464] (robo1_haje) StdoutLine: {'line': b'writing robo1_haje.egg-info/PKG-INFO\n'}
+[1.617621] (robo1_haje) StdoutLine: {'line': b'writing dependency_links to robo1_haje.egg-info/dependency_links.txt\n'}
+[1.617715] (robo1_haje) StdoutLine: {'line': b'writing top-level names to robo1_haje.egg-info/top_level.txt\n'}
+[1.617788] (robo1_haje) StdoutLine: {'line': b"writing manifest file 'robo1_haje.egg-info/SOURCES.txt'\n"}
+[1.619310] (robo1_haje) StdoutLine: {'line': b"reading manifest file 'robo1_haje.egg-info/SOURCES.txt'\n"}
+[1.620299] (robo1_haje) StdoutLine: {'line': b"writing manifest file 'robo1_haje.egg-info/SOURCES.txt'\n"}
+[1.640323] (robo1_haje) StdoutLine: {'line': b'[ 50%] Built target ament_cmake_python_build_robo1_haje_egg\n'}
+[1.701759] (-) TimerEvent: {}
+[1.802105] (-) TimerEvent: {}
+[1.902480] (-) TimerEvent: {}
+[2.002822] (-) TimerEvent: {}
+[2.103090] (-) TimerEvent: {}
+[2.203427] (-) TimerEvent: {}
+[2.303796] (-) TimerEvent: {}
+[2.404159] (-) TimerEvent: {}
+[2.504435] (-) TimerEvent: {}
+[2.604693] (-) TimerEvent: {}
+[2.704996] (-) TimerEvent: {}
+[2.805333] (-) TimerEvent: {}
+[2.905700] (-) TimerEvent: {}
+[3.006046] (-) TimerEvent: {}
+[3.106411] (-) TimerEvent: {}
+[3.206787] (-) TimerEvent: {}
+[3.307066] (-) TimerEvent: {}
+[3.407434] (-) TimerEvent: {}
+[3.507758] (-) TimerEvent: {}
+[3.608084] (-) TimerEvent: {}
+[3.708415] (-) TimerEvent: {}
+[3.808746] (-) TimerEvent: {}
+[3.909011] (-) TimerEvent: {}
+[4.009359] (-) TimerEvent: {}
+[4.109707] (-) TimerEvent: {}
+[4.210047] (-) TimerEvent: {}
+[4.310392] (-) TimerEvent: {}
+[4.410730] (-) TimerEvent: {}
+[4.510978] (-) TimerEvent: {}
+[4.611286] (-) TimerEvent: {}
+[4.711627] (-) TimerEvent: {}
+[4.811971] (-) TimerEvent: {}
+[4.912300] (-) TimerEvent: {}
+[5.012565] (-) TimerEvent: {}
+[5.112912] (-) TimerEvent: {}
+[5.213271] (-) TimerEvent: {}
+[5.313648] (-) TimerEvent: {}
+[5.413984] (-) TimerEvent: {}
+[5.514293] (-) TimerEvent: {}
+[5.614653] (-) TimerEvent: {}
+[5.715015] (-) TimerEvent: {}
+[5.815359] (-) TimerEvent: {}
+[5.915717] (-) TimerEvent: {}
+[6.016054] (-) TimerEvent: {}
+[6.116406] (-) TimerEvent: {}
+[6.216795] (-) TimerEvent: {}
+[6.317096] (-) TimerEvent: {}
+[6.417416] (-) TimerEvent: {}
+[6.517758] (-) TimerEvent: {}
+[6.618111] (-) TimerEvent: {}
+[6.718452] (-) TimerEvent: {}
+[6.818853] (-) TimerEvent: {}
+[6.919222] (-) TimerEvent: {}
+[7.019629] (-) TimerEvent: {}
+[7.119993] (-) TimerEvent: {}
+[7.220307] (-) TimerEvent: {}
+[7.320644] (-) TimerEvent: {}
+[7.420957] (-) TimerEvent: {}
+[7.521220] (-) TimerEvent: {}
+[7.621543] (-) TimerEvent: {}
+[7.721873] (-) TimerEvent: {}
+[7.822209] (-) TimerEvent: {}
+[7.922419] (-) TimerEvent: {}
+[8.022745] (-) TimerEvent: {}
+[8.123068] (-) TimerEvent: {}
+[8.223400] (-) TimerEvent: {}
+[8.323752] (-) TimerEvent: {}
+[8.424066] (-) TimerEvent: {}
+[8.524379] (-) TimerEvent: {}
+[8.624631] (-) TimerEvent: {}
+[8.724943] (-) TimerEvent: {}
+[8.825195] (-) TimerEvent: {}
+[8.925509] (-) TimerEvent: {}
+[9.030913] (-) TimerEvent: {}
+[9.131254] (-) TimerEvent: {}
+[9.231608] (-) TimerEvent: {}
+[9.331956] (-) TimerEvent: {}
+[9.432303] (-) TimerEvent: {}
+[9.532665] (-) TimerEvent: {}
+[9.632930] (-) TimerEvent: {}
+[9.733189] (-) TimerEvent: {}
+[9.833523] (-) TimerEvent: {}
+[9.933883] (-) TimerEvent: {}
+[10.034261] (-) TimerEvent: {}
+[10.134533] (-) TimerEvent: {}
+[10.234928] (-) TimerEvent: {}
+[10.335286] (-) TimerEvent: {}
+[10.435639] (-) TimerEvent: {}
+[10.477721] (robo1_haje) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable tree_detector\x1b[0m\n'}
+[10.535733] (-) TimerEvent: {}
+[10.636070] (-) TimerEvent: {}
+[10.736433] (-) TimerEvent: {}
+[10.836799] (-) TimerEvent: {}
+[10.937124] (-) TimerEvent: {}
+[11.037408] (-) TimerEvent: {}
+[11.137778] (-) TimerEvent: {}
+[11.229115] (robo1_haje) StdoutLine: {'line': b'[100%] Built target tree_detector\n'}
+[11.237885] (-) TimerEvent: {}
+[11.238707] (robo1_haje) CommandEnded: {'returncode': 0}
+[11.239168] (robo1_haje) JobProgress: {'identifier': 'robo1_haje', 'progress': 'install'}
+[11.244877] (robo1_haje) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje'], 'cwd': '/home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'en_AU:en'), ('USER', 'eleanorlow'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/eleanorlow'), ('OLDPWD', '/home/eleanorlow/robo1'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('MANAGERPID', '1584'), ('SYSTEMD_EXEC_PID', '1759'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator25ef4b219e3b005583550f2b0f9f990c3'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '15010'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/eleanorlow/robo1/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'eleanorlow'), ('JOURNAL_STREAM', '8:12086'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'eleanorlow'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/home/eleanorlow/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/bethany:@/tmp/.ICE-unix/1720,unix/bethany:/tmp/.ICE-unix/1720'), ('INVOCATION_ID', '8af1ed9ae7fa422f8b0d9b5ab08f36af'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_AU.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('IBUS_DISABLE_SNOOPER', '1'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.9Z3IF3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/eleanorlow/robo1/install/robo1_haje:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('TERMINATOR_UUID', 'urn:uuid:361a2aa6-effa-48d9-8c39-366c2164a741'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/eleanorlow/robo1/build/robo1_haje:/home/eleanorlow/robo1/install/robo1_haje/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/eleanorlow/robo1/install/robo1_haje:/opt/ros/humble')]), 'shell': False}
+[11.250672] (robo1_haje) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[11.251091] (robo1_haje) StdoutLine: {'line': b'-- Execute custom install script\n'}
+[11.251246] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/pythonpath.sh\n'}
+[11.257915] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/pythonpath.dsv\n'}
+[11.264207] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje-1.0.3-py3.10.egg-info/PKG-INFO\n'}
+[11.271196] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje-1.0.3-py3.10.egg-info/SOURCES.txt\n'}
+[11.277072] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje-1.0.3-py3.10.egg-info/dependency_links.txt\n'}
+[11.283989] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje-1.0.3-py3.10.egg-info/top_level.txt\n'}
+[11.290239] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje/__init__.py\n'}
+[11.296596] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje/fireRiskCreateMap.py\n'}
+[11.302531] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje/fireriskMap.py\n'}
+[11.308505] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje/movement_node.py\n'}
+[11.314170] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/lib/robo1_haje/movement_node.py\n'}
+[11.319747] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/lib/robo1_haje/fireRiskCreateMap.py\n'}
+[11.325749] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/lib/robo1_haje/tree_detector\n'}
+[11.331619] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/drone.rviz\n'}
+[11.337150] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/gazebo_bridge.yaml\n'}
+[11.337962] (-) TimerEvent: {}
+[11.342962] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/movement_params.yaml\n'}
+[11.348879] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/nav2_params.yaml\n'}
+[11.354666] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/robot_localization.yaml\n'}
+[11.360568] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/slam_params.yaml\n'}
+[11.367117] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/drone_ignition.launch.py\n'}
+[11.373757] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/drone_navigation.launch.py\n'}
+[11.380337] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/launch.py\n'}
+[11.386265] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/launch_2.py\n'}
+[11.392227] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/sim.launch.py\n'}
+[11.398643] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/meshes/Summer_B.jpg\n'}
+[11.405930] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/meshes/bush_3.mtl\n'}
+[11.412545] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/meshes/bush_3.obj\n'}
+[11.419824] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/model.config\n'}
+[11.426044] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/model.sdf\n'}
+[11.434507] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/materials/textures/empty_grass.png\n'}
+[11.438066] (-) TimerEvent: {}
+[11.440986] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/materials/textures/forest_overhead.png\n'}
+[11.446599] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/materials/textures/leaf_litter.png\n'}
+[11.452416] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/model.config\n'}
+[11.458318] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/model.sdf\n'}
+[11.464350] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/materials/textures/forest_wall.png\n'}
+[11.470302] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/materials/textures/forest_wall_transparent.png\n'}
+[11.476216] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/materials/textures/forest_wall_transparent_small.png\n'}
+[11.482127] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/model.config\n'}
+[11.487974] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/model.sdf\n'}
+[11.493794] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/grass_plane/materials/textures/empty_grass.png\n'}
+[11.499677] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/grass_plane/model.config\n'}
+[11.505067] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/grass_plane/model.sdf\n'}
+[11.511479] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree/meshes/model/__Wood_Lumber_ButtJoined_.jpg\n'}
+[11.519186] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree/meshes/palm_tree.dae\n'}
+[11.525458] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree/model.config\n'}
+[11.531878] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree/model.sdf\n'}
+[11.537498] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/meshes/Sonnerat.jpg\n'}
+[11.538150] (-) TimerEvent: {}
+[11.543077] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/meshes/tree_1.mtl\n'}
+[11.548967] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/meshes/tree_1.obj\n'}
+[11.554570] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/model.config\n'}
+[11.561053] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/model.sdf\n'}
+[11.568702] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/meshes/Mossy_Tr.jpg\n'}
+[11.574593] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/meshes/Walnut_L.jpg\n'}
+[11.582839] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/meshes/tree_2.mtl\n'}
+[11.591487] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/meshes/tree_2.obj\n'}
+[11.597089] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/model.config\n'}
+[11.602594] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/model.sdf\n'}
+[11.608574] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/common_properties.urdf.xacro\n'}
+[11.614417] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/drone.gazebo.xacro\n'}
+[11.620308] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/drone.urdf.xacro\n'}
+[11.626305] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/hull.dae\n'}
+[11.632170] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/propeller_fl.dae\n'}
+[11.637711] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/propeller_fr.dae\n'}
+[11.638256] (-) TimerEvent: {}
+[11.643370] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/propeller_rl.dae\n'}
+[11.648882] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/propeller_rr.dae\n'}
+[11.654642] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/model.config\n'}
+[11.660515] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/model.sdf\n'}
+[11.666567] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/worlds/large_demo.sdf\n'}
+[11.672584] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/worlds/simple_trees.sdf\n'}
+[11.678322] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/src/Detection.cpp\n'}
+[11.684326] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/src/Detection.h\n'}
+[11.689897] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/src/__pycache__/fireRiskgraph.cpython-310.pyc\n'}
+[11.696174] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/src/__pycache__/fireriskMap.cpython-310.pyc\n'}
+[11.702564] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/ament_index/resource_index/package_run_dependencies/robo1_haje\n'}
+[11.708538] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/ament_index/resource_index/parent_prefix_path/robo1_haje\n'}
+[11.714365] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/ament_prefix_path.sh\n'}
+[11.720404] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/ament_prefix_path.dsv\n'}
+[11.726251] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/path.sh\n'}
+[11.732066] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/path.dsv\n'}
+[11.737647] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.bash\n'}
+[11.738355] (-) TimerEvent: {}
+[11.743596] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.sh\n'}
+[11.750050] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.zsh\n'}
+[11.755972] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.dsv\n'}
+[11.761955] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/package.dsv\n'}
+[11.767977] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/ament_index/resource_index/packages/robo1_haje\n'}
+[11.773841] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/cmake/robo1_hajeConfig.cmake\n'}
+[11.779655] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/cmake/robo1_hajeConfig-version.cmake\n'}
+[11.786008] (robo1_haje) StdoutLine: {'line': b'-- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/package.xml\n'}
+[11.817655] (robo1_haje) StdoutLine: {'line': b"Listing '/home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje'...\n"}
+[11.817798] (robo1_haje) StdoutLine: {'line': b"Compiling '/home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje/__init__.py'...\n"}
+[11.817840] (robo1_haje) StdoutLine: {'line': b"Compiling '/home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje/fireRiskCreateMap.py'...\n"}
+[11.817882] (robo1_haje) StdoutLine: {'line': b"Compiling '/home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje/fireriskMap.py'...\n"}
+[11.817922] (robo1_haje) StdoutLine: {'line': b"Compiling '/home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje/movement_node.py'...\n"}
+[11.822874] (robo1_haje) CommandEnded: {'returncode': 0}
+[11.833701] (robo1_haje) JobEnded: {'identifier': 'robo1_haje', 'rc': 0}
+[11.834007] (-) EventReactorShutdown: {}

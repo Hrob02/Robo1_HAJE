@@ -25,6 +25,10 @@ class FireRiskMap:
             "medium": 2,
             "tall": 3
         }
+        
+        plt.ion()
+        self.fig_veg, self.ax_veg = plt.subplots(figsize=(6, 6))
+        self.fig_fire, self.ax_fire = plt.subplots(figsize=(6, 6))
             
 
 
@@ -38,62 +42,73 @@ class FireRiskMap:
                     self.fire_map[ny, nx] = min(self.fire_map[ny, nx] + weight, 1.5)
 
     def visibleVegetionMap(self, shortTrees, mediumTrees, tallTrees, expand=True):
+            # Clear maps for each new scan
+            self.veg_map.fill(0)
+            self.fire_map.fill(0)
 
-        for (x, y) in shortTrees:
-            gx = int(x / self.resolution)
-            gy = int(y / self.resolution)
-            if expand:
-                self.expandingPixel(gx, gy, self.radius["short"], self.treeCategory["short"], self.weights["short"])
+            for (x, y) in shortTrees:
+                gx, gy = int(x / self.resolution), int(y / self.resolution)
+                if expand:
+                    self.expandingPixel(gx, gy, self.radius["short"], self.treeCategory["short"], self.weights["short"])
+                else:
+                    self.veg_map[gy, gx] = self.treeCategory["short"]
+
+            for (x, y) in mediumTrees:
+                gx, gy = int(x / self.resolution), int(y / self.resolution)
+                if expand:
+                    self.expandingPixel(gx, gy, self.radius["medium"], self.treeCategory["medium"], self.weights["medium"])
+                else:
+                    self.veg_map[gy, gx] = self.treeCategory["medium"]
+
+            for (x, y) in tallTrees:
+                gx, gy = int(x / self.resolution), int(y / self.resolution)
+                if expand:
+                    self.expandingPixel(gx, gy, self.radius["tall"], self.treeCategory["tall"], self.weights["tall"])
+                else:
+                    self.veg_map[gy, gx] = self.treeCategory["tall"]
+
+            colors = ["white", "green", "blue", "purple"]
+            veg_cmap = ListedColormap(colors)
+
+            self.ax_veg.clear()
+            im = self.ax_veg.imshow(
+                self.veg_map,
+                cmap=veg_cmap,
+                origin="lower",
+                extent=[0, self.world_size, 0, self.world_size]
+            )
+            self.ax_veg.set_title("Visible Vegetation Map")
+
+            if not hasattr(self, "veg_cbar"):
+                self.veg_cbar = self.fig_veg.colorbar(im, ax=self.ax_veg, ticks=[0,1,2,3])
+                self.veg_cbar.ax.set_yticklabels(['None','Short','Medium','Tall'])
             else:
-                self.veg_map[gx, gy] = self.treeCategory["short"]
+                self.veg_cbar.update_normal(im)
 
-        for (x, y) in mediumTrees:
-            gx = int(x / self.resolution)
-            gy = int(y / self.resolution)
-            if expand:
-                self.expandingPixel(gx, gy, self.radius["medium"], self.treeCategory["medium"], self.weights["medium"])
-            else:
-                self.veg_map[gx, gy] = self.treeCategory["medium"]
-
-        for (x, y) in tallTrees:
-            gx = int(x / self.resolution)
-            gy = int(y / self.resolution)
-            if expand:
-                self.expandingPixel(gx, gy, self.radius["tall"], self.treeCategory["tall"], self.weights["tall"])
-            else:
-                self.veg_map[gx,gy] = self.treeCategory["tall"]
-
-        #Plotting the points on the graph
-        colors = ["white", "green", "blue", "purple"]
-        veg_cmap = ListedColormap(colors)
-
-        plt.ion()                # turn on interactive mode
-        self.fig, self.ax = plt.subplots()
-
-        plt.figure(figsize=(6,6))
-        plt.title("Visible Vegetation FART")
-        self.ax.clear()
-        im = plt.imshow(self.veg_map, cmap=veg_cmap, origin="lower")
-        cbar = plt.colorbar(im, ticks=[0,1,2,3])
-        cbar.ax.set_yticklabels(['None','Short','Medium','Tall'])
-        plt.draw()
-        plt.pause(0.001)
+            plt.pause(0.001)
 
     def fireRiskMap(self):
-
-        plt.ion()                # turn on interactive mode
-        self.fig, self.ax = plt.subplots()
-
         colors = ["white", "yellow", "orange", "red", "black"]
         cmap = ListedColormap(colors)
-        plt.figure(figsize=(6,6))
-        plt.title("Fire Fuel Map")
-        self.ax.clear()
-        im = plt.imshow(self.fire_map, cmap=cmap, origin="lower", vmin=0, vmax=1.4)
-        cbar = plt.colorbar(im)
-        cbar.set_label("Fire Risk Level")
-        # plt.show(block=False)
-        plt.draw()
+
+        self.ax_fire.clear()
+        im = self.ax_fire.imshow(
+            self.fire_map,
+            cmap=cmap,
+            origin="lower",
+            vmin=0,
+            vmax=1.4,
+            extent=[0, self.world_size, 0, self.world_size]
+        )
+        self.ax_fire.set_title("Fire Fuel Map")
+
+
+        if not hasattr(self, "fire_cbar"):
+            self.fire_cbar = self.fig_fire.colorbar(im, ax=self.ax_fire)
+            self.fire_cbar.set_label("Fire Risk Level")
+        else:
+            self.fire_cbar.update_normal(im)
+
         plt.pause(0.001)
 
     def ffdiCalculator(self, temp, humidity, windSpeed, droughtFactor):

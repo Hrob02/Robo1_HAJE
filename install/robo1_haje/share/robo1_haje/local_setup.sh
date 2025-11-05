@@ -1,0 +1,1 @@
+/home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje/ament_cmake_environment_hooks/local_setup.sh

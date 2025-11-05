@@ -21,6 +21,8 @@ import fireriskMap as fire
 class RunningMap(Node):
     def __init__(self):
         super().__init__('fire_map_node')
+
+        self.fire_map = fire.FireRiskMap(world_size=50, resolution=0.8)
         
         #tree pose subscription
         self.treepose_sub_ = self.create_subscription(MarkerArray, '/tree_pose', self.treepose_callback, 10)
@@ -58,12 +60,12 @@ class RunningMap(Node):
         mediumTrees = self.medium_trees
         tallTrees = self.large_trees
         
-        map = fire.FireRiskMap(world_size=50, resolution=0.8)
-        map.visibleVegetionMap(shortTrees, mediumTrees, tallTrees, True)
-        map.fireRiskMap()
-        ffdiValue = map.ffdiCalculator(35, 20, 30, 8)
+        self.fire_map.visibleVegetionMap(shortTrees, mediumTrees, tallTrees, True)
+        self.fire_map.fireRiskMap()
+        
+        ffdiValue = self.fire_map.ffdiCalculator(35, 20, 30, 8)
         print(ffdiValue)
-        ffdiRating = map.ffdiRating(ffdiValue)
+        ffdiRating = self.fire_map.ffdiRating(ffdiValue)
         print(ffdiRating)
 
 

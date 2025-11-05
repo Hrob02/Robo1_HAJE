@@ -1,0 +1,107 @@
+[0.007s] Invoking command in '/home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje': CMAKE_PREFIX_PATH=/home/eleanorlow/robo1/install/robo1_haje:/opt/ros/humble /usr/bin/cmake --build /home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje -- -j8 -l8
+[0.036s] [35m[1mConsolidate compiler generated dependencies of target tree_detector[0m
+[0.048s] [  0%] Built target ament_cmake_python_symlink_robo1_haje_setup
+[0.048s] [  0%] Built target ament_cmake_python_symlink_robo1_haje
+[0.048s] [100%] Built target tree_detector
+[0.216s] running egg_info
+[0.216s] writing robo1_haje.egg-info/PKG-INFO
+[0.216s] writing dependency_links to robo1_haje.egg-info/dependency_links.txt
+[0.216s] writing top-level names to robo1_haje.egg-info/top_level.txt
+[0.218s] reading manifest file 'robo1_haje.egg-info/SOURCES.txt'
+[0.219s] writing manifest file 'robo1_haje.egg-info/SOURCES.txt'
+[0.240s] [100%] Built target ament_cmake_python_build_robo1_haje_egg
+[0.249s] Invoked command in '/home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje' returned '0': CMAKE_PREFIX_PATH=/home/eleanorlow/robo1/install/robo1_haje:/opt/ros/humble /usr/bin/cmake --build /home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje -- -j8 -l8
+[0.256s] Invoking command in '/home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje': CMAKE_PREFIX_PATH=/home/eleanorlow/robo1/install/robo1_haje:/opt/ros/humble /usr/bin/cmake --install /home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje
+[0.261s] -- Install configuration: ""
+[0.261s] -- Execute custom install script
+[0.261s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/pythonpath.sh
+[0.261s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/pythonpath.dsv
+[0.261s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje-1.0.3-py3.10.egg-info/PKG-INFO
+[0.262s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje-1.0.3-py3.10.egg-info/SOURCES.txt
+[0.262s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje-1.0.3-py3.10.egg-info/dependency_links.txt
+[0.262s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje-1.0.3-py3.10.egg-info/top_level.txt
+[0.262s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje/__init__.py
+[0.262s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje/fireRiskCreateMap.py
+[0.262s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje/fireriskMap.py
+[0.262s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje/movement_node.py
+[0.262s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/lib/robo1_haje/movement_node.py
+[0.262s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/lib/robo1_haje/fireRiskCreateMap.py
+[0.263s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/lib/robo1_haje/tree_detector
+[0.263s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/drone.rviz
+[0.263s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/gazebo_bridge.yaml
+[0.263s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/movement_params.yaml
+[0.263s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/nav2_params.yaml
+[0.263s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/robot_localization.yaml
+[0.263s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/config/slam_params.yaml
+[0.263s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/drone_ignition.launch.py
+[0.263s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/drone_navigation.launch.py
+[0.263s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/launch.py
+[0.263s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/launch_2.py
+[0.263s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/launch/sim.launch.py
+[0.264s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/meshes/Summer_B.jpg
+[0.264s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/meshes/bush_3.mtl
+[0.264s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/meshes/bush_3.obj
+[0.264s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/model.config
+[0.264s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/bush_3/model.sdf
+[0.264s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/materials/textures/empty_grass.png
+[0.264s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/materials/textures/forest_overhead.png
+[0.264s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/materials/textures/leaf_litter.png
+[0.264s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/model.config
+[0.265s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_plane/model.sdf
+[0.265s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/materials/textures/forest_wall.png
+[0.265s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/materials/textures/forest_wall_transparent.png
+[0.265s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/materials/textures/forest_wall_transparent_small.png
+[0.265s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/model.config
+[0.265s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/forest_wall/model.sdf
+[0.265s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/grass_plane/materials/textures/empty_grass.png
+[0.265s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/grass_plane/model.config
+[0.265s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/grass_plane/model.sdf
+[0.265s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree/meshes/model/__Wood_Lumber_ButtJoined_.jpg
+[0.265s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree/meshes/palm_tree.dae
+[0.265s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree/model.config
+[0.265s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/palm_tree/model.sdf
+[0.265s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/meshes/Sonnerat.jpg
+[0.266s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/meshes/tree_1.mtl
+[0.266s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/meshes/tree_1.obj
+[0.266s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/model.config
+[0.266s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_1/model.sdf
+[0.266s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/meshes/Mossy_Tr.jpg
+[0.266s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/meshes/Walnut_L.jpg
+[0.266s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/meshes/tree_2.mtl
+[0.266s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/meshes/tree_2.obj
+[0.266s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/model.config
+[0.266s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/models/tree_2/model.sdf
+[0.266s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/common_properties.urdf.xacro
+[0.266s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/drone.gazebo.xacro
+[0.266s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/drone.urdf.xacro
+[0.267s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/hull.dae
+[0.267s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/propeller_fl.dae
+[0.267s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/propeller_fr.dae
+[0.267s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/propeller_rl.dae
+[0.267s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/meshes/propeller_rr.dae
+[0.267s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/model.config
+[0.267s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/urdf/model.sdf
+[0.267s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/worlds/large_demo.sdf
+[0.267s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/worlds/simple_trees.sdf
+[0.267s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/src/Detection.cpp
+[0.267s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/src/Detection.h
+[0.267s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/src/__pycache__/fireRiskgraph.cpython-310.pyc
+[0.268s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/src/__pycache__/fireriskMap.cpython-310.pyc
+[0.268s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/ament_index/resource_index/package_run_dependencies/robo1_haje
+[0.268s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/ament_index/resource_index/parent_prefix_path/robo1_haje
+[0.268s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/ament_prefix_path.sh
+[0.268s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/ament_prefix_path.dsv
+[0.268s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/path.sh
+[0.268s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/environment/path.dsv
+[0.268s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.bash
+[0.268s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.sh
+[0.268s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.zsh
+[0.269s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/local_setup.dsv
+[0.269s] -- Symlinking: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/package.dsv
+[0.275s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/ament_index/resource_index/packages/robo1_haje
+[0.275s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/cmake/robo1_hajeConfig.cmake
+[0.275s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/cmake/robo1_hajeConfig-version.cmake
+[0.275s] -- Up-to-date symlink: /home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/share/robo1_haje/package.xml
+[0.299s] Listing '/home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje'...
+[0.300s] Compiling '/home/eleanorlow/robo1/src/Robo1_HAJE/install/robo1_haje/local/lib/python3.10/dist-packages/robo1_haje/fireriskMap.py'...
+[0.305s] Invoked command in '/home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje' returned '0': CMAKE_PREFIX_PATH=/home/eleanorlow/robo1/install/robo1_haje:/opt/ros/humble /usr/bin/cmake --install /home/eleanorlow/robo1/src/Robo1_HAJE/build/robo1_haje
