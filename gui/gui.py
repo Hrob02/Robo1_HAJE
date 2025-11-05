@@ -808,6 +808,11 @@ class HAJEGUI(ctk.CTk):
         self.lbl_odom.configure(text=f"odom: x={self._fmt(d['x'])}, y={self._fmt(d['y'])}, yaw={self._fmt(d['yaw'])}")
         if self.ctx: self.ctx.rec.add_row("odom", {"t":d["t"], "x":d["x"], "y":d["y"], "yaw":d["yaw"]})
 
+        try:
+            self.map_panel.set_pose(d["x"], d["y"], d["yaw"])
+        except Exception as e:
+            self._append_log(f"[WARN] MapPanel set_pose failed: {e}")
+
     def _on_ros_imu(self, d: Dict[str,Any]):
         self.lbl_imu.configure(text=f"imu:  roll={self._fmt(d['roll'])}, pitch={self._fmt(d['pitch'])}, yaw={self._fmt(d['yaw'])}")
         if self.ctx: self.ctx.rec.add_row("imu", {"t":d["t"], "roll":d["roll"], "pitch":d["pitch"], "yaw":d["yaw"]})
@@ -914,6 +919,12 @@ class MapPanel(ctk.CTkFrame):
         self.canvas.pack(expand=True, fill="both")
         self.points = []
         self.markers = []
+        self.drone_pose = None
+
+    def set_pose(self, x, y, yaw):
+        """Set drone pose in map frame (meters, radians)."""
+        self.drone_pose = (x, y, yaw)
+        self._redraw()
 
     def add_scan(self, ranges, angle_min, angle_increment):
         """Convert laser scan ranges into points on canvas."""
@@ -950,6 +961,40 @@ class MapPanel(ctk.CTkFrame):
                 cx + x*10 - 5, cy - y*10 - 5,
                 cx + x*10 + 5, cy - y*10 + 5,
                 fill=color_hex, outline=""
+            )
+
+        # Draw drone arrow if we have a pose
+        if self.drone_pose is not None:
+            x, y, yaw = self.drone_pose
+            scale = 10  # pixels per meter
+            px = cx + x * scale
+            py = cy - y * scale  # invert y for canvas
+
+            # Triangle in robot frame (meters)
+            # tip forward, base left/right
+            arrow_shape = [
+                (0.8, 0.0),    # tip
+                (-0.4, 0.30),  # back left
+                (-0.4, -0.30)  # back right
+            ]
+
+            pts = []
+            cos_y = math.cos(yaw)
+            sin_y = math.sin(yaw)
+            for dx, dy in arrow_shape:
+                # rotate by yaw
+                wx = cos_y * dx - sin_y * dy
+                wy = sin_y * dx + cos_y * dy
+                # map -> canvas
+                sx = px + wx * scale
+                sy = py - wy * scale
+                pts.extend((sx, sy))
+
+            self.canvas.create_polygon(
+                pts,
+                fill="#ff3333",
+                outline="#ffffff",
+                width=1
             )
 
         # Crosshair center
