@@ -163,7 +163,7 @@ void DroneTreeDetector::imageCallback(const sensor_msgs::msg::Image::SharedPtr m
       std_msgs::msg::Float64MultiArray tree_msg;
       tree_msg.data.push_back(closest_tree.x);
       tree_msg.data.push_back(closest_tree.y);
-      tree_msg.data.push_back(0.0);  // scale placeholder
+      tree_msg.data.push_back(1.0);  // scale placeholder
 
       tree_pub_->publish(tree_msg);
 
