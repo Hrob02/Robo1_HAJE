@@ -127,6 +127,8 @@ class FirelandExplorer(Node):
         # Stores the active nav2 goal handle so we can cancel
         self.current_goal_handle_ = None
 
+        self.take_off = False
+
 
 
 
@@ -257,6 +259,11 @@ class FirelandExplorer(Node):
         """
 
         """Main decision loop"""
+
+        if not self.take_off:
+            self.takeoff()
+            self.take_off = True
+
         planner_str = self.get_parameter('planner_type').value
 
         self.get_logger().debug(f'Loop running; planner_type = {self.planner_type_}, parameter = {self.get_parameter("planner_type").value}')
@@ -277,6 +284,23 @@ class FirelandExplorer(Node):
         else:
             self.get_logger().error('No valid planner selected')
             self.destroy_node()
+    
+    def takeoff(self):
+        """Setting the Z-axis / height of drone """
+        pose = Pose()
+        pose.position.z = 3.0
+
+        # Send a goal to navigate_to_pose with self.nav2_action_client_
+        action_goal = NavigateToPose.Goal()
+        action_goal.pose.header.stamp = self.get_clock().now().to_msg()
+        action_goal.pose.header.frame_id = 'map'
+
+
+        # Publish visualisation
+        self.goal_pose_vis_.publish(action_goal.pose)
+
+        
+
 
 
     def find_frontiers(self):
