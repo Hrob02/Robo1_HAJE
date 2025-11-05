@@ -486,6 +486,8 @@ def build_pdf(context: Dict[str,Any], out_dir: Path) -> Path:
 class HAJEGUI(ctk.CTk):
     def __init__(self):
         super().__init__()
+        self.attributes('-topmost', True)
+
         self.title("HAJE Engineering Fuel Assessment & Risk Tool")
         self.geometry("1400x860"); self.minsize(1200,760); self.configure(fg_color=BG)
 
@@ -703,6 +705,8 @@ class HAJEGUI(ctk.CTk):
         # Run it
         self._append_log(f"[INFO] Launching world with: {self.selected_world_cmd}")
         self.cmds.run("launch_world", cwd=self.session_dir, new_console=True)
+
+        self.tabs.set("Live")
 
     def _clean_restart(self):
         if messagebox.askyesno("Clean restart","Save report first?\nThis clears cached UI and resets states."):
