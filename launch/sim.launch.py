@@ -173,7 +173,8 @@ def generate_launch_description():
     tree_detector = Node(
         package='robo1_haje',
         executable='tree_detector',
-        output='screen'
+        output='screen',
+        parameters=[{'world_path': LaunchConfiguration('world')}]
     )
 
     # ------------------------------
@@ -199,7 +200,7 @@ def generate_launch_description():
                 "use_z_control": False,
                 "yaw_to_path": True,
                 "lookahead_m": 0.0,
-                "launch_altitude": 2.0,
+                "launch_altitude": 4.0,
                 "land_touchdown_z": 0.1,
             },
         ],

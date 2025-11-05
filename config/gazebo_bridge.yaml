@@ -12,6 +12,18 @@
   gz_type_name: 'ignition.msgs.Model'
   direction: GZ_TO_ROS
 
+- ros_topic_name: "/gazebo/model_states"
+  gz_topic_name: "/world/simple_trees/pose/info"
+  ros_type_name: "gazebo_msgs/msg/ModelStates"
+  gz_type_name: "gz.msgs.Pose_V"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/drone/segmentation/image"
+  gz_topic_name: "/model/drone/segmentation"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "ignition.msgs.Image"
+  direction: GZ_TO_ROS
+
 # # Odometry (basic)
 # - ros_topic_name: '/odom'
 #   gz_topic_name: '/model/drone/odometry'
