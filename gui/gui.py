@@ -22,6 +22,8 @@ from enum import Enum
 from pathlib import Path
 from threading import Lock, Thread
 from typing import Any, Dict, List, Optional
+from visualization_msgs.msg import Marker
+import tkinter as tk
 
 # ----------------------------- Third-party -----------------------------
 import customtkinter as ctk
@@ -302,10 +304,12 @@ class ROSConnector:
                  on_odom, on_imu, on_scan, on_gps,
                  on_cam1, on_cam2,
                  on_connected,
+                 on_marker,
                  log_cb):
         self.on_odom=on_odom; self.on_imu=on_imu; self.on_scan=on_scan; self.on_gps=on_gps
         self.on_cam1=on_cam1; self.on_cam2=on_cam2
         self.on_connected=on_connected
+        self.on_marker = on_marker
         self.log_cb=log_cb
         self.connected=False
         self._thread=None
@@ -329,13 +333,20 @@ class ROSConnector:
                     self.on_connected()
 
             # Subscriptions (rename topics if your stack differs)
-            node.create_subscription(Odometry,  "/odom", lambda msg: (self._cb_odom(msg), _set_connected()), 10)
+            node.create_subscription(Odometry,  "/odometry", lambda msg: (self._cb_odom(msg), _set_connected()), 10)
             node.create_subscription(Imu,       "/imu",  lambda msg: (self._cb_imu(msg),  _set_connected()), 10)
             node.create_subscription(LaserScan, "/scan", lambda msg: (self._cb_scan(msg), _set_connected()), 10)
             node.create_subscription(NavSatFix, "/fix",  lambda msg: (self._cb_gps(msg),  _set_connected()), 10)
+            if self.on_marker:
+                node.create_subscription(
+                    Marker,
+                    "/visualization_marker",
+                    lambda msg: (self._cb_marker(msg), _set_connected()),
+                    10
+                )
 
             if HAVE_CVBRIDGE:
-                node.create_subscription(RosImage, "/camera1/image_raw", lambda msg: (self._cb_img(msg,1), _set_connected()), 10)
+                node.create_subscription(RosImage, "/camera/image", lambda msg: (self._cb_img(msg,1), _set_connected()), 10)
                 node.create_subscription(RosImage, "/camera2/image_raw", lambda msg: (self._cb_img(msg,2), _set_connected()), 10)
             else:
                 self.log_cb("[INFO] cv_bridge not installed: keeping mock cams even after ROS connects.")
@@ -391,6 +402,18 @@ class ROSConnector:
             else:          self.on_cam2(pil, t)
         except Exception as e:
             self.log_cb(f"[WARN] cv_bridge image conversion failed: {e}")
+
+    def _cb_marker(self, msg: Marker):
+        # extract (x, y) of marker
+        x = msg.pose.position.x
+        y = msg.pose.position.y
+        # optional: color by namespace
+        color = (
+            int(msg.color.r * 255),
+            int(msg.color.g * 255),
+            int(msg.color.b * 255),
+        )
+        self.on_marker({"x": x, "y": y, "color": color, "ns": msg.ns})
 
     @staticmethod
     def _yaw_from_quat(x,y,z,w):
@@ -536,6 +559,7 @@ class HAJEGUI(ctk.CTk):
             on_cam1=self._on_frame1,
             on_cam2=self._on_frame2,
             on_connected=self._on_ros_connected,
+            on_marker=self._on_ros_marker,
             log_cb=self._append_log
         )
         self.ros.start()
@@ -606,10 +630,18 @@ class HAJEGUI(ctk.CTk):
         self.lbl_scan = ctk.CTkLabel(left.body, text="scan: — waiting for ROS —", text_color=TEXT); self.lbl_scan.pack(anchor="w", pady=4)
 
         # mid: cameras
-        mid1 = self._card(self.live); mid1.grid(row=1, column=1, sticky="nsew", padx=10, pady=(6,8))
-        mid2 = self._card(self.live); mid2.grid(row=2, column=1, sticky="nsew", padx=10, pady=(8,16))
-        self.cam1 = ctk.CTkLabel(mid1.body, text="CAM 1"); self.cam1.pack(expand=True, fill="both", padx=8, pady=8)
-        self.cam2 = ctk.CTkLabel(mid2.body, text="CAM 2"); self.cam2.pack(expand=True, fill="both", padx=8, pady=8)
+        mid1 = self._card(self.live)
+        mid1.grid(row=1, column=1, sticky="nsew", padx=10, pady=(6,8))
+        mid2 = self._card(self.live)
+        mid2.grid(row=2, column=1, sticky="nsew", padx=10, pady=(8,16))
+
+        # CAM 1 (top)
+        self.cam1 = ctk.CTkLabel(mid1.body, text="CAM 1")
+        self.cam1.pack(expand=True, fill="both", padx=8, pady=8)
+
+        # Optional: add map panel separately below or beside
+        self.map_panel = MapPanel(mid2.body)
+        self.map_panel.pack(expand=True, fill="both", padx=8, pady=8)
 
         # right: key/warnings + controls
         right = self._card(self.live); right.grid(row=1, column=2, sticky="nsew", padx=(10,20), pady=(6,8))
@@ -784,9 +816,17 @@ class HAJEGUI(ctk.CTk):
         self.lbl_scan.configure(text=f"scan: {d['points']} pts, mean={self._fmt(d['mean_range'])} m")
         if self.ctx: self.ctx.rec.add_row("scan", d)
 
+        # Feed LIDAR data into the map
+        if "ranges" in d:
+            self.map_panel.add_scan(d["ranges"], d.get("angle_min", -1.57), d.get("angle_increment", 0.005))
+
     def _on_ros_gps(self, d: Dict[str,Any]):
         self.lbl_gps.configure(text=f"gps:  lat={self._fmt(d['lat'],6)}, lon={self._fmt(d['lon'],6)}, alt={self._fmt(d['alt'])}")
         if self.ctx: self.ctx.rec.add_row("gps", d)
+
+    def _on_ros_marker(self, data):
+        self.map_panel.add_marker(data["x"], data["y"], data["color"])
+
 
     # ----------------- external commands --------------------------------
     def _run_cmd(self, name: str, new_console: bool = True):
@@ -864,6 +904,58 @@ class HAJEGUI(ctk.CTk):
             if getattr(self, "ctx", None):  self.ctx.rec.close()
         finally:
             super().destroy()
+
+class MapPanel(ctk.CTkFrame):
+    """Simple 2D top-down map showing LIDAR scans and visualization markers."""
+    def __init__(self, parent, size=400):
+        super().__init__(parent, fg_color="#0D0E10")
+        self.size = size
+        self.canvas = tk.Canvas(self, width=size, height=size, bg="#181A1F", highlightthickness=0)
+        self.canvas.pack(expand=True, fill="both")
+        self.points = []
+        self.markers = []
+
+    def add_scan(self, ranges, angle_min, angle_increment):
+        """Convert laser scan ranges into points on canvas."""
+        self.points.clear()
+        scale = 10  # pixels per meter
+        cx = cy = self.size / 2
+        for i, r in enumerate(ranges):
+            if not (r > 0.05 and r < 30.0):
+                continue
+            angle = angle_min + i * angle_increment
+            x = cx + r * math.cos(angle) * scale
+            y = cy - r * math.sin(angle) * scale
+            self.points.append((x, y))
+        self._redraw()
+
+    def add_marker(self, x, y, color=(0,255,0)):
+        """Add a detected tree marker."""
+        self.markers.append((x, y, color))
+        self._redraw()
+
+    def _redraw(self):
+        self.canvas.delete("all")
+        cx = cy = self.size / 2
+
+        # Draw scan points
+        for x, y in self.points:
+            self.canvas.create_oval(x-2, y-2, x+2, y+2, fill="#5555ff", outline="")
+
+        # Draw tree markers
+        for x, y, color in self.markers:
+            r,g,b = color
+            color_hex = f"#{r:02x}{g:02x}{b:02x}"
+            self.canvas.create_oval(
+                cx + x*10 - 5, cy - y*10 - 5,
+                cx + x*10 + 5, cy - y*10 + 5,
+                fill=color_hex, outline=""
+            )
+
+        # Crosshair center
+        self.canvas.create_line(cx-10, cy, cx+10, cy, fill="#888")
+        self.canvas.create_line(cx, cy-10, cx, cy+10, fill="#888")
+
 
 # ----------------------------- run -----------------------------------------
 def main():
