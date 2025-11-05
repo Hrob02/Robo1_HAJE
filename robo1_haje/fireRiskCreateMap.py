@@ -5,7 +5,8 @@ import numpy as np
 
 from std_msgs.msg import Float64MultiArray
 from nav_msgs.msg import OccupancyGrid
-# MarkerArray not needed for the tree data subscription
+
+import xml.etree.ElementTree as ET
 
 import fireriskMap as fire
 
@@ -13,8 +14,17 @@ class RunningMap(Node):
     def __init__(self):
         super().__init__('fire_map_node')
 
-        # create FireRiskMap with initial guesses
-        self.fire_map = fire.FireRiskMap(world_size=50, resolution=0.8)
+        # Get parameters
+        self.declare_parameter('world_path', '')
+
+
+        self.world_path = self.get_parameter('world_path').get_parameter_value().string_value
+        self.get_logger().info(f"Using world file: {self.world_path}")
+
+
+        self.world_size = self.extract_world_size(self.world_path)
+
+        self.fire_map = fire.FireRiskMap(world_size=self.world_size, resolution=0.8)
 
         # Subscribe to map so we can get origin/resolution from real SLAM map
         self.map_sub_ = self.create_subscription(OccupancyGrid, '/map', self.map_callback, 10)
@@ -30,6 +40,24 @@ class RunningMap(Node):
         self.main_loop_timer_ = self.create_timer(0.2, self.run)
 
         self.get_logger().info("RunningMap node started. Waiting for /map metadata and /detected_tree_pose messages.")
+    
+    def extract_world_size(self, world_path):
+        try:
+            tree = ET.parse(world_path)
+            root = tree.getroot()
+            size_tag = root.find(".//size")
+            if size_tag is not None:
+                size_values = [float(x) for x in size_tag.text.split()]
+                # Usually in SDF: <size>x y z</size>
+                world_size = max(size_values[:2])  # use max of x,y
+                self.get_logger().info(f"World size extracted from {world_path}: {world_size}")
+                return world_size
+            else:
+                self.get_logger().warn(f"No <size> tag found in {world_path}, defaulting to 20m.")
+                return 20.0
+        except Exception as e:
+            self.get_logger().error(f"Failed to read world file: {e}")
+            return 20.0
 
     def map_callback(self, msg: OccupancyGrid):
         # Update origin & resolution from actual map metadata
