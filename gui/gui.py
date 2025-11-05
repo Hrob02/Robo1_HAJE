@@ -385,6 +385,15 @@ class ROSConnector:
         mean = sum(valid)/len(valid) if valid else 0.0
         self.on_scan({"t":t,"points":pts,"mean_range":mean})
 
+        self.on_scan({
+        "t": t,
+        "points": pts,
+        "mean_range": mean,
+        "ranges": list(msg.ranges),
+        "angle_min": msg.angle_min,
+        "angle_increment": msg.angle_increment,
+        })
+
     def _cb_gps(self, msg: NavSatFix):
         t=time.time()
         self.on_gps({"t":t,"lat":msg.latitude,"lon":msg.longitude,"alt":msg.altitude})
@@ -819,11 +828,19 @@ class HAJEGUI(ctk.CTk):
 
     def _on_ros_scan(self, d: Dict[str,Any]):
         self.lbl_scan.configure(text=f"scan: {d['points']} pts, mean={self._fmt(d['mean_range'])} m")
-        if self.ctx: self.ctx.rec.add_row("scan", d)
+        if self.ctx:
+            self.ctx.rec.add_row("scan", {
+                "t": d["t"],
+                "points": d["points"],
+                "mean_range": d["mean_range"],
+            })
 
-        # Feed LIDAR data into the map
         if "ranges" in d:
-            self.map_panel.add_scan(d["ranges"], d.get("angle_min", -1.57), d.get("angle_increment", 0.005))
+            self.map_panel.add_scan(
+                d["ranges"],
+                d.get("angle_min", -1.57),
+                d.get("angle_increment", 0.005),
+            )
 
     def _on_ros_gps(self, d: Dict[str,Any]):
         self.lbl_gps.configure(text=f"gps:  lat={self._fmt(d['lat'],6)}, lon={self._fmt(d['lon'],6)}, alt={self._fmt(d['alt'])}")
