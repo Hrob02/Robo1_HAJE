@@ -11,6 +11,7 @@
 #include <tinyxml2.h>
 #include <filesystem>
 #include <fstream>
+#include <std_msgs/msg/float64_multi_array.hpp>
 
 #include <mutex>
 #include <map>
@@ -33,6 +34,7 @@ private:
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_sub_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
   rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr marker_pub_;
+  rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr tree_pub_;
 
   // State
   nav_msgs::msg::Odometry current_odom_;

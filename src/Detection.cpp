@@ -13,6 +13,9 @@ DroneTreeDetector::DroneTreeDetector() : Node("tree_detector")
   marker_pub_ = this->create_publisher<visualization_msgs::msg::Marker>(
       "/visualization_marker", 10);
 
+  tree_pub_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
+    "/tree_pose", 10);
+
   std::string world_path = this->declare_parameter<std::string>(
       "world_path", "/home/hallie/ros2_ws/src/Robo1_HAJE/worlds/simple_trees.sdf");
 
@@ -156,6 +159,14 @@ void DroneTreeDetector::imageCallback(const sensor_msgs::msg::Image::SharedPtr m
     {
       marker_pub_->publish(makeMarker(closest_tree));
       marked_positions_.push_back(closest_tree);
+
+      std_msgs::msg::Float64MultiArray tree_msg;
+      tree_msg.data.push_back(closest_tree.x);
+      tree_msg.data.push_back(closest_tree.y);
+      tree_msg.data.push_back(0.0);  // scale placeholder
+
+      tree_pub_->publish(tree_msg);
+
       RCLCPP_INFO(this->get_logger(),
                   "New tree marked at (%.2f, %.2f, %.2f)",
                   closest_tree.x, closest_tree.y, closest_tree.z);

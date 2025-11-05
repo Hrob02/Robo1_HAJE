@@ -55,6 +55,7 @@ ament_target_dependencies(tree_detector
   image_transport
   OpenCV
   TinyXML2
+  std_msgs
 )
 
 # Install targets
@@ -65,7 +66,7 @@ install(TARGETS
 
 # Install other resources
 install(
-  DIRECTORY config launch models urdf worlds srv src
+  DIRECTORY config launch models urdf worlds src
   DESTINATION share/${PROJECT_NAME}
 )
 
