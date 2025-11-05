@@ -18,6 +18,8 @@
 #include <vector>
 #include <memory>
 #include <cmath>
+#include <cstdlib>
+#include <ctime>
 
 class DroneTreeDetector : public rclcpp::Node
 {

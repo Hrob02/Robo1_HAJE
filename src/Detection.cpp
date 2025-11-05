@@ -98,6 +98,8 @@ void DroneTreeDetector::imageCallback(const sensor_msgs::msg::Image::SharedPtr m
     return;
   }
 
+  std::srand(static_cast<unsigned>(std::time(nullptr)));
+
   // Compute dominant label
   int histSize = 256;
   float range[] = {0, 256};
@@ -155,10 +157,12 @@ void DroneTreeDetector::imageCallback(const sensor_msgs::msg::Image::SharedPtr m
       marker_pub_->publish(makeMarker(closest_tree));
       marked_positions_.push_back(closest_tree);
 
+      float scale_value = static_cast<float>((std::rand() % 3) + 1);
+
       std_msgs::msg::Float64MultiArray tree_msg;
       tree_msg.data.push_back(closest_tree.x);
       tree_msg.data.push_back(closest_tree.y);
-      tree_msg.data.push_back(1.0);  // scale placeholder
+      tree_msg.data.push_back(scale_value);  // scale placeholder
 
       tree_pub_->publish(tree_msg);
 

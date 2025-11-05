@@ -1,34 +1,4 @@
 #!/usr/bin/env python3
-# HAJE Movement Subsystem (ROS 2 Humble + Ignition/Gazebo)
-#
-# PASS scope:
-# - /movement/go starts the mission; /movement/stop stops.
-# - Executes ≥3 waypoints in order with arrival tolerances and per-WP hold.
-# - Publishes geometry_msgs/Twist to drive the drone.
-# - Publishes nav_msgs/Path on /movement/path (with proper header stamps).
-#
-# Assumptions:
-# - Use simulator odometry: /model/<name>/odometry (defaults to drone), or /odometry via bridge.
-#
-# This version adds "face_forward" yaw control so the drone turns toward the
-# direction of travel (publishes Twist.angular.z).
-# HAJE Movement Subsystem (ROS 2 Humble + Gazebo/GZ)
-# CREDIT tier: GUI goal subscription + queuing + defined path visualisation.
-# HAJE Movement Subsystem (ROS 2 Humble + Gazebo/GZ)
-# CREDIT tier: GUI goal subscription + queuing + defined path + markers.
-# Distinction-grade Movement Subsystem (ROS 2 Humble + Ignition/Gazebo)
-# Features:
-# - GO/STOP/PAUSE/CONTINUE/SKIP/CLEAR + dynamic waypoint add
-# - ≥3 WPs execution with hold; XY+optional Z control
-# - Yaw control to face direction of travel
-# - Acceleration limiting (x/y/z/yaw)
-# - Odom watchdog -> safe hold on dropout
-# - RViz Path + MarkerArray (TRANSIENT_LOCAL)
-# - Optional geofence & lookahead follower
-# - Works with /odometry or /odometry/filtered
-# Movement Subsystem (ROS 2 Humble + Ignition/Gazebo)
-# Adds /movement/launch and /movement/land on top of the distinction build.
-#!/usr/bin/env python3
 """
 Movement controller for the drone sim (ROS 2 Humble).
 
