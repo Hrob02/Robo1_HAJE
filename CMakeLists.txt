@@ -35,6 +35,7 @@ ament_python_install_package(${PROJECT_NAME})
 # Install your Python executable script into ROS 2's lib directory
 install(PROGRAMS
   robo1_haje/movement_node.py
+  robo1_haje/fireRiskCreateMap.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
