@@ -16,9 +16,7 @@ def generate_launch_description():
     pkg_robo1 = get_package_share_directory('robo1_haje')
     config_path = os.path.join(pkg_robo1, 'config')
 
-    # ------------------------------
     # Launch arguments
-    # ------------------------------
     declare_world = DeclareLaunchArgument(
         'world',
         default_value=os.path.join(pkg_robo1, 'worlds', 'simple_trees.sdf'),
@@ -38,9 +36,7 @@ def generate_launch_description():
     world = LaunchConfiguration('world')
     use_sim_time = LaunchConfiguration('use_sim_time')
 
-    # ------------------------------
     # 1. Launch Ignition Gazebo
-    # ------------------------------
     ign_gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
@@ -54,9 +50,7 @@ def generate_launch_description():
         }.items(),
     )
 
-    # ------------------------------
     # 2. Process URDF + spawn drone
-    # ------------------------------
     urdf_file = os.path.join(pkg_robo1, 'urdf', 'drone.urdf.xacro')
     robot_description = xacro.process_file(urdf_file).toxml()
 
@@ -80,9 +74,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    # ------------------------------
     # 4. Bridge Gazebo <-> ROS2
-    # ------------------------------
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
@@ -111,10 +103,7 @@ def generate_launch_description():
         parameters=[{'use_sim_time': True}],
     )
 
-
-    # ------------------------------
     # 5. EKF localization
-    # ------------------------------
     ekf_node = Node(
         package='robot_localization',
         executable='ekf_node',
@@ -142,9 +131,7 @@ def generate_launch_description():
         }]
     )
 
-    # ------------------------------
     # 6. SLAM Toolbox
-    # ------------------------------
     slam_toolbox = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution([
@@ -160,9 +147,7 @@ def generate_launch_description():
         }.items()
     )
 
-    # ------------------------------
     # 7. RViz launch
-    # ------------------------------
     rviz_config = os.path.join(pkg_robo1, 'config', 'drone.rviz')
 
     rviz_node = Node(
@@ -172,12 +157,10 @@ def generate_launch_description():
         output='screen',
         parameters=[{'use_sim_time': True}],
         arguments=['-d', rviz_config],
-        condition=IfCondition(LaunchConfiguration('rviz'))  # uses your existing flag
+        condition=IfCondition(LaunchConfiguration('rviz'))
     )
 
-    # ------------------------------
-    # 7. Tree detector
-    # ------------------------------
+    # 8. Tree detector
     tree_detector = Node(
         package='robo1_haje',
         executable='tree_detector',
@@ -185,9 +168,7 @@ def generate_launch_description():
         parameters=[{'world_path': LaunchConfiguration('world')}]
     )
 
-    # ------------------------------
-    # 8. Movement controller
-    # ------------------------------
+    # 9. Movement controller
     movement_params = os.path.join(
         get_package_share_directory("robo1_haje"),
         "config",
@@ -196,7 +177,7 @@ def generate_launch_description():
 
     movement_node = Node(
         package="robo1_haje",
-        executable="movement_node.py",  # must match your CMake target / executable name
+        executable="movement_node.py",
         name="movement_controller",
         output="screen",
         parameters=[
@@ -212,23 +193,16 @@ def generate_launch_description():
                 "land_touchdown_z": 0.1,
             },
         ],
-        # remappings=[
-        # ("/odometry", "/model/drone/odometry"),
-        # ],
     )
 
-    # ------------------------------
-    # 9. Fire Risk Map Creator
-    # ------------------------------
+    # 10. Fire Risk Map Creator
     fire_risk_node = Node(
         package='robo1_haje',
         executable='fireRiskCreateMap.py',
         output='screen'
     )
 
-    # ------------------------------
     # Return everything
-    # ------------------------------
     return LaunchDescription([
         declare_world,
         declare_use_sim_time,
