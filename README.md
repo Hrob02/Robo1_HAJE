@@ -51,7 +51,7 @@ The following are required to successfully run this project:
      sudo apt install ros-humble-slam-toolbox ros-humble-navigation2 ros-humble-nav2-bringup
      sudo apt install ros-humble-xacro
 
-The repo has package.xml and CMakeLists.txt.
+The repo has package.xml and CMakeLists.txt included.
 
 ## Getting Started
 
