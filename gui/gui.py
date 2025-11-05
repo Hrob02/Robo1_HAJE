@@ -1,715 +1,824 @@
 """
-The following GUI provides an advanced working prototype for the HAJE Engineering
-Fuel Assessment and Risk Tool GUI. There is no dynamic interfacing with simulation or ROS.
-This will be setup in the coming weeks with mock missions. To ensure that the integration has been
-successful these mock missions should have randomised or unique inputs
+HAJE Engineering - Fuel Assessment & Risk Tool (GUI)
+Windows-first build with external command runner (cmd.exe) + ReportLab PDFs.
+
+Updates in this version:
+- Mock camera frames keep displaying until ROS topics are actually received.
+- No synthetic odom/imu/gps/scan are produced. UI shows "— waiting for ROS —" until data arrives.
+- When ROS telemetry (any of odom/imu/gps/scan) is first received, mock cameras stop and
+  ROS images (if cv_bridge is installed) will populate; otherwise we keep mock cams but still log telemetry.
+
+Dependencies for ROS mode (optional):
+  pip install rclpy
+  pip install cv_bridge  (optional, for image topics)
+
+Change topic names below if yours differ.
 """
 
-#! ----------------------------- Standard Library -----------------------------
-import csv
-import json
-import math
-import random
-import shlex
-import subprocess
-import time
-from collections import deque
-from datetime import datetime
+from __future__ import annotations
+import csv, json, math, platform, subprocess, textwrap, time, threading, shlex, os
+from dataclasses import dataclass, field
+from enum import Enum
 from pathlib import Path
-from threading import Thread, Lock
+from threading import Lock, Thread
+from typing import Any, Dict, List, Optional
 
-#! ----------------------------- Third-Party Libs -----------------------------
+# ----------------------------- Third-party -----------------------------
 import customtkinter as ctk
 from tkinter import messagebox
-from jinja2 import Template
-from PIL import Image, ImageTk  # for mock camera frames
+from PIL import Image
+
+# Optional OpenCV for webcam fallback (not required for ROS)
 try:
-    import cv2  # optional, for webcam/video in mock mode
-except ImportError:
+    import cv2
+except Exception:
     cv2 = None
 
-# Optional plots in recorder (saved as PNGs if matplotlib is present)
+# Optional ReportLab (pure-Python PDF)
 try:
-    import matplotlib.pyplot as plt
+    from reportlab.lib.pagesizes import A4
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.units import mm
+    from reportlab.lib.utils import ImageReader
+    HAVE_RL = True
 except Exception:
-    plt = None
+    HAVE_RL = False
 
-# ----------------------------- Theme Constants ------------------------------
-BG          = "#0F0F11"   # app background
-CARD        = "#1B1C1F"   # card surface
-SHADOW_DARK = "#0A0A0B"   # soft shadow plate
-TEXT        = "#D7DBE0"   # primary text
-SUBTEXT     = "#9AA3AD"   # secondary text
-ACCENT      = "#E10600"   # red
-ACCENT_2    = "#FF3B2E"   # red hover
-BORDER      = "#2E3238"   # subtle border
+# Optional ROS 2 stack
+try:
+    import rclpy
+    from rclpy.node import Node
+    from nav_msgs.msg import Odometry
+    from sensor_msgs.msg import Imu, LaserScan, NavSatFix, Image as RosImage
+    HAVE_ROS = True
+except Exception:
+    HAVE_ROS = False
+
+# Optional cv_bridge for ROS image conversion
+try:
+    from cv_bridge import CvBridge
+    HAVE_CVBRIDGE = True
+except Exception:
+    HAVE_CVBRIDGE = False
+
+# ----------------------------- Theme -----------------------------
+BG          = "#0F0F11"
+CARD        = "#1B1C1F"
+TEXT        = "#D7DBE0"
+SUBTEXT     = "#9AA3AD"
+ACCENT      = "#E10600"
+ACCENT_2    = "#FF3B2E"
+BORDER      = "#2E3238"
+WARN        = "#FFB020"
+OK          = "#13A10E"
 
 ctk.set_appearance_mode("dark")
-ctk.set_default_color_theme("blue")  # we override colors per-widget
+ctk.set_default_color_theme("blue")
 
-# ------------------------------ LaTeX Template ------------------------------
-LATEX_TEMPLATE = r"""
-\documentclass[11pt]{article}
-\usepackage[margin=1in]{geometry}
-\usepackage{graphicx}
-\usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{hyperref}
-\hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue}
+# ----------------------------- Helpers -----------------------------
+def open_file(path: Path):
+    try:
+        sysname = platform.system()
+        if sysname == "Windows":
+            os.startfile(str(path))  # type: ignore[attr-defined]
+        elif sysname == "Darwin":
+            subprocess.Popen(["open", str(path)])
+        else:
+            subprocess.Popen(["xdg-open", str(path)])
+    except Exception:
+        pass
 
-\begin{document}
-\begin{center}
-  {\LARGE \textbf{ {{ title }} }}\\[6pt]
-  {\large Mission ID: {{ mission_id }} \quad | \quad Generated: {{ generated_at }}}
-\end{center}
-\hrule\vspace{1em}
+def now_id() -> str:
+    return time.strftime("%Y%m%d-%H%M%S")
 
-\section*{Summary of Findings}
-{{ summary }}
+# ----------------------------- Behaviour State -----------------------------
+class BState(str, Enum):
+    OFF="OFF"; IDLE="IDLE"; TAKEOFF="TAKEOFF"; EXEC="EXEC"; SUSPEND="SUSPEND"; LAND="LAND"
 
-\section*{Fuel Risk}
-{{ fuel_risk }}
+# ----------------------------- Command pattern (+ undo/redo) ---------------
+@dataclass
+class Command:
+    name: str
+    params: Dict[str, Any] = field(default_factory=dict)
+    def execute(self, ctx: "Context"): ...
+    def undo(self, ctx: "Context"): ...
 
-\section*{Configuration}
-\begin{tabular}{@{}ll@{}}
-\toprule
-\textbf{Key} & \textbf{Value} \\
-\midrule
-{% for k, v in config.items() -%}
-{{ k }} & {{ v }} \\
-{% endfor -%}
-\bottomrule
-\end{tabular}
+class TakeoffCmd(Command):
+    def execute(self, ctx): ctx.set_state(BState.TAKEOFF); ctx.log_io("cmd","takeoff", self.params)
+    def undo(self, ctx):    ctx.set_state(BState.IDLE);    ctx.log_io("undo","takeoff", {})
 
-\section*{Live Data Snapshots}
-\begin{tabular}{@{}ll@{}}
-\toprule
-\textbf{Metric} & \textbf{Value} \\
-\midrule
-odom & {{ live.odom }} \\
-gps  & {{ live.gps }} \\
-imu  & {{ live.imu }} \\
-scan & {{ live.scan }} \\
-\bottomrule
-\end{tabular}
+class SuspendCmd(Command):
+    def execute(self, ctx): ctx.set_state(BState.SUSPEND); ctx.log_io("cmd","suspend", self.params)
+    def undo(self, ctx):    ctx.set_state(BState.EXEC);    ctx.log_io("undo","suspend", {})
 
-{% if images %}
-\section*{Images}
-{% for img in images -%}
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.9\linewidth]{ {{ img }} }
-\end{figure}
-{% endfor -%}
-{% endif %}
+class LandCmd(Command):
+    def execute(self, ctx): ctx.set_state(BState.LAND);    ctx.log_io("cmd","land", self.params)
+    def undo(self, ctx):    ctx.set_state(BState.IDLE);    ctx.log_io("undo","land", {})
 
-\section*{Artifacts}
-Raw CSVs are saved in: \texttt{ {{ session_dir }} }.
+class CmdStack:
+    def __init__(self): self.done: List[Command]=[]; self.undone: List[Command]=[]
+    def do(self, cmd: Command, ctx: "Context"):
+        cmd.execute(ctx); self.done.append(cmd); self.undone.clear()
+    def undo(self, ctx: "Context"):
+        if not self.done: return
+        c=self.done.pop(); c.undo(ctx); self.undone.append(c)
+    def redo(self, ctx: "Context"):
+        if not self.undone: return
+        c=self.undone.pop(); c.execute(ctx); self.done.append(c)
 
-\section*{Logs}
-\noindent\texttt{ {{ logs }} }
-
-\end{document}
-"""
-
-#! ------------------------------ LaTeX Escaping ------------------------------
-#? This section handles the special characters because latex fails without adequate escaping
-#* DETERMINE MECHANISM SO CAN EXPLAIN FULLY
-def latex_escape(s: str) -> str:
-    if not s:
-        return ""
-    repl = {
-        "\\": r"\textbackslash{}",  "&": r"\&",  "%": r"\%", "$": r"\$",
-        "#": r"\#",                 "_": r"\_",  "{": r"\{", "}": r"\}",
-        "~": r"\textasciitilde{}", "^": r"\textasciicircum{}",
-    }
-    for k, v in repl.items():
-        s = s.replace(k, v)
-    return s
-
-#! ---------------------------- Neumorphic Helpers ----------------------------
-"""
-Neumorphic Helpers manage colouring and presentation of GUI components to mimic shadowing
-This must be handled manually as TKinter has less front end flexibility than CSS 
-"""
-class NeoCard(ctk.CTkFrame):
-    def __init__(self, parent, pad=(10, 10), **kwargs):
-        super().__init__(parent, fg_color=BG)
-        self.padx, self.pady = pad
-        self.back = ctk.CTkFrame(self, fg_color=SHADOW_DARK, corner_radius=18)
-        self.back.place(relx=0, rely=0, relwidth=1, relheight=1)
-        self.card = ctk.CTkFrame(self, fg_color=CARD, corner_radius=18, **kwargs)
-        self.card.place(relx=0, rely=0, relwidth=1, relheight=1, x=-1, y=-1)
-        self.body = ctk.CTkFrame(self.card, fg_color=CARD, corner_radius=18)
-        self.body.pack(expand=True, fill="both", padx=self.padx, pady=self.pady)
-
-def AccentButton(*args, **kwargs) -> ctk.CTkButton:
-    return ctk.CTkButton(*args, fg_color=ACCENT, hover_color=ACCENT_2,
-                         text_color="white", corner_radius=12, height=44, **kwargs)
-
-#! ---------------------------- Mock ROS “Bus” ----------------------------
-#! ---------------------------- TO BE REMOVED  ----------------------------
-"""
-Mock "Bus" for ROS Connection - THIS MUST BE REMOVED SO THERE ARE NO DISRUPTIONS TO ACTUAL CONNECTION
-"""
-class MockBus:
-    """Feeds synthetic data into GUI update hooks at a fixed rate."""
-    def __init__(self, tk_root,
-                 on_odom, on_gps, on_imu, on_scan,
-                 on_frame1, on_frame2, fps=10):
-        self.tk = tk_root
-        self.on_odom = on_odom
-        self.on_gps = on_gps
-        self.on_imu = on_imu
-        self.on_scan = on_scan
-        self.on_frame1 = on_frame1
-        self.on_frame2 = on_frame2
-        self.fps = fps
-        self._running = False
-        self._cap1 = None
-        self._cap2 = None
-
-    def start(self, video1: str | None = None, video2: str | None = None):
-        self._running = True
-        if cv2 and video1:
-            self._cap1 = cv2.VideoCapture(0 if video1 == "webcam" else video1)
-        if cv2 and video2:
-            self._cap2 = cv2.VideoCapture(0 if video2 == "webcam" else video2)
-        self._tick()
-
-    def stop(self):
-        self._running = False
-        if self._cap1: self._cap1.release()
-        if self._cap2: self._cap2.release()
-
-    def _pull_frame(self, cap, t) -> Image.Image:
-        if cap and cap.isOpened():
-            ok, frame = cap.read()
-            if ok and frame is not None:
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                return Image.fromarray(frame)
-        img = Image.new("RGB", (640, 360), (28, 30, 35))
-        r = 12
-        cx = int(320 + 180*math.cos(t/2))
-        cy = int(180 + 100*math.sin(t/2))
-        for dx in range(-r, r):
-            for dy in range(-r, r):
-                if dx*dx + dy*dy <= r*r:
-                    x2 = cx+dx; y2 = cy+dy
-                    if 0 <= x2 < 640 and 0 <= y2 < 360:
-                        img.putpixel((x2, y2), (225, 20, 10))
-        return img
-
-    def _tick(self):
-        if not self._running:
-            return
-        t = time.time()
-        x = 10.0 * math.cos(t/4.0)
-        y = 10.0 * math.sin(t/4.0)
-        yaw = (t % (2*math.pi))
-        self.on_odom({"t": t, "x": x, "y": y, "yaw": yaw})
-        self.on_gps({"t": t, "lat": -33.864 + x*1e-6, "lon": 151.209 + y*1e-6, "alt": 89.3})
-        self.on_imu({"t": t, "roll": 0.01*math.sin(t), "pitch": 0.01*math.cos(t), "yaw": yaw})
-        self.on_scan({"t": t, "points": 720, "mean_range": 12.3 + 0.5*math.sin(t/3)})
-        img1 = self._pull_frame(self._cap1, t)
-        img2 = self._pull_frame(self._cap2, t)
-        self.on_frame1(img1, t)
-        self.on_frame2(img2, t)
-        interval_ms = int(1000 / max(1, self.fps))
-        self.tk.after(interval_ms, self._tick)
-
-#! ------------------------------ Data Recorder ------------------------------
-"""
-Thread-safe recorder that saves telemetry to CSV and frames to disk.
-One instance per mission/session. This is required for saving data 
-"""
+# ----------------------------- Data Recorder ------------------------------
 class DataRecorder:
-    def __init__(self, session_dir: Path, frame_interval_s: float = 0.5, keep_images: int = 50):
-        self.dir = Path(session_dir)
-        self.dir.mkdir(parents=True, exist_ok=True)
-        (self.dir / "frames").mkdir(exist_ok=True)
+    """CSV logger + frame saver."""
+    def __init__(self, session_dir: Path, keep_images=50):
+        self.dir = Path(session_dir); self.dir.mkdir(parents=True, exist_ok=True)
+        (self.dir/"frames").mkdir(exist_ok=True)
         self._lock = Lock()
-        self._frames_dir = self.dir / "frames"
-        self._last_frame_save = {"cam1": 0.0, "cam2": 0.0}
-        self._frame_interval = frame_interval_s
-        self._keep_images = keep_images
-        # rolling image lists
-        self._images = {"cam1": deque(maxlen=keep_images), "cam2": deque(maxlen=keep_images)}
-        # csv files
-        self._files = {
-            "odom": open(self.dir / "odom.csv", "w", newline=""),
-            "gps":  open(self.dir / "gps.csv", "w", newline=""),
-            "imu":  open(self.dir / "imu.csv", "w", newline=""),
-            "scan": open(self.dir / "scan.csv", "w", newline=""),
+        self._images: List[str] = []
+        self._keep = keep_images
+        self._csvs = {
+            "odom": self._writer("odom", ["t","x","y","yaw"]),
+            "gps":  self._writer("gps",  ["t","lat","lon","alt"]),
+            "imu":  self._writer("imu",  ["t","roll","pitch","yaw"]),
+            "scan": self._writer("scan", ["t","points","mean_range"]),
+            "io":   self._writer("io",   ["t","kind","name","data"]),
         }
-        self._writers = {
-            "odom": csv.DictWriter(self._files["odom"], fieldnames=["t","x","y","yaw"]),
-            "gps":  csv.DictWriter(self._files["gps"],  fieldnames=["t","lat","lon","alt"]),
-            "imu":  csv.DictWriter(self._files["imu"],  fieldnames=["t","roll","pitch","yaw"]),
-            "scan": csv.DictWriter(self._files["scan"], fieldnames=["t","points","mean_range"]),
-        }
-        for w in self._writers.values():
-            w.writeheader()
-        self._meta = {"start_time": time.time()}
+        self.meta = {"start": time.time()}
 
-    def add(self, stream: str, row: dict):
+    def _writer(self, stem: str, fields: List[str]):
+        f = open(self.dir/f"{stem}.csv", "w", newline="")
+        w = csv.DictWriter(f, fieldnames=fields); w.writeheader()
+        return (f, w)
+
+    def add_row(self, stream: str, row: Dict[str, Any]):
         with self._lock:
-            if stream in self._writers:
-                self._writers[stream].writerow(row)
+            f, w = self._csvs.get(stream, (None, None))
+            if w: w.writerow(row)
 
-    def save_frame(self, cam: str, pil_img: Image.Image, t: float):
-        now = t
-        if now - self._last_frame_save.get(cam, 0.0) < self._frame_interval:
-            return
-        self._last_frame_save[cam] = now
-        ts = datetime.fromtimestamp(now).strftime("%H%M%S_%f")[:-3]
-        path = self._frames_dir / f"{cam}_{ts}.jpg"
+    def add_frame(self, img: Image.Image, cam: str, t: float):
+        p = self.dir/"frames"/f"{cam}_{time.strftime('%H%M%S')}_{int((t%1)*1000):03d}.jpg"
         try:
-            pil_img.save(path, format="JPEG", quality=88)
-            with self._lock:
-                self._images[cam].append(str(path))
+            img.save(p, "JPEG", quality=88)
+            self._images.append(str(p))
+            self._images = self._images[-self._keep:]
         except Exception:
             pass
 
-    def latest_images(self, limit=6):
-        with self._lock:
-            imgs = list(self._images["cam1"]) + list(self._images["cam2"])
-        return imgs[-limit:] if limit else imgs
+    def latest_images(self, n=6) -> List[str]:
+        return self._images[-n:]
 
     def close(self):
         with self._lock:
-            for f in self._files.values():
+            for f,_ in self._csvs.values():
                 try: f.flush(); f.close()
                 except Exception: pass
-            self._meta["end_time"] = time.time()
+        (self.dir/"session_meta.json").write_text(json.dumps(self.meta|{"end": time.time()}, indent=2))
+
+# ----------------------------- GUI Context ---------------------------------
+class Context:
+    """Holds session state for commands + logging."""
+    def __init__(self, session_dir: Path, ui_cb_set_state, ui_cb_status):
+        self.session_dir = session_dir
+        self.state = BState.OFF
+        self.ui_set_state = ui_cb_set_state
+        self.ui_status = ui_cb_status
+        self.rec = DataRecorder(session_dir)
+
+    def set_state(self, s: BState):
+        self.state = s
+        self.ui_set_state(s)
+
+    def log_io(self, kind: str, name: str, data: Dict[str, Any]):
+        self.rec.add_row("io", {"t": time.time(), "kind": kind, "name": name, "data": json.dumps(data)})
+
+# ----------------------------- External Command Runner ---------------------
+class CommandRegistry:
+    def __init__(self, json_path: Path, log_cb):
+        self.json_path = Path(json_path)
+        self.log_cb = log_cb
+        self.commands: Dict[str,str] = {}
+        self.load()
+
+    def load(self):
+        try:
+            if self.json_path.exists():
+                self.commands = json.loads(self.json_path.read_text())
+            else:
+                self.commands = {}
+        except Exception as e:
+            self.log_cb(f"[ERROR] Failed to load {self.json_path.name}: {e}")
+
+    def run(self, name: str, cwd: Path | None = None, new_console: bool = True):
+        cmd = self.commands.get(name)
+        if not cmd:
+            self.log_cb(f"[WARN] Command '{name}' not found in {self.json_path.name}")
+            return
+        sys = platform.system()
+        popen_kwargs = dict(
+            cwd=str(cwd or Path.cwd()),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1,
+            shell=True
+        )
+        try:
+            if sys == "Windows" and new_console:
+                flags = getattr(subprocess, "CREATE_NEW_CONSOLE", 0x00000010)
+                proc = subprocess.Popen(cmd, creationflags=flags, **popen_kwargs)
+            else:
+                if sys != "Windows" and not cmd.strip().startswith(("bash", "sh")) and any(c in cmd for c in "|&;><$~"):
+                    cmd = f"bash -lc {shlex.quote(cmd)}"
+                proc = subprocess.Popen(cmd, **popen_kwargs)
+        except Exception as e:
+            self.log_cb(f"[ERROR] spawn '{name}': {e}")
+            return
+
+        threading.Thread(target=self._pump, args=(name, proc), daemon=True).start()
+
+    def _pump(self, name: str, proc: subprocess.Popen):
+        self.log_cb(f"[RUN] {name}: pid={proc.pid}")
+        try:
+            assert proc.stdout is not None
+            for line in proc.stdout:
+                self.log_cb(line.rstrip("\n"))
+        except Exception as e:
+            self.log_cb(f"[ERROR] {name}: {e}")
+        rc = proc.wait()
+        self.log_cb(f"[DONE] {name}: {'OK' if rc==0 else f'EXIT {rc}'}")
+
+# ----------------------------- Mock Cameras ONLY ---------------------------
+class MockCams:
+    """Generates placeholder frames (no telemetry)."""
+    def __init__(self, frame1_cb, frame2_cb, fps=10):
+        self.frame1_cb=frame1_cb; self.frame2_cb=frame2_cb
+        self.fps=fps; self._run=False
+        self._cap1=None; self._cap2=None
+
+    def start(self, video1=None, video2=None):
+        self._run=True
+        if cv2 and video1: self._cap1=cv2.VideoCapture(0 if video1=="webcam" else video1)
+        if cv2 and video2: self._cap2=cv2.VideoCapture(0 if video2=="webcam" else video2)
+        Thread(target=self._loop, daemon=True).start()
+
+    def stop(self):
+        self._run=False
+        if self._cap1: self._cap1.release()
+        if self._cap2: self._cap2.release()
+
+    def _pull(self, cap, t)->Image.Image:
+        if cap and cap.isOpened():
+            ok,frame=(cap.read() if cv2 else (False,None))
+            if ok and frame is not None:
+                import cv2 as _cv2
+                frame=_cv2.cvtColor(frame,_cv2.COLOR_BGR2RGB)
+                from PIL import Image as _Image
+                return _Image.fromarray(frame)
+        # simple generated placeholder (red dot orbiting)
+        from PIL import Image as _Image
+        img=_Image.new("RGB",(640,360),(28,30,35))
+        r=12; cx=int(320+180*math.cos(t/2)); cy=int(180+100*math.sin(t/2))
+        for dx in range(-r,r):
+            for dy in range(-r,r):
+                if dx*dx+dy*dy<=r*r:
+                    x2=cx+dx; y2=cy+dy
+                    if 0<=x2<640 and 0<=y2<360: img.putpixel((x2,y2),(225,20,10))
+        return img
+
+    def _loop(self):
+        while self._run:
+            t=time.time()
+            img1=self._pull(self._cap1,t); img2=self._pull(self._cap2,t)
+            self.frame1_cb(img1,t); self.frame2_cb(img2,t)
+            time.sleep(1/max(1,self.fps))
+
+# ----------------------------- ROS Connector -------------------------------
+class ROSConnector:
+    """
+    Spins a ROS2 node in the background. Calls UI callbacks when messages arrive.
+    - When ANY telemetry arrives, sets 'connected' True (switch away from mock telemetry).
+    - If cv_bridge is available, image topics are converted and sent to UI.
+    """
+    def __init__(self,
+                 on_odom, on_imu, on_scan, on_gps,
+                 on_cam1, on_cam2,
+                 on_connected,
+                 log_cb):
+        self.on_odom=on_odom; self.on_imu=on_imu; self.on_scan=on_scan; self.on_gps=on_gps
+        self.on_cam1=on_cam1; self.on_cam2=on_cam2
+        self.on_connected=on_connected
+        self.log_cb=log_cb
+        self.connected=False
+        self._thread=None
+        self._bridge = CvBridge() if HAVE_CVBRIDGE else None
+
+    def start(self):
+        if not HAVE_ROS:
+            self.log_cb("[INFO] ROS mode unavailable: rclpy not installed.")
+            return
+        self._thread = Thread(target=self._spin, daemon=True)
+        self._thread.start()
+
+    def _spin(self):
+        try:
+            rclpy.init(args=None)
+            node = Node("haje_gui_bridge")
+
+            def _set_connected():
+                if not self.connected:
+                    self.connected=True
+                    self.on_connected()
+
+            # Subscriptions (rename topics if your stack differs)
+            node.create_subscription(Odometry,  "/odom", lambda msg: (self._cb_odom(msg), _set_connected()), 10)
+            node.create_subscription(Imu,       "/imu",  lambda msg: (self._cb_imu(msg),  _set_connected()), 10)
+            node.create_subscription(LaserScan, "/scan", lambda msg: (self._cb_scan(msg), _set_connected()), 10)
+            node.create_subscription(NavSatFix, "/fix",  lambda msg: (self._cb_gps(msg),  _set_connected()), 10)
+
+            if HAVE_CVBRIDGE:
+                node.create_subscription(RosImage, "/camera1/image_raw", lambda msg: (self._cb_img(msg,1), _set_connected()), 10)
+                node.create_subscription(RosImage, "/camera2/image_raw", lambda msg: (self._cb_img(msg,2), _set_connected()), 10)
+            else:
+                self.log_cb("[INFO] cv_bridge not installed: keeping mock cams even after ROS connects.")
+
+            self.log_cb("[INFO] ROS bridge running. Waiting for topics…")
+            rclpy.spin(node)
+        except Exception as e:
+            self.log_cb(f"[ERROR] ROS bridge error: {e}")
+        finally:
             try:
-                (self.dir / "session_meta.json").write_text(json.dumps(self._meta, indent=2))
+                rclpy.shutdown()
             except Exception:
                 pass
 
-    def make_quick_plots(self):
-        # Optional: save small timeseries PNGs for the report
-        if not plt:
-            return []
-        images = []
+    # ----- message adapters -----
+    def _cb_odom(self, msg: Odometry):
+        t=time.time()
+        x=msg.pose.pose.position.x
+        y=msg.pose.pose.position.y
+        # yaw from quaternion (simple extract)
+        q=msg.pose.pose.orientation
+        yaw = self._yaw_from_quat(q.x,q.y,q.z,q.w)
+        self.on_odom({"t":t,"x":x,"y":y,"yaw":yaw})
+
+    def _cb_imu(self, msg: Imu):
+        t=time.time()
+        # roll/pitch/yaw from quaternion (approx)
+        q=msg.orientation
+        roll,pitch,yaw = self._rpy_from_quat(q.x,q.y,q.z,q.w)
+        self.on_imu({"t":t,"roll":roll,"pitch":pitch,"yaw":yaw})
+
+    def _cb_scan(self, msg: LaserScan):
+        t=time.time()
+        pts = len(msg.ranges)
+        valid = [r for r in msg.ranges if (r is not None and r==r and r>0.0)]
+        mean = sum(valid)/len(valid) if valid else 0.0
+        self.on_scan({"t":t,"points":pts,"mean_range":mean})
+
+    def _cb_gps(self, msg: NavSatFix):
+        t=time.time()
+        self.on_gps({"t":t,"lat":msg.latitude,"lon":msg.longitude,"alt":msg.altitude})
+
+    def _cb_img(self, msg: RosImage, cam_idx: int):
+        if not self._bridge: return
         try:
-            import pandas as pd  # only used here; skip if not installed
-        except Exception:
-            return images
+            cv = self._bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
+            import cv2 as _cv2
+            rgb = _cv2.cvtColor(cv, _cv2.COLOR_BGR2RGB)
+            from PIL import Image as _Image
+            pil = _Image.fromarray(rgb)
+            t=time.time()
+            if cam_idx==1: self.on_cam1(pil, t)
+            else:          self.on_cam2(pil, t)
+        except Exception as e:
+            self.log_cb(f"[WARN] cv_bridge image conversion failed: {e}")
+
+    @staticmethod
+    def _yaw_from_quat(x,y,z,w):
+        import math
+        # yaw (Z axis rotation)
+        siny_cosp = 2.0*(w*z + x*y); cosy_cosp = 1.0 - 2.0*(y*y + z*z)
+        return math.atan2(siny_cosp, cosy_cosp)
+
+    @staticmethod
+    def _rpy_from_quat(x,y,z,w):
+        import math
+        # roll
+        sinr_cosp = 2*(w*x + y*z); cosr_cosp = 1 - 2*(x*x + y*y)
+        roll = math.atan2(sinr_cosp, cosr_cosp)
+        # pitch
+        sinp = 2*(w*y - z*x)
+        if abs(sinp) >= 1: pitch = math.copysign(math.pi/2, sinp)
+        else: pitch = math.asin(sinp)
+        # yaw
+        siny_cosp = 2*(w*z + x*y); cosy_cosp = 1 - 2*(y*y + z*z)
+        yaw = math.atan2(siny_cosp, cosy_cosp)
+        return roll, pitch, yaw
+
+# ----------------------------- PDF (ReportLab) -----------------------------
+def build_pdf(context: Dict[str,Any], out_dir: Path) -> Path:
+    if not HAVE_RL:
+        raise RuntimeError("ReportLab is required. Install with: pip install reportlab")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    pdf_path = out_dir/f"report_{now_id()}.pdf"
+    c = canvas.Canvas(str(pdf_path), pagesize=A4); W,H=A4
+
+    # Title block
+    c.setFont("Helvetica-Bold",16)
+    c.drawString(20*mm,H-20*mm, context.get("title","Drone Mission Report"))
+    c.setFont("Helvetica",10)
+    c.drawString(20*mm,H-26*mm, f"Mission: {context.get('mission_id','')}")
+    c.drawString(20*mm,H-31*mm, str(context.get("generated_at","")))
+    y=H-40*mm
+
+    # Summary
+    c.setFont("Helvetica-Bold",12); c.drawString(20*mm,y,"Summary"); y-=6*mm
+    c.setFont("Helvetica",10)
+    for line in textwrap.wrap(context.get("summary","—"), 95):
+        y-=5*mm
+        if y<25*mm: c.showPage(); y=H-25*mm; c.setFont("Helvetica",10)
+        c.drawString(20*mm,y,line)
+
+    # Quantitative summary
+    y-=8*mm
+    c.setFont("Helvetica-Bold",12); c.drawString(20*mm,y,"Quantitative Summary"); y-=6*mm
+    c.setFont("Helvetica",10)
+    stats=context.get("stats",{})
+    for line in [
+        f"Mean odom.x = {stats.get('odom_x_mean','—')}",
+        f"Mean odom.y = {stats.get('odom_y_mean','—')}",
+        f"Mean scan range = {stats.get('scan_mean','—')}",
+    ]:
+        y-=5*mm
+        if y<25*mm: c.showPage(); y=H-25*mm; c.setFont("Helvetica",10)
+        c.drawString(20*mm,y,line)
+
+    # Config
+    y-=8*mm
+    c.setFont("Helvetica-Bold",12); c.drawString(20*mm,y,"Configuration"); y-=6*mm
+    c.setFont("Helvetica",10)
+    for k,v in context.get("config",{}).items():
+        y-=5*mm
+        if y<25*mm: c.showPage(); y=H-25*mm; c.setFont("Helvetica",10)
+        c.drawString(20*mm,y, f"{k}: {v}")
+
+    # Live strings
+    y-=8*mm
+    c.setFont("Helvetica-Bold",12); c.drawString(20*mm,y,"Live Snapshots"); y-=6*mm
+    c.setFont("Helvetica",10)
+    for label, val in context.get("live",{}).items():
+        y-=5*mm
+        if y<25*mm: c.showPage(); y=H-25*mm; c.setFont("Helvetica",10)
+        c.drawString(20*mm,y, f"{label}: {val}")
+
+    # Images (limit 6)
+    for p in context.get("images",[])[:6]:
         try:
-            for name in ["odom","gps","imu","scan"]:
-                p = self.dir / f"{name}.csv"
-                if not p.exists(): continue
-                df = pd.read_csv(p)
-                if df.empty: continue
-                fig = plt.figure(figsize=(5,2.2))
-                if name == "odom":
-                    plt.plot(df["t"]-df["t"].iloc[0], df["x"]); plt.plot(df["t"]-df["t"].iloc[0], df["y"])
-                    plt.ylabel("m")
-                elif name == "gps":
-                    plt.plot(df["t"]-df["t"].iloc[0], df["lat"]); plt.plot(df["t"]-df["t"].iloc[0], df["lon"])
-                    plt.ylabel("deg")
-                elif name == "imu":
-                    plt.plot(df["t"]-df["t"].iloc[0], df["roll"]); plt.plot(df["t"]-df["t"].iloc[0], df["pitch"])
-                    plt.ylabel("rad")
-                else:
-                    plt.plot(df["t"]-df["t"].iloc[0], df["mean_range"]); plt.ylabel("m")
-                plt.xlabel("s")
-                plt.tight_layout()
-                out_png = self.dir / f"{name}.png"
-                fig.savefig(out_png)
-                plt.close(fig)
-                images.append(str(out_png))
+            img=ImageReader(p); iw,ih=img.getSize()
+            maxw=W-40*mm; maxh=55*mm; scale=min(maxw/iw, maxh/ih); w,h=iw*scale, ih*scale
+            if y-h<20*mm: c.showPage(); y=H-20*mm
+            c.drawImage(img, 20*mm, y-h, w, h, preserveAspectRatio=True, mask='auto'); y-=h+6*mm
         except Exception:
             pass
-        return images
 
-#! --------------------------------- GUI  ----------------------------------
-class HAJEEngineeringGUI(ctk.CTk):
+    c.showPage(); c.save(); return pdf_path
+
+# ----------------------------- GUI -----------------------------------------
+class HAJEGUI(ctk.CTk):
     def __init__(self):
         super().__init__()
-        # Window Configuration
-        self.title("HAJE Engineering Fuel Assessment Risk Tool")
-        self.geometry("1400x850")
-        self.minsize(1200, 760)
-        self.configure(fg_color=BG)
+        self.title("HAJE Engineering Fuel Assessment & Risk Tool")
+        self.geometry("1400x860"); self.minsize(1200,760); self.configure(fg_color=BG)
+
+        # Session
+        self.session_id: Optional[str] = None
+        self.session_dir: Optional[Path] = None
+        self.ctx: Optional[Context] = None
+        self.stack = CmdStack()
 
         # Tabs
-        self.tabview = ctk.CTkTabview(self, width=1300, height=800, fg_color=BG)
-        self.tabview.pack(padx=16, pady=16, expand=True, fill="both")
-        self.tabview._segmented_button.configure(
-            fg_color="#191A1D",
-            selected_color=ACCENT, selected_hover_color=ACCENT_2,
-            unselected_color="#2A2C31", unselected_hover_color="#33363C",
-            text_color=TEXT,
+        self.tabs = ctk.CTkTabview(self, width=1300, height=800, fg_color=BG)
+        self.tabs.pack(padx=16, pady=16, expand=True, fill="both")
+        self.launch = self.tabs.add("Launch")
+        self.live   = self.tabs.add("Live")
+        self.report = self.tabs.add("Report")
+        self._build_launch(); self._build_live(); self._build_report()
+
+        # Shortcuts
+        self.bind_all("<Control-t>", lambda e: (self._do(TakeoffCmd("takeoff")), self._run_cmd("takeoff")))
+        self.bind_all("<Control-s>", lambda e: (self._do(SuspendCmd("suspend")), self._run_cmd("suspend")))
+        self.bind_all("<Control-l>", lambda e: (self._do(LandCmd("land")),    self._run_cmd("land")))
+        self.bind_all("<Control-z>", lambda e: self._undo())
+        self.bind_all("<Control-y>", lambda e: self._redo())
+
+        # Command registry (dictionary file)
+        self.cmds = CommandRegistry(Path.cwd()/"commands.json", log_cb=self._append_log)
+
+        # IMPORTANT: start with MockCams only (no telemetry)
+        self.mock = MockCams(self._on_frame1, self._on_frame2, fps=10)
+        self.mock.start()
+
+        # Start ROS connector (if available). It will flip us to "connected" mode
+        # once *any* telemetry message arrives.
+        self.ros_connected = False
+        self.ros = ROSConnector(
+            on_odom=self._on_ros_odom,
+            on_imu=self._on_ros_imu,
+            on_scan=self._on_ros_scan,
+            on_gps=self._on_ros_gps,
+            on_cam1=self._on_frame1,
+            on_cam2=self._on_frame2,
+            on_connected=self._on_ros_connected,
+            log_cb=self._append_log
         )
-        self.launch_tab = self.tabview.add("Launch")
-        self.live_tab   = self.tabview.add("Mission Feed")
-        self.report_tab = self.tabview.add("Report")
+        self.ros.start()
 
-        # Build pages
-        self._build_launch_tab()
-        self._build_live_tab()
-        self._build_report_tab()
+    # ----------------- BUILD: Launch -----------------------------------
+    def _build_launch(self):
+        self.launch.grid_columnconfigure(0, weight=1)
+        for r in range(6): self.launch.grid_rowconfigure(r, weight=0)
+        self.launch.grid_rowconfigure(5, weight=1)
 
-        # Session/recorder placeholders (created on Start)
-        self.mission_id = None
-        self.session_dir = None
-        self.recorder: DataRecorder | None = None
+        ctk.CTkLabel(self.launch, text="1. LAUNCH", font=("Arial",26,"bold"), text_color=TEXT)\
+            .grid(row=0, column=0, sticky="w", padx=20, pady=(16,8))
 
-        # ---------------- Mock wiring (flip to False when moving to ROS) -----------
-        self.mock_mode = True
-        if self.mock_mode:
-            self.mock = MockBus(
-                tk_root=self,
-                on_odom=self.on_mock_odom,
-                on_gps=self.on_mock_gps,
-                on_imu=self.on_mock_imu,
-                on_scan=self.on_mock_scan,
-                on_frame1=self.on_mock_frame1,
-                on_frame2=self.on_mock_frame2,
-                fps=10
-            )
-            self.mock.start(video1=None, video2=None)  # set "webcam" to preview
+        top = self._card(self.launch); top.grid(row=1, column=0, sticky="ew", padx=20, pady=(6,8))
+        top.body.grid_columnconfigure(3, weight=1)
+        self._status_lbl = ctk.CTkLabel(top.body, text="Status: OFF", text_color=TEXT, font=("Arial",14,"bold"))
+        self._status_lbl.grid(row=0, column=0, sticky="w", padx=6, pady=6)
+        self._state_badge = ctk.CTkLabel(top.body, text=BState.OFF, fg_color=BORDER, corner_radius=10, padx=10)
+        self._state_badge.grid(row=0, column=1, sticky="w", padx=6)
 
-    # ----------------------------- Launch Tab --------------------------------
-    def _build_launch_tab(self):
-        for r in range(6): self.launch_tab.grid_rowconfigure(r, weight=0)
-        self.launch_tab.grid_rowconfigure(5, weight=1)
-        self.launch_tab.grid_columnconfigure(0, weight=1)
+        self.btn_start = ctk.CTkButton(top.body, text="START SESSION", command=self._start_session,
+                                       fg_color=ACCENT, hover_color=ACCENT_2)
+        self.btn_start.grid(row=0, column=2, sticky="w", padx=8)
+        self.btn_restart = ctk.CTkButton(top.body, text="CLEAN RESTART", command=self._clean_restart,
+                                         fg_color="#444", hover_color="#555")
+        self.btn_restart.grid(row=0, column=3, sticky="e", padx=8)
 
-        ctk.CTkLabel(self.launch_tab, text="1. LAUNCH PAGE",
-                     font=("Arial", 26, "bold"), text_color=TEXT)\
-            .grid(row=0, column=0, sticky="w", padx=20, pady=(16, 6))
+        opts = self._card(self.launch); opts.grid(row=2, column=0, sticky="ew", padx=20, pady=(6,10))
+        ctk.CTkLabel(opts.body, text="Mission parameters", text_color=TEXT, font=("Arial",18,"bold"))\
+            .grid(row=0, column=0, sticky="w")
+        self.param_speed = ctk.CTkEntry(opts.body, placeholder_text="Speed (m/s)")
+        self.param_res   = ctk.CTkEntry(opts.body, placeholder_text="Resolution (cm/px)")
+        self.param_dur   = ctk.CTkEntry(opts.body, placeholder_text="Est. Duration (min)")
+        for i,x in enumerate([self.param_speed,self.param_res,self.param_dur], start=1):
+            x.grid(row=i, column=0, sticky="ew", pady=4)
 
-        # START/STOP bar
-        bar = NeoCard(self.launch_tab); bar.grid(row=1, column=0, sticky="ew", padx=20, pady=(10, 10))
-        bar.body.grid_columnconfigure(2, weight=1)
-        self.start_btn = ctk.CTkButton(bar.body, text="START", state="disabled",
-                                       fg_color="#3A3B3F", hover_color="#3A3B3F",
-                                       text_color="#666B73", corner_radius=12, height=44,
-                                       command=self._start_mission, width=160)
-        self.stop_btn  = ctk.CTkButton(bar.body, text="STOP", fg_color="#9B1C17",
-                                       hover_color="#7B1612", text_color="white",
-                                       corner_radius=12, height=44, command=self._stop_mission, width=160)
-        self.start_btn.grid(row=0, column=0, padx=(0,10), pady=6, sticky="w")
-        self.stop_btn.grid(row=0, column=1, padx=(0,10), pady=6, sticky="w")
-        ctk.CTkLabel(bar.body, text="Start greyed out if empty",
-                     text_color=SUBTEXT, font=("Arial", 12, "italic"))\
-            .grid(row=1, column=0, columnspan=2, sticky="w", pady=(2, 2))
+        self._msg = ctk.CTkTextbox(self.launch, height=140, fg_color="#121316", text_color=TEXT,
+                                   border_color=BORDER, border_width=2, corner_radius=12)
+        self._msg.grid(row=3, column=0, sticky="nsew", padx=20, pady=(6,16))
+        self._append_log("[INFO] Ready. Start a session to enable logging.")
 
-        # Flight procedure
-        proc = NeoCard(self.launch_tab); proc.grid(row=2, column=0, sticky="ew", padx=20, pady=(6, 8))
-        ctk.CTkLabel(proc.body, text="✓  FLIGHT PROCEDURE",
-                     font=("Arial", 18, "bold"), text_color=TEXT)\
-            .grid(row=0, column=0, sticky="w", pady=(4, 8))
-        self.proc_var = ctk.StringVar(value="")
-        ctk.CTkRadioButton(proc.body, text="Standard opp.", value="Standard",
-                           variable=self.proc_var, text_color=TEXT,
-                           fg_color=ACCENT, hover_color=ACCENT_2,
-                           command=self._maybe_enable_start).grid(row=1, column=0, sticky="w", pady=(0,6))
-        ctk.CTkRadioButton(proc.body, text="Flight data only.", value="DataOnly",
-                           variable=self.proc_var, text_color=TEXT,
-                           fg_color=ACCENT, hover_color=ACCENT_2,
-                           command=self._maybe_enable_start).grid(row=2, column=0, sticky="w")
+    # ----------------- BUILD: Live -------------------------------------
+    def _build_live(self):
+        for c in range(3): self.live.grid_columnconfigure(c, weight=1, uniform="live")
+        self.live.grid_rowconfigure(1, weight=1); self.live.grid_rowconfigure(2, weight=1)
+        ctk.CTkLabel(self.live, text="2. LIVE", font=("Arial",26,"bold"), text_color=TEXT)\
+            .grid(row=0, column=0, columnspan=3, sticky="w", padx=20, pady=(16,8))
 
-        # gps data
-        gps = NeoCard(self.launch_tab); gps.grid(row=3, column=0, sticky="ew", padx=20, pady=(6, 10))
-        ctk.CTkLabel(gps.body, text="GPS", font=("Arial", 18, "bold"), text_color=TEXT)\
-            .grid(row=0, column=0, sticky="w", pady=(2, 6))
-        self.gps_entry = ctk.CTkEntry(gps.body, placeholder_text="data...",
-                                      height=44, corner_radius=12,
-                                      fg_color="#111214", text_color=TEXT,
-                                      border_color=BORDER, border_width=2)
-        self.gps_entry.grid(row=1, column=0, sticky="ew")
-        self.gps_entry.bind("<KeyRelease>", lambda e: self._maybe_enable_start())
+        # left: live data
+        left = self._card(self.live); left.grid(row=1, column=0, rowspan=2, sticky="nsew", padx=(20,10), pady=(6,16))
+        self.lbl_odom = ctk.CTkLabel(left.body, text="odom: — waiting for ROS —", text_color=TEXT); self.lbl_odom.pack(anchor="w", pady=4)
+        self.lbl_gps  = ctk.CTkLabel(left.body, text="gps:  — waiting for ROS —",  text_color=TEXT); self.lbl_gps.pack(anchor="w", pady=4)
+        self.lbl_imu  = ctk.CTkLabel(left.body, text="imu:  — waiting for ROS —",  text_color=TEXT); self.lbl_imu.pack(anchor="w", pady=4)
+        self.lbl_scan = ctk.CTkLabel(left.body, text="scan: — waiting for ROS —", text_color=TEXT); self.lbl_scan.pack(anchor="w", pady=4)
 
-    def _maybe_enable_start(self):
-        filled = bool(self.gps_entry.get().strip())
-        chosen = self.proc_var.get() != ""
-        if filled and chosen:
-            self.start_btn.configure(state="normal", fg_color=ACCENT, hover_color=ACCENT_2, text_color="white")
-        else:
-            self.start_btn.configure(state="disabled", fg_color="#3A3B3F", hover_color="#3A3B3F", text_color="#666B73")
+        # mid: cameras
+        mid1 = self._card(self.live); mid1.grid(row=1, column=1, sticky="nsew", padx=10, pady=(6,8))
+        mid2 = self._card(self.live); mid2.grid(row=2, column=1, sticky="nsew", padx=10, pady=(8,16))
+        self.cam1 = ctk.CTkLabel(mid1.body, text="CAM 1"); self.cam1.pack(expand=True, fill="both", padx=8, pady=8)
+        self.cam2 = ctk.CTkLabel(mid2.body, text="CAM 2"); self.cam2.pack(expand=True, fill="both", padx=8, pady=8)
 
-    def _start_mission(self):
-        # Create a new session folder and start a recorder
-        self.mission_id = datetime.now().strftime("%Y%m%d-%H%M%S")
-        base = Path.home() / "Documents" / "DroneReports" / "sessions"
-        self.session_dir = base / self.mission_id
-        self.session_dir.mkdir(parents=True, exist_ok=True)
-        self.recorder = DataRecorder(self.session_dir)
-        messagebox.showinfo("Start", f"Mission Started ✅\nMode: {self.proc_var.get()}\nSession: {self.session_dir}")
+        # right: key/warnings + controls
+        right = self._card(self.live); right.grid(row=1, column=2, sticky="nsew", padx=(10,20), pady=(6,8))
+        ctk.CTkLabel(right.body, text="KEY / WARNINGS", text_color=TEXT, font=("Arial",18,"bold")).pack(anchor="w", pady=(4,6))
+        self.warn_badge = ctk.CTkLabel(right.body, text="No warnings", fg_color=OK, corner_radius=8, padx=8)
+        self.warn_badge.pack(padx=6, pady=6, anchor="w")
 
-    def _stop_mission(self):
-        if self.recorder:
-            self.recorder.close()
-            self.recorder = None
-        messagebox.showinfo("Stop", "Mission Stopped ⛔\nRecorder closed.")
+        ctrl = self._card(self.live); ctrl.grid(row=2, column=2, sticky="nsew", padx=(10,20), pady=(8,16))
+        ctk.CTkLabel(ctrl.body, text="Controls (shortcuts)", text_color=TEXT, font=("Arial",18,"bold")).pack(anchor="w")
+        ctk.CTkButton(ctrl.body, text="LAUNCH (open console)", command=lambda: self._run_cmd("launch")).pack(anchor="e", pady=6)
+        ctk.CTkButton(ctrl.body, text="MOVEMENT", command=lambda: self._run_cmd("movement")).pack(anchor="e", pady=6)
+        ctk.CTkButton(ctrl.body, text="TAKEOFF  (Ctrl+T)", command=lambda: (self._do(TakeoffCmd("takeoff")), self._run_cmd("takeoff"))).pack(anchor="e", pady=6)
+        ctk.CTkButton(ctrl.body, text="SUSPEND (Ctrl+S)", command=lambda: (self._do(SuspendCmd("suspend")), self._run_cmd("suspend"))).pack(anchor="e", pady=6)
+        ctk.CTkButton(ctrl.body, text="LAND    (Ctrl+L)", command=lambda: (self._do(LandCmd("land")), self._run_cmd("land"))).pack(anchor="e", pady=6)
+        ctk.CTkButton(ctrl.body, text="Undo (Ctrl+Z)", command=self._undo).pack(anchor="e", pady=(18,4))
+        ctk.CTkButton(ctrl.body, text="Redo (Ctrl+Y)", command=self._redo).pack(anchor="e", pady=4)
 
-    # ------------------------------- Live Tab --------------------------------
-    def _build_live_tab(self):
-        for c in range(3): self.live_tab.grid_columnconfigure(c, weight=1, uniform="live")
-        self.live_tab.grid_rowconfigure(1, weight=1)
-        self.live_tab.grid_rowconfigure(2, weight=1)
+    # ----------------- BUILD: Report -----------------------------------
+    def _build_report(self):
+        for c in range(2): self.report.grid_columnconfigure(c, weight=1, uniform="rep")
+        self.report.grid_rowconfigure(1, weight=1)
+        ctk.CTkLabel(self.report, text="3. REPORT", font=("Arial",26,"bold"), text_color=TEXT)\
+            .grid(row=0, column=0, columnspan=2, sticky="w", padx=20, pady=(16,8))
 
-        ctk.CTkLabel(self.live_tab, text="2. LIVE PAGE",
-                     font=("Arial", 26, "bold"), text_color=TEXT)\
-            .grid(row=0, column=0, columnspan=3, sticky="w", padx=20, pady=(16, 8))
+        left = self._card(self.report); left.grid(row=1, column=0, sticky="nsew", padx=(20,10), pady=(6,16))
+        ctk.CTkLabel(left.body, text="Summary of Findings", font=("Arial",18,"bold")).pack(anchor="w")
+        self.tb_summary = ctk.CTkTextbox(left.body); self.tb_summary.pack(expand=True, fill="both", pady=8)
+        self.tb_summary.insert("end", "• Fuel hazard moderate in S-SE sector.\n• Flights stable; no signal drop.\n")
 
-        # Left: RVIZ + Live Data (big)
-        left_top = NeoCard(self.live_tab); left_top.grid(row=1, column=0, sticky="nsew", padx=(20,10), pady=(4,6))
-        left_bot = NeoCard(self.live_tab); left_bot.grid(row=2, column=0, sticky="nsew", padx=(20,10), pady=(6,16))
+        right = self._card(self.report); right.grid(row=1, column=1, sticky="nsew", padx=(10,20), pady=(6,16))
+        ctk.CTkLabel(right.body, text="Configuration", font=("Arial",18,"bold")).pack(anchor="w")
+        self.tb_cfg = ctk.CTkTextbox(right.body, height=120); self.tb_cfg.pack(fill="x", pady=(4,10))
+        self.tb_cfg.insert("end", "Mode: Standard\nMax Alt: 120 m\nPilot: A. Akhurst\n")
+        ctk.CTkLabel(right.body, text="Mission Log (shell + system)", font=("Arial",18,"bold")).pack(anchor="w")
+        self.tb_logs = ctk.CTkTextbox(right.body); self.tb_logs.pack(expand=True, fill="both", pady=6)
+        self.tb_logs.insert("end", "System logs…\n")
+        ctk.CTkButton(right.body, text="Generate Report", fg_color=ACCENT, hover_color=ACCENT_2,
+                      command=self._gen_report).pack(anchor="e", pady=(10,0))
 
-        rv = left_top.body
-        rv.grid_rowconfigure(0, weight=1); rv.grid_columnconfigure(0, weight=1)
-        ctk.CTkLabel(rv, text="RVIZ MAP", font=("Arial", 20, "bold"), text_color=TEXT)\
-            .grid(row=0, column=0, sticky="n", pady=(8, 0))
-        ctk.CTkLabel(rv, text="(visualization marker(s))", text_color=SUBTEXT)\
-            .grid(row=0, column=0, sticky="s", pady=(0, 10))
+    # ----------------- helpers -----------------------------------------
+    def _card(self, parent):
+        f = ctk.CTkFrame(parent, fg_color=CARD, corner_radius=18)
+        f.body = ctk.CTkFrame(f, fg_color=CARD, corner_radius=18)
+        f.body.pack(expand=True, fill="both", padx=12, pady=12)
+        return f
 
-        ld = left_bot.body
-        ctk.CTkLabel(ld, text="Live Data", font=("Arial", 20, "bold"), text_color=TEXT)\
-            .grid(row=0, column=0, sticky="w", pady=(2, 6))
-        self.data_labels = {
-            "odom": ctk.CTkLabel(ld, text="odom: —", text_color=TEXT),
-            "gps":  ctk.CTkLabel(ld, text="gps: —",  text_color=TEXT),
-            "imu":  ctk.CTkLabel(ld, text="imu: —",  text_color=TEXT),
-            "scan": ctk.CTkLabel(ld, text="scan data: —", text_color=TEXT),
-        }
-        r = 1
-        for lbl in self.data_labels.values():
-            lbl.grid(row=r, column=0, sticky="w", pady=4, padx=4)
-            r += 1
+    def _append_log(self, line: str):
+        try:
+            self.tb_logs.insert("end", line + "\n"); self.tb_logs.see("end")
+        except Exception:
+            pass
+        try:
+            self._msg.insert("end", line + "\n"); self._msg.see("end")
+        except Exception:
+            pass
 
-        # Middle: Cameras (image panes)
-        mid_top = NeoCard(self.live_tab); mid_top.grid(row=1, column=1, sticky="nsew", padx=10, pady=(4, 6))
-        mid_bot = NeoCard(self.live_tab); mid_bot.grid(row=2, column=1, sticky="nsew", padx=10, pady=(6, 16))
+    def _status(self, txt: str): self._status_lbl.configure(text=f"Status: {txt}")
 
-        for frame, title_text in [(mid_top.body, "CAM 1"), (mid_bot.body, "CAM 2")]:
-            frame.grid_rowconfigure(1, weight=1); frame.grid_columnconfigure(0, weight=1)
-            ctk.CTkLabel(frame, text=title_text, font=("Arial", 20, "bold"), text_color=TEXT)\
-                .grid(row=0, column=0, sticky="w", pady=(8, 0), padx=10)
+    def _set_state(self, s: BState):
+        col = {"OFF":BORDER, "IDLE":OK, "TAKEOFF":"#0078D4", "EXEC":"#6A5ACD",
+               "SUSPEND":WARN, "LAND":"#888"}[s.value]
+        self._state_badge.configure(text=s.value, fg_color=col)
+        self._status(s.value)
 
-        self._cam1_label = ctk.CTkLabel(mid_top.body, text="")
-        self._cam1_label.grid(row=1, column=0, sticky="nsew", pady=(6, 10), padx=10)
-        self._cam1_imgtk = None
+    # ----------------- session -----------------------------------------
+    def _start_session(self):
+        self.session_id = now_id()
+        base = Path.cwd()/ "DroneReports" / "sessions"
+        self.session_dir = base/self.session_id; self.session_dir.mkdir(parents=True, exist_ok=True)
+        self.ctx = Context(self.session_dir, self._set_state, self._status)
+        self._set_state(BState.IDLE)
+        self._append_log(f"[INFO] Session started at {self.session_dir}")
 
-        self._cam2_label = ctk.CTkLabel(mid_bot.body, text="")
-        self._cam2_label.grid(row=1, column=0, sticky="nsew", pady=(6, 10), padx=10)
-        self._cam2_imgtk = None
+    def _clean_restart(self):
+        if messagebox.askyesno("Clean restart","Save report first?\nThis clears cached UI and resets states."):
+            self._gen_report()
+        # Reset UI/state
+        self._state_badge.configure(text=BState.OFF, fg_color=BORDER)
+        self._status("OFF")
+        try: self._msg.delete("1.0","end")
+        except Exception: pass
+        try: self.tb_logs.delete("1.0","end")
+        except Exception: pass
+        self.stack = CmdStack()
+        self.warn_badge.configure(text="No warnings", fg_color=OK)
+        self.session_id=None; self.session_dir=None; self.ctx=None
 
-        # Right: Key + Controls
-        right = NeoCard(self.live_tab); right.grid(row=1, column=2, sticky="nsew", padx=(10,20), pady=(4,6))
-        ctrl  = NeoCard(self.live_tab); ctrl.grid(row=2, column=2, sticky="nsew", padx=(10,20), pady=(6,16))
+    # ----------------- do/undo/redo ------------------------------------
+    def _do(self, cmd: Command):
+        if not self.ctx:
+            self._append_log("[WARN] Start a session first.")
+            return
+        try:
+            self.stack.do(cmd, self.ctx)
+            self._append_log(f"[INFO] Executed: {cmd.name}")
+        except Exception as e:
+            self.warn_badge.configure(text="Command error", fg_color=WARN)
+            self._append_log(f"[ERROR] {cmd.name}: {e}. Recovery: retry or land.")
 
-        kb = right.body
-        ctk.CTkLabel(kb, text="KEY:", font=("Arial", 20, "bold"), text_color=TEXT)\
-            .grid(row=0, column=0, columnspan=2, sticky="w", pady=(2,8))
-        def tile(txt, row, col):
-            t = ctk.CTkFrame(kb, fg_color="#26282D", corner_radius=12, width=130, height=60)
-            t.grid_propagate(False)
-            ctk.CTkLabel(t, text=txt, text_color=TEXT).pack(expand=True)
-            t.grid(row=row, column=col, padx=8, pady=6, sticky="w")
-        tile("Species 1", 1, 0); tile("Species 2", 1, 1)
-        tile("Species 3", 2, 0); tile("User visual", 2, 1)
+    def _undo(self):
+        if not self.ctx: return
+        self.stack.undo(self.ctx); self._append_log("[INFO] Undo")
+    def _redo(self):
+        if not self.ctx: return
+        self.stack.redo(self.ctx); self._append_log("[INFO] Redo")
 
-        cc = ctrl.body
-        cc.grid_columnconfigure(0, weight=1)
-        self.user_input = ctk.CTkEntry(cc, placeholder_text="USER INPUT",
-                                       height=44, fg_color="#111214", text_color=TEXT,
-                                       border_color=BORDER, border_width=2, corner_radius=12)
-        self.user_input.grid(row=0, column=0, sticky="ew", pady=(4, 10))
-        AccentButton(cc, text="SUSPEND", command=self._suspend, width=140)\
-            .grid(row=1, column=0, sticky="e")
-
-    def _suspend(self):
-        messagebox.showinfo("Suspend", "Drone Suspended ⏸")
-
-    #! -------------------------- Mock update hooks + record -------------------
-    def _fmt(self, v, n=3):
+    # ----------------- UI helpers --------------------------------------
+    def _fmt(self,v,n=3):
         try: return f"{float(v):.{n}f}"
         except: return str(v)
 
-    def on_mock_odom(self, d):
-        self.data_labels["odom"].configure(
-            text=f"odom: x={self._fmt(d['x'])}, y={self._fmt(d['y'])}, yaw={self._fmt(d['yaw'])}"
-        )
-        if self.recorder: self.recorder.add("odom", d)
+    def _to_ctk(self, pil_img: Image.Image):
+        from customtkinter import CTkImage
+        res = pil_img.resize((640,360))
+        return CTkImage(light_image=res, dark_image=res, size=(640,360))
 
-    def on_mock_gps(self, d):
-        self.data_labels["gps"].configure(
-            text=f"gps: lat={self._fmt(d['lat'],6)}, lon={self._fmt(d['lon'],6)}, alt={self._fmt(d['alt'])}m"
-        )
-        if self.recorder: self.recorder.add("gps", d)
+    # Camera frame sinks
+    def _on_frame1(self, pil_img: Image.Image, t: float):
+        self.cam1.configure(image=self._to_ctk(pil_img))
+        if self.ctx: self.ctx.rec.add_frame(pil_img, "cam1", t)
 
-    def on_mock_imu(self, d):
-        self.data_labels["imu"].configure(
-            text=f"imu: roll={self._fmt(d['roll'])}, pitch={self._fmt(d['pitch'])}, yaw={self._fmt(d['yaw'])}"
-        )
-        if self.recorder: self.recorder.add("imu", d)
+    def _on_frame2(self, pil_img: Image.Image, t: float):
+        self.cam2.configure(image=self._to_ctk(pil_img))
+        if self.ctx: self.ctx.rec.add_frame(pil_img, "cam2", t)
 
-    def on_mock_scan(self, d):
-        self.data_labels["scan"].configure(
-            text=f"scan data: {d['points']} pts, mean={self._fmt(d['mean_range'])} m"
-        )
-        if self.recorder: self.recorder.add("scan", d)
-
-    def on_mock_frame1(self, pil_img, t):
-        self._cam1_imgtk = ImageTk.PhotoImage(pil_img.resize((640, 360)))
-        self._cam1_label.configure(image=self._cam1_imgtk)
-        if self.recorder: self.recorder.save_frame("cam1", pil_img, t)
-
-    def on_mock_frame2(self, pil_img, t):
-        self._cam2_imgtk = ImageTk.PhotoImage(pil_img.resize((640, 360)))
-        self._cam2_label.configure(image=self._cam2_imgtk)
-        if self.recorder: self.recorder.save_frame("cam2", pil_img, t)
-
-    # ------------------------------ Report Tab --------------------------------
-    def _build_report_tab(self):
-        self.report_tab.grid_columnconfigure(0, weight=3, uniform="rep")
-        self.report_tab.grid_columnconfigure(1, weight=2, uniform="rep")
-        self.report_tab.grid_rowconfigure(1, weight=1)
-
-        ctk.CTkLabel(self.report_tab, text="3. REPORT PAGE",
-                     font=("Arial", 26, "bold"), text_color=TEXT)\
-            .grid(row=0, column=0, columnspan=2, sticky="w", padx=20, pady=(16, 8))
-
-        # Left: Summary
-        left = NeoCard(self.report_tab); left.grid(row=1, column=0, sticky="nsew", padx=(20,10), pady=(6,16))
-        left.body.grid_columnconfigure(0, weight=1)
-        left.body.grid_rowconfigure(1, weight=1)
-        ctk.CTkLabel(left.body, text="Summary of Findings", font=("Arial", 20, "bold"), text_color=TEXT)\
-            .grid(row=0, column=0, sticky="w", pady=(2, 6))
-        self._summary_tb = ctk.CTkTextbox(left.body, fg_color="#121316", text_color=TEXT,
-                                          border_color=BORDER, border_width=2, corner_radius=12)
-        self._summary_tb.insert("end", "Gauge/summary viz placeholder →\n\n• Fuel Risk, etc …")
-        self._summary_tb.grid(row=1, column=0, sticky="nsew")
-
-        # Right: Config + Logs + Generate
-        right = NeoCard(self.report_tab); right.grid(row=1, column=1, sticky="nsew", padx=(10,20), pady=(6,16))
-        right.body.grid_columnconfigure(0, weight=1)
-        right.body.grid_rowconfigure(3, weight=1)
-        ctk.CTkLabel(right.body, text="Configuration", font=("Arial", 20, "bold"), text_color=TEXT)\
-            .grid(row=0, column=0, sticky="w", pady=(2, 6))
-        self._cfg_tb = ctk.CTkTextbox(right.body, height=120, fg_color="#121316", text_color=TEXT,
-                                      border_color=BORDER, border_width=2, corner_radius=12)
-        self._cfg_tb.insert("end", "Example:\nMode: Standard\nMax Altitude: 120 m\nPilot: A. Akhurst")
-        self._cfg_tb.grid(row=1, column=0, sticky="ew")
-
-        ctk.CTkLabel(right.body, text="Mission Log", font=("Arial", 20, "bold"), text_color=TEXT)\
-            .grid(row=2, column=0, sticky="w", pady=(6, 6))
-        self._logs_tb = ctk.CTkTextbox(right.body, fg_color="#121316", text_color=TEXT,
-                                       border_color=BORDER, border_width=2, corner_radius=12)
-        self._logs_tb.insert("end", "System logs / ROS output stream…")
-        self._logs_tb.grid(row=3, column=0, sticky="nsew")
-
-        self.gen_btn = ctk.CTkButton(right.body, text="Generate Report",
-                                     fg_color=ACCENT, hover_color=ACCENT_2,
-                                     corner_radius=12, command=self._generate_report)
-        self.gen_btn.grid(row=4, column=0, sticky="e", pady=(8, 0))
-
-    # --------------------------- Report Data Hooks ----------------------------
-    def _get_textbox_content_on_report(self, which: int) -> str:
-        tbs = [getattr(self, "_summary_tb", None),
-               getattr(self, "_cfg_tb", None),
-               getattr(self, "_logs_tb", None)]
-        tb = tbs[which] if 0 <= which < len(tbs) else None
-        return tb.get("1.0", "end").strip() if tb else ""
-
-    def _collect_report_data(self) -> dict:
-        summary_text = latex_escape(self._get_textbox_content_on_report(0))
-        config_text  = self._get_textbox_content_on_report(1)
-        logs_text    = latex_escape(self._get_textbox_content_on_report(2))
-
-        config_pairs = {}
-        for line in (config_text or "").splitlines():
-            if ":" in line:
-                k, v = line.split(":", 1)
-                config_pairs[latex_escape(k.strip())] = latex_escape(v.strip())
-
-        # Prefer recorder values if available; else scrape labels
-        if self.recorder and self.session_dir:
-            # Make quick timeseries plots (optional)
-            plot_imgs = self.recorder.make_quick_plots()
-            image_paths = self.recorder.latest_images(limit=6) + plot_imgs
-        else:
-            image_paths = []
-
-        live = {
-            "odom": latex_escape(self.data_labels["odom"].cget("text").split(": ", 1)[-1]),
-            "gps":  latex_escape(self.data_labels["gps"].cget("text").split(": ", 1)[-1]),
-            "imu":  latex_escape(self.data_labels["imu"].cget("text").split(": ", 1)[-1]),
-            "scan": latex_escape(self.data_labels["scan"].cget("text").split(": ", 1)[-1]),
-        }
-
-        return {
-            "title":        "Drone Mission Report",
-            "mission_id":   self.mission_id or datetime.now().strftime("%Y%m%d-%H%M%S"),
-            "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
-            "summary":      summary_text or "—",
-            "fuel_risk":    latex_escape("Auto-rated fuel risk and notes…"),
-            "config":       config_pairs,
-            "live":         live,
-            "images":       image_paths,
-            "logs":         logs_text or "—",
-            "session_dir":  str(self.session_dir) if self.session_dir else "",
-        }
-
-    # --------------------------- Report Generation ---------------------------
-    def _generate_report(self):
-        Thread(target=self._report_worker, daemon=True).start()
-
-    def _report_worker(self):
-        try:
-            self.gen_btn.configure(state="disabled", text="Generating…")
-            data = self._collect_report_data()
-
-            out_dir = Path.home() / "Documents" / "DroneReports"
-            out_dir.mkdir(parents=True, exist_ok=True)
-
-            job_id   = data["mission_id"]
-            tex_path = out_dir / f"report_{job_id}.tex"
-            pdf_path = out_dir / f"report_{job_id}.pdf"
-
-            tex = Template(LATEX_TEMPLATE).render(**data)
-            tex_path.write_text(tex, encoding="utf-8")
-
+    # ----------------- ROS event sinks ---------------------------------
+    def _on_ros_connected(self):
+        self._append_log("[INFO] ROS telemetry connected.")
+        self.warn_badge.configure(text="ROS connected", fg_color=OK)
+        # Stop mock cams ONLY if we will receive ROS images via cv_bridge.
+        if HAVE_CVBRIDGE:
             try:
-                cmd = f"latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir={shlex.quote(str(out_dir))} {shlex.quote(str(tex_path))}"
-                subprocess.run(cmd, shell=True, check=True, cwd=str(out_dir))
-            except subprocess.CalledProcessError:
-                for _ in range(2):
-                    cmd = (
-                        f"pdflatex -interaction=nonstopmode -halt-on-error "
-                        f"-output-directory={shlex.quote(str(out_dir))} {shlex.quote(str(tex_path))}"
-                    )
-                    subprocess.run(cmd, shell=True, check=True, cwd=str(out_dir))
+                if getattr(self, "mock", None): self.mock.stop()
+                self._append_log("[INFO] Switching camera source: ROS images (cv_bridge).")
+            except Exception:
+                pass
 
-            if pdf_path.exists():
-                messagebox.showinfo("Report", f"PDF generated:\n{pdf_path}")
-                try:
-                    subprocess.Popen(["xdg-open", str(pdf_path)])
-                except Exception:
-                    pass
-            else:
-                messagebox.showerror("Report", "Failed to generate PDF. Check LaTeX logs in the output folder.")
-        except Exception as ex:
-            messagebox.showerror("Report Error", str(ex))
-        finally:
-            self.gen_btn.configure(state="normal", text="Generate Report")
+    def _on_ros_odom(self, d: Dict[str,Any]):
+        self.lbl_odom.configure(text=f"odom: x={self._fmt(d['x'])}, y={self._fmt(d['y'])}, yaw={self._fmt(d['yaw'])}")
+        if self.ctx: self.ctx.rec.add_row("odom", {"t":d["t"], "x":d["x"], "y":d["y"], "yaw":d["yaw"]})
 
-    # ------------------------------ Cleanup -----------------------------------
+    def _on_ros_imu(self, d: Dict[str,Any]):
+        self.lbl_imu.configure(text=f"imu:  roll={self._fmt(d['roll'])}, pitch={self._fmt(d['pitch'])}, yaw={self._fmt(d['yaw'])}")
+        if self.ctx: self.ctx.rec.add_row("imu", {"t":d["t"], "roll":d["roll"], "pitch":d["pitch"], "yaw":d["yaw"]})
+
+    def _on_ros_scan(self, d: Dict[str,Any]):
+        self.lbl_scan.configure(text=f"scan: {d['points']} pts, mean={self._fmt(d['mean_range'])} m")
+        if self.ctx: self.ctx.rec.add_row("scan", d)
+
+    def _on_ros_gps(self, d: Dict[str,Any]):
+        self.lbl_gps.configure(text=f"gps:  lat={self._fmt(d['lat'],6)}, lon={self._fmt(d['lon'],6)}, alt={self._fmt(d['alt'])}")
+        if self.ctx: self.ctx.rec.add_row("gps", d)
+
+    # ----------------- external commands --------------------------------
+    def _run_cmd(self, name: str, new_console: bool = True):
+        if not self.session_dir:
+            self._append_log("[WARN] Start a session first.")
+            return
+        env = os.environ.copy()
+        if self.param_speed.get().strip(): env["HAJE_SPEED"] = self.param_speed.get().strip()
+        if self.param_res.get().strip():   env["HAJE_RES"]   = self.param_res.get().strip()
+        if self.param_dur.get().strip():   env["HAJE_DUR"]   = self.param_dur.get().strip()
+        self._append_log(f"[INFO] Executing shell command '{name}'…")
+        os.environ.update(env)
+        self.cmds.run(name, cwd=self.session_dir, new_console=new_console)
+
+    # ----------------- report ------------------------------------------
+    def _collect_stats(self) -> Dict[str, Any]:
+        stats = {"odom_x_mean":"—","odom_y_mean":"—","scan_mean":"—"}
+        if not self.session_dir: return stats
+        try:
+            import statistics as st
+            def read_csv(p: Path) -> List[dict]:
+                return list(csv.DictReader(open(p, newline=""))) if p.exists() else []
+            odom = read_csv(self.session_dir/"odom.csv")
+            scan = read_csv(self.session_dir/"scan.csv")
+            if odom:
+                xs=[float(r["x"]) for r in odom]; ys=[float(r["y"]) for r in odom]
+                stats["odom_x_mean"]=f"{st.fmean(xs):.3f}"; stats["odom_y_mean"]=f"{st.fmean(ys):.3f}"
+            if scan:
+                ms=[float(r["mean_range"]) for r in scan]; stats["scan_mean"]=f"{st.fmean(ms):.3f}"
+        except Exception:
+            pass
+        return stats
+
+    def _parse_cfg(self, text: str) -> Dict[str,str]:
+        cfg={}
+        for line in (text or "").splitlines():
+            if ":" in line:
+                k,v=line.split(":",1); cfg[k.strip()]=v.strip()
+        if self.param_speed.get().strip(): cfg["Speed(m/s)"]=self.param_speed.get().strip()
+        if self.param_res.get().strip():   cfg["Resolution"]=self.param_res.get().strip()
+        if self.param_dur.get().strip():   cfg["Duration(min)"]=self.param_dur.get().strip()
+        return cfg
+
+    def _gen_report(self):
+        try:
+            if not self.session_dir:
+                self._append_log("[WARN] No session directory; start session first.")
+                return
+            ctx = {
+                "title":"Drone Mission Report",
+                "mission_id": self.session_id or now_id(),
+                "generated_at": time.strftime("%Y-%m-%d %H:%M"),
+                "summary": self.tb_summary.get("1.0","end").strip(),
+                "config": self._parse_cfg(self.tb_cfg.get("1.0","end")),
+                "live": {
+                    "odom": self.lbl_odom.cget("text").split(": ",1)[-1],
+                    "gps":  self.lbl_gps.cget("text").split(": ",1)[-1],
+                    "imu":  self.lbl_imu.cget("text").split(": ",1)[-1],
+                    "scan": self.lbl_scan.cget("text").split(": ",1)[-1],
+                },
+                "images": (self.ctx.rec.latest_images(6) if self.ctx else []),
+                "stats": self._collect_stats()
+            }
+            out_dir = Path.cwd()/ "DroneReports" / "sessions" / self.session_id
+            pdf = build_pdf(ctx, out_dir)
+            messagebox.showinfo("Report", f"Report created:\n{pdf}")
+            open_file(pdf)
+        except Exception as e:
+            messagebox.showerror("Report Error", str(e))
+
+    # ----------------- shutdown ----------------------------------------
     def destroy(self):
         try:
-            if getattr(self, "recorder", None):
-                self.recorder.close()
-            if getattr(self, "mock", None):
-                self.mock.stop()
+            if getattr(self, "mock", None): self.mock.stop()
+            if getattr(self, "ctx", None):  self.ctx.rec.close()
         finally:
             super().destroy()
 
-# ---------------------------------- Main ------------------------------------
+# ----------------------------- run -----------------------------------------
 if __name__ == "__main__":
-    app = HAJEEngineeringGUI()
+    app = HAJEGUI()
     app.mainloop()
