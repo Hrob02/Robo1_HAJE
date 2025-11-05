@@ -41,9 +41,17 @@ def generate_launch_description():
     # ------------------------------
     # 1. Launch Ignition Gazebo
     # ------------------------------
-    ign_gazebo = ExecuteProcess(
-        cmd=['ign', 'gazebo', world, '-r', '-v', '4'],
-        output='screen'
+    ign_gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            PathJoinSubstitution([
+                FindPackageShare('ros_gz_sim'),
+                'launch',
+                'gz_sim.launch.py'
+            ])
+        ]),
+        launch_arguments={
+            'gz_args': [LaunchConfiguration('world'), ' -r -v 4']
+        }.items(),
     )
 
     # ------------------------------
