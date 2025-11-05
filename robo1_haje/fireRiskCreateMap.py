@@ -29,6 +29,8 @@ class RunningMap(Node):
         # Subscribe to map so we can get origin/resolution from real SLAM map
         self.map_sub_ = self.create_subscription(OccupancyGrid, '/map', self.map_callback, 10)
 
+        self.create_map_size = True
+
         # tree pose subscription (correct message type)
         self.treepose_sub_ = self.create_subscription(Float64MultiArray, '/detected_tree_pose', self.treepose_callback, 10)
 
@@ -58,32 +60,32 @@ class RunningMap(Node):
         except Exception as e:
             self.get_logger().error(f"Failed to read world file: {e}")
             return 20.0
+        
 
     def map_callback(self, msg: OccupancyGrid):
         # Update origin & resolution from actual map metadata
-        try:
-            origin = msg.info.origin.position
-            self.fire_map.origin_x = origin.x
-            self.fire_map.origin_y = origin.y
-            # update resolution and grid size if map differs
-            if abs(self.fire_map.resolution - msg.info.resolution) > 1e-6:
-                self.fire_map.resolution = msg.info.resolution
-                self.fire_map.grid_size = int(self.fire_map.world_size / self.fire_map.resolution)
-                # resize arrays to match new grid_size
-                self.fire_map.veg_map = np.zeros((self.fire_map.grid_size, self.fire_map.grid_size), dtype=int)
-                self.fire_map.fire_map = np.zeros((self.fire_map.grid_size, self.fire_map.grid_size), dtype=float)
-            self.get_logger().info(f"Map metadata updated: origin=({self.fire_map.origin_x:.2f},{self.fire_map.origin_y:.2f}), res={self.fire_map.resolution:.3f}")
-        except Exception as e:
-            self.get_logger().warning(f"Failed to parse /map metadata: {e}")
+
+        if self.create_map_size:
+
+            try:
+                origin = msg.info.origin.position
+                self.fire_map.origin_x = origin.x
+                self.fire_map.origin_y = origin.y
+                # update resolution and grid size if map differs
+                if abs(self.fire_map.resolution - msg.info.resolution) > 1e-6:
+                    self.fire_map.resolution = msg.info.resolution
+                    self.fire_map.grid_size = int(self.fire_map.world_size / self.fire_map.resolution)
+                    # resize arrays to match new grid_size
+                    self.fire_map.veg_map = np.zeros((self.fire_map.grid_size, self.fire_map.grid_size), dtype=int)
+                    self.fire_map.fire_map = np.zeros((self.fire_map.grid_size, self.fire_map.grid_size), dtype=float)
+                self.get_logger().info(f"Map metadata updated: origin=({self.fire_map.origin_x:.2f},{self.fire_map.origin_y:.2f}), res={self.fire_map.resolution:.3f}")
+            except Exception as e:
+                self.get_logger().warning(f"Failed to parse /map metadata: {e}")
+        self.create_map_size = False
 
     def treepose_callback(self, msg: Float64MultiArray):
         data = msg.data
         n = len(data)
-
-        # clear previous data
-        self.small_trees.clear()
-        self.medium_trees.clear()
-        self.large_trees.clear()
 
         # every triplet [x, y, z]
         for i in range(0, n, 3):
@@ -99,7 +101,7 @@ class RunningMap(Node):
             elif z == 3:
                 self.large_trees.append((x, y))
 
-        self.get_logger().debug(f"Received {len(self.small_trees)} small, {len(self.medium_trees)} medium, {len(self.large_trees)} tall trees")
+        # self.get_logger().debug(f"Received {len(self.small_trees)} small, {len(self.medium_trees)} medium, {len(self.large_trees)} tall trees")
 
     def run(self):
         shortTrees = self.small_trees

@@ -19,7 +19,7 @@ def generate_launch_description():
     # Launch arguments
     declare_world = DeclareLaunchArgument(
         'world',
-        default_value=os.path.join(pkg_robo1, 'worlds', 'simple_trees.sdf'),
+        default_value=os.path.join(pkg_robo1, 'worlds', 'large_demo.sdf'),
         description='World file for Ignition Gazebo'
     )
     declare_use_sim_time = DeclareLaunchArgument(
@@ -195,7 +195,7 @@ def generate_launch_description():
         ],
     )
 
-    # 10. Fire risk map creator
+        # 10. Fire risk map creator ###### 
     fire_map_node = Node(
         package="robo1_haje",
         executable="fireRiskCreateMap.py",
