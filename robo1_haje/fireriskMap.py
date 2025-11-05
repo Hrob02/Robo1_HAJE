@@ -1,3 +1,4 @@
+# fireriskMap.py
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
@@ -8,11 +9,11 @@ class FireRiskMap:
         self.world_size = world_size
         self.resolution = resolution 
 
-        self.origin_x = 0.0   # default; will be updated later if needed
+        # these will be set from the real /map message (defaults kept)
+        self.origin_x = 0.0
         self.origin_y = 0.0
 
         self.grid_size = int(self.world_size / self.resolution)
-
 
         self.veg_map = np.zeros((self.grid_size, self.grid_size), dtype=int)
         self.fire_map = np.zeros((self.grid_size, self.grid_size), dtype=float)
@@ -21,7 +22,7 @@ class FireRiskMap:
         self.radius = {"short": 4, "medium": 6, "tall": 8}
         self.treeCategory = {"short": 1, "medium": 2, "tall": 3}
 
-        #side-by-side subplots
+        # side-by-side subplots
         plt.ion()
         self.fig, (self.ax_veg, self.ax_fire) = plt.subplots(1, 2, figsize=(12, 6))
         self.fig.suptitle("Fire Risk Detection Maps")
@@ -31,10 +32,10 @@ class FireRiskMap:
         self.fire_cbar = None
 
     def world_to_grid(self, x, y):
+        """Convert world/map coordinates (meters) to grid indices (ints)."""
         gx = int((x - self.origin_x) / self.resolution)
         gy = int((y - self.origin_y) / self.resolution)
         return gx, gy
-
 
     def expandingPixel(self, gx, gy, radius, treeInt, weight):
         for dx in range(-radius, radius + 1):
@@ -45,36 +46,38 @@ class FireRiskMap:
                     self.veg_map[ny, nx] = treeInt 
                     self.fire_map[ny, nx] = min(self.fire_map[ny, nx] + weight, 1.5)
 
-
     def visibleVegetationMap(self, shortTrees, mediumTrees, tallTrees, expand=True):
-        # Clear maps for each new scan
+        # Clear maps for each new scan (start fresh)
         self.veg_map.fill(0)
         self.fire_map.fill(0)
 
-        # Draw vegetation points
+        # Vegetation points — convert each world (map) coordinate -> grid
         for (x, y) in shortTrees:
-            gx, gy = self.world_to_grid(int(x / self.resolution), int(y / self.resolution))
-            if expand:
-                self.expandingPixel(gx, gy, self.radius["short"], self.treeCategory["short"], self.weights["short"])
-            else:
-                self.veg_map[gy, gx] = self.treeCategory["short"]
+            gx, gy = self.world_to_grid(x, y)
+            # guard for out-of-bounds (map origin/resolution mismatch will not crash)
+            if 0 <= gx < self.grid_size and 0 <= gy < self.grid_size:
+                if expand:
+                    self.expandingPixel(gx, gy, self.radius["short"], self.treeCategory["short"], self.weights["short"])
+                else:
+                    self.veg_map[gy, gx] = self.treeCategory["short"]
 
         for (x, y) in mediumTrees:
-            gx, gy = self.world_to_grid(int(x / self.resolution), int(y / self.resolution))
-            if expand:
-                self.expandingPixel(gx, gy, self.radius["medium"], self.treeCategory["medium"], self.weights["medium"])
-            else:
-                self.veg_map[gy, gx] = self.treeCategory["medium"]
+            gx, gy = self.world_to_grid(x, y)
+            if 0 <= gx < self.grid_size and 0 <= gy < self.grid_size:
+                if expand:
+                    self.expandingPixel(gx, gy, self.radius["medium"], self.treeCategory["medium"], self.weights["medium"])
+                else:
+                    self.veg_map[gy, gx] = self.treeCategory["medium"]
 
         for (x, y) in tallTrees:
-            gx, gy = self.world_to_grid(int(x / self.resolution), int(y / self.resolution))
-            if expand:
-                self.expandingPixel(gx, gy, self.radius["tall"], self.treeCategory["tall"], self.weights["tall"])
-            else:
-                self.veg_map[gy, gx] = self.treeCategory["tall"]
+            gx, gy = self.world_to_grid(x, y)
+            if 0 <= gx < self.grid_size and 0 <= gy < self.grid_size:
+                if expand:
+                    self.expandingPixel(gx, gy, self.radius["tall"], self.treeCategory["tall"], self.weights["tall"])
+                else:
+                    self.veg_map[gy, gx] = self.treeCategory["tall"]
 
         self.updatePlots()
-
 
     def updatePlots(self):
         """Update both vegetation and fire risk plots side-by-side."""
@@ -82,17 +85,18 @@ class FireRiskMap:
         colors_veg = ["white", "green", "blue", "purple"]
         veg_cmap = ListedColormap(colors_veg)
 
+        # clear axes
         self.ax_veg.clear()
         im_veg = self.ax_veg.imshow(
             self.veg_map,
             cmap=veg_cmap,
             origin="lower",
-            extent=[0, self.world_size, 0, self.world_size]
+            extent=[self.origin_x, self.origin_x + self.grid_size * self.resolution,
+                    self.origin_y, self.origin_y + self.grid_size * self.resolution]
         )
         self.ax_veg.set_title("Vegetation Density")
         self.ax_veg.set_xlabel("X (m)")
         self.ax_veg.set_ylabel("Y (m)")
-
 
         if self.veg_cbar is None:
             self.veg_cbar = self.fig.colorbar(im_veg, ax=self.ax_veg, ticks=[0,1,2,3])
@@ -111,7 +115,8 @@ class FireRiskMap:
             origin="lower",
             vmin=0,
             vmax=1.4,
-            extent=[0, self.world_size, 0, self.world_size]
+            extent=[self.origin_x, self.origin_x + self.grid_size * self.resolution,
+                    self.origin_y, self.origin_y + self.grid_size * self.resolution]
         )
         self.ax_fire.set_title("Fire Fuel / Risk Level")
         self.ax_fire.set_xlabel("X (m)")
@@ -123,10 +128,8 @@ class FireRiskMap:
         else:
             self.fire_cbar.update_normal(im_fire)
 
-
         plt.tight_layout()
         plt.pause(0.001)
-
 
     def ffdiCalculator(self, temp, humidity, windSpeed, droughtFactor):
         ffdi = 2.0 * math.exp(
@@ -134,7 +137,6 @@ class FireRiskMap:
             - 0.0345 * humidity + 0.0338 * temp + 0.0234 * windSpeed
         )
         return ffdi
-
 
     def ffdiRating(self, ffdi):
         if ffdi < 11:
