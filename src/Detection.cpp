@@ -14,10 +14,10 @@ DroneTreeDetector::DroneTreeDetector() : Node("tree_detector")
       "/visualization_marker", 10);
 
   tree_pub_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
-    "/tree_pose", 10);
+    "/detected_tree_pose", 10);
 
   std::string world_path = this->declare_parameter<std::string>(
-      "world_path", "/home/hallie/ros2_ws/src/Robo1_HAJE/worlds/simple_trees.sdf");
+      "world_path", "/home/eleanorlow/robo1_haje/src/Robo1_HAJE/worlds/simple_trees.sdf"); //SPECIFIC TO YOU
 
   loadWorldModels(world_path);
 

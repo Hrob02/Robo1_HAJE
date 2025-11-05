@@ -7,7 +7,6 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray
 
-from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
 
 import fireriskMap as fire
@@ -25,7 +24,7 @@ class RunningMap(Node):
         self.fire_map = fire.FireRiskMap(world_size=50, resolution=0.8)
         
         #tree pose subscription
-        self.treepose_sub_ = self.create_subscription(MarkerArray, '/tree_pose', self.treepose_callback, 10)
+        self.treepose_sub_ = self.create_subscription(MarkerArray, '/detected_tree_pose', self.treepose_callback, 10)
 
         self.small_trees = []
         self.medium_trees = []
@@ -35,6 +34,7 @@ class RunningMap(Node):
         self.main_loop_timer_ = self.create_timer(0.2, self.run)
     
     def treepose_callback(self, msg):
+
         data = msg.data
         n = len(data)
 
@@ -60,13 +60,13 @@ class RunningMap(Node):
         mediumTrees = self.medium_trees
         tallTrees = self.large_trees
         
-        self.fire_map.visibleVegetionMap(shortTrees, mediumTrees, tallTrees, True)
-        self.fire_map.fireRiskMap()
+        self.fire_map.visibleVegetationMap(shortTrees, mediumTrees, tallTrees, True)
+        # self.fire_map.fireRiskMap()
         
         ffdiValue = self.fire_map.ffdiCalculator(35, 20, 30, 8)
-        print(ffdiValue)
+        # print(ffdiValue)
         ffdiRating = self.fire_map.ffdiRating(ffdiValue)
-        print(ffdiRating)
+        # print(ffdiRating)
 
 
 def main():
