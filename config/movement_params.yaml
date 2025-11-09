@@ -6,3 +6,43 @@
     # You can also pre-seed waypoints here if you want:
     # waypoints: [0.0, 0.0, 2.0, 3.0, 0.0, 2.0]
 
+####____--------- unintegrated TSP part  
+# /**:
+#   ros__parameters:
+
+#     # Geofence: [xmin, xmax, ymin, ymax, zmin, zmax]
+#     geofence: [-5.0, 5.0, -5.0, 5.0, 0.0, 4.5]
+
+#     # Start/land behaviour
+#     skip_takeoff: false
+#     launch_altitude: 4.0
+#     land_touchdown_z: 0.1
+
+#     # Controller limits and tolerances (credit rubric tolerances)
+#     kp_xy: 0.6
+#     kp_z: 0.8
+#     kp_yaw: 1.2
+#     max_xy: 0.5
+#     max_z: 0.5
+#     max_yaw_rate: 0.8
+#     xy_tol: 0.35
+#     z_tol: 0.25
+#     wp_hold_sec: 2.0
+#     tick_hz: 20.0
+
+#     # Facing + smoothing
+#     yaw_to_path: true
+#     lookahead_m: 0.0
+#     use_z_control: false
+
+#     # TSP + routing (High Distinction)
+#     tsp_mode: "nn_2opt"         # "none" | "nn_2opt"
+#     grid_res_m: 0.5
+#     clearance_m: 0.8
+#     rth_on_breach: true
+
+#     # Perception obstacles (from tree detector)
+#     obstacles_enabled: false     # switch ON when tree detector is running
+#     obstacles_topic: "/tree_pose"
+#     obstacle_radius_m: 0.6
+#     replan_ahead_radius: 1.5
